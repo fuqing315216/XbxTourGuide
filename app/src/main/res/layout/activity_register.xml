@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llyt_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlyt_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/head_bg_color">
+
+        <ImageButton
+            android:id="@+id/ibtn_return"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingLeft="16dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_return" />
+
+        <TextView
+            android:id="@+id/tv_header"
+            style="@style/HeaderTextView"
+            android:text="@string/fill_info" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="16dp"
+            android:text="@string/next"
+            android:textColor="@color/head_text_color"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/head_text_color"
+        android:layout_height="48dp">
+
+        <RelativeLayout
+            android:id="@+id/rlyt_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_guide"
+                style="@style/HeaderTextView"
+                android:layout_width="match_parent"
+                android:text="@string/register_guide"
+                android:textColor="@color/head_bg_color"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/line_guide"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/head_bg_color" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_native"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_native"
+                style="@style/HeaderTextView"
+                android:layout_width="match_parent"
+                android:text="@string/register_native"
+                android:textColor="@color/gray_color"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/line_native"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/head_bg_color"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_accompany"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_accompany"
+                style="@style/HeaderTextView"
+                android:layout_width="match_parent"
+                android:text="@string/register_accompany"
+                android:textColor="@color/gray_color"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/line_accompany"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/head_bg_color"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_register"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
+
+</LinearLayout>
