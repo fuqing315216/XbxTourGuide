@@ -17,10 +17,10 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p/>
+ * <p>
  * 我的订单列表
  */
-public class MyOrderListActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
+public class MyOrderListActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ImageButton returnIbtn;
     private ListView myOrderLv;
@@ -33,9 +33,9 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         initView();
     }
 
-    private void initView(){
-        returnIbtn=(ImageButton)findViewById(R.id.ibtn_return);
-        myOrderLv=(ListView)findViewById(R.id.lv_myorder);
+    private void initView() {
+        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
+        myOrderLv = (ListView) findViewById(R.id.lv_myorder);
 
         returnIbtn.setOnClickListener(this);
         myOrderLv.setOnItemClickListener(this);
@@ -43,11 +43,11 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void setData(){
-        ArrayList<MyOrderBeans> orderList=new ArrayList<>();
-        for (int i=0;i<5;i++){
-            MyOrderBeans bean=new MyOrderBeans();
-            bean.setOrderId(1+"");
+    private void setData() {
+        ArrayList<MyOrderBeans> orderList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            MyOrderBeans bean = new MyOrderBeans();
+            bean.setOrderId(1 + "");
             bean.setOrderDate("4月" + (1 + i) + "日 11：00");
             bean.setOrderStatus(i % 4);
             bean.setTouristType(i % 3);
@@ -56,15 +56,16 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
             orderList.add(bean);
         }
 
-        adapter=new MyOrderListAdapter(this,orderList);
+        adapter = new MyOrderListAdapter(this, orderList);
         myOrderLv.setAdapter(adapter);
     }
+
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ibtn_return:
-            finish();
+                finish();
                 break;
             default:
                 break;
@@ -73,7 +74,8 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MyOrderBeans bean=(MyOrderBeans)parent.getItemAtPosition(position);
-        Toast.makeText(this,bean.getOrderDate(),Toast.LENGTH_SHORT).show();
+//        MyOrderBeans bean = (MyOrderBeans) parent.getItemAtPosition(position);
+//        Toast.makeText(this, bean.getOrderDate(), Toast.LENGTH_SHORT).show();
+        startIntent(MyOrderDetailActivity.class,false);
     }
 }

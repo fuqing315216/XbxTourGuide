@@ -2,10 +2,15 @@ package com.xbx.tourguide.base;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -56,4 +61,5 @@ public class BaseStatusActivity extends Activity {
         }
         win.setAttributes(winParams);
     }
+
 }

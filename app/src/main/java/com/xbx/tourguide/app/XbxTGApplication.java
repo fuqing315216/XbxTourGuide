@@ -1,8 +1,13 @@
 package com.xbx.tourguide.app;
 
 import android.app.Application;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.NotificationCompat;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -10,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.ui.HomeActivity;
 
 /**
  * Created by shuzhen on 2016/3/28.
@@ -70,5 +76,37 @@ public class XbxTGApplication extends Application {
 
     }
 
+    public void showNotification(){
+        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(
+                this);
+        Intent intent = new Intent(this,HomeActivity.class);
+        ComponentName componentName = new ComponentName("com.xbx.tourguide.ui",
+                "com.xbx.tourguide.ui.HomeActivity");
+        intent.setComponent(componentName);
+        intent.setAction("Android.intent.action.MAIN");
+        intent.addCategory("Android.intent.category.LAUNCHER");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+//        stackBuilder.addParentStack(HomeActivity.class);
+//        stackBuilder.addNextIntent(intent);
+//        int requestCode = (int) SystemClock.uptimeMillis();
+//        PendingIntent contentIntent = stackBuilder.getPendingIntent(
+//                requestCode, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notifyBuilder.setContentTitle("途途导由");
+        notifyBuilder.setContentText("服务已开启");
+        notifyBuilder.setTicker("途途导由");
+        notifyBuilder.setContentIntent(contentIntent);
+        notifyBuilder.setAutoCancel(false);
+        notifyBuilder.setOngoing(true);
+        notifyBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.notify(R.string.app_name, notifyBuilder.build());
+
+    }
 
 }

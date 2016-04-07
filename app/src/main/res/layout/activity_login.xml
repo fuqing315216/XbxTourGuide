@@ -57,6 +57,7 @@
             <EditText
                 android:id="@+id/et_phone"
                 style="@style/EditTextStyle"
+                android:inputType="phone"
                 android:hint="@string/et_phone" />
 
         </RelativeLayout>
@@ -82,6 +83,7 @@
             <EditText
                 android:id="@+id/et_code"
                 style="@style/EditTextStyle"
+                android:inputType="textPassword"
                 android:hint="@string/et_password" />
 
         </RelativeLayout>

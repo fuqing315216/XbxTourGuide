@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xbx.tourguide">
 
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".app.XbxTGApplication"
@@ -36,6 +41,9 @@
             android:name=".ui.RegisterNextActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".ui.RegisterFinalActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".ui.CameraDialogActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -48,6 +56,12 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.MyOrderListActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.MyOrderDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.ServiceTimeActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

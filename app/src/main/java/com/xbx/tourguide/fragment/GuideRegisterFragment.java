@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +13,11 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.ui.CameraDialogActivity;
 import com.xbx.tourguide.ui.RegisterActivity;
+import com.xbx.tourguide.ui.RegisterNextActivity;
 import com.xbx.tourguide.view.CircleImageView;
-
-import java.io.File;
 
 /**
  * Created by shuzhen on 2016/3/30.
@@ -32,7 +30,9 @@ public class GuideRegisterFragment extends Fragment implements View.OnClickListe
     private RadioButton femaleRb, maleRb;
     private CircleImageView headPicCiv;
     private TextView typeEt;
+    public EditText nameEt,idEt,guideIdEt;
     private ImageLoader loader;
+    public RegisterBeans beans=new RegisterBeans();
 
     @Nullable
     @Override
@@ -50,6 +50,11 @@ public class GuideRegisterFragment extends Fragment implements View.OnClickListe
         maleRb = (RadioButton) v.findViewById(R.id.rb_male);
         headPicCiv = (CircleImageView) v.findViewById(R.id.civ_headimg);
         typeEt = (TextView) v.findViewById(R.id.et_toursit_type);
+        nameEt=(EditText)v.findViewById(R.id.et_name);
+        idEt=(EditText)v.findViewById(R.id.et_card);
+        guideIdEt=(EditText)v.findViewById(R.id.et_tourist_certificate);
+
+        beans.setSex(1);
 
         femaleRb.setOnClickListener(this);
         maleRb.setOnClickListener(this);
@@ -68,11 +73,13 @@ public class GuideRegisterFragment extends Fragment implements View.OnClickListe
             case R.id.rb_famale:
                 femaleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
                 maleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
+                beans.setSex(1);
                 break;
 
             case R.id.rb_male:
                 femaleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 maleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
+                beans.setSex(0);
                 break;
 
             case R.id.civ_headimg:
@@ -99,12 +106,18 @@ public class GuideRegisterFragment extends Fragment implements View.OnClickListe
         if (resultCode == 100) {
 
             String url = data.getStringExtra("url");
-            loader.displayImage("file://" + url, headPicCiv);
+            loader.displayImage( "file://" +url, headPicCiv);
+            beans.setHead_image(url);
 
         } else if (resultCode == 101) {
             String type = data.getStringExtra("type");
             typeEt.setText(type);
             typeEt.setTextColor(getResources().getColor(R.color.text_color));
+            if (getResources().getString(R.string.guide).equals(type)){
+                beans.setGuide_type(0);
+            }else if(getResources().getString(R.string.leader).equals(type)){
+                beans.setGuide_type(1);
+            }
         }
 
     }

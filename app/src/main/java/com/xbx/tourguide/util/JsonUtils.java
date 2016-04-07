@@ -1,5 +1,7 @@
 package com.xbx.tourguide.util;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -13,6 +15,7 @@ public class JsonUtils {
 
 	public static <T> T object(String json, Class<T> classOfT) {
 //		return gson.fromJson(json, classOfT);
+		Log.i("json","json==>"+json);
 		return JSON.parseObject(json, classOfT);
 	}
 	public static <T> String toJson(Class<T> param) {

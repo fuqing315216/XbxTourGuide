@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">导由导游端</string>
+    <string name="app_name">途途导由</string>
     <string name="phone_login">手机登录</string>
     <string name="register">注册</string>
     <string name="phone">手机号</string>
@@ -48,4 +48,33 @@
     <string name="setting">设置</string>
     <string name="mywallet">我的钱包</string>
     <string name="information">消息中心</string>
+    <string name="finished">已完成</string>
+    <string name="going">进行中</string>
+    <string name="ordered">已预约</string>
+    <string name="closed">已关闭</string>
+    <string name="natival">土著</string>
+    <string name="accompany">随游</string>
+    <string name="confirm_pw">确认密码</string>
+    <string name="et_confirm_pw">请再次输入密码</string>
+    <string name="register_explain">注册即代表</string>
+    <string name="register_zack"><u>阅读并同意Zack协议</u></string>
+    <string name="order_detail">订单详情</string>
+    <string name="order_details">订单明细</string>
+    <string name="order_status">订单状态：</string>
+    <string name="order_time">订单时间：</string>
+    <string name="pay_details">交易明细</string>
+    <string name="cost_sum">消费金额：</string>
+    <string name="fee">打赏：</string>
+    <string name="cost_total">总计：</string>
+    <string name="pay_type">支付方式：</string>
+    <string name="TA_comment">TA的评价</string>
+    <string name="refuse">拒单</string>
+    <string name="accept">接单</string>
+    <string name="update_ok">确认修改</string>
+    <string name="price_per_h">价格/小时</string>
+    <string name="price_per_d">价格/天</string>
+    <string name="guide_type">导游性质</string>
+    <string name="total">全陪</string>
+    <string name="part">地陪</string>
+
 </resources>

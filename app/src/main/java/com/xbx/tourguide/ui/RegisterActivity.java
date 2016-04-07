@@ -1,140 +1,185 @@
 package com.xbx.tourguide.ui;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.fragment.AccompanyRegisterFragment;
-import com.xbx.tourguide.fragment.GuideRegisterFragment;
-import com.xbx.tourguide.fragment.NativeRegisterFragment;
+import com.xbx.tourguide.beans.RegisterBeans;
+import com.xbx.tourguide.beans.Result;
+import com.xbx.tourguide.beans.VerifyBeans;
+import com.xbx.tourguide.http.HttpUrl;
+import com.xbx.tourguide.http.IRequest;
+import com.xbx.tourguide.http.RequestJsonListener;
+import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.util.VerifyUtil;
+
 
 /**
- * Created by shuzhen on 2016/3/30.
+ * Created by shuzhen on 2016/4/1.
  * <p/>
  * 注册页
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
+    private TextView zackTv, nextTv;
     private ImageButton returnIbtn;
-    private RelativeLayout guideRlyt, nativeRlyt, accompanyRlyt;
-    private TextView guideTv, nativeTv, accompanyTv, nextTv;
-    private View guideV, nativeV, accompanyV;
-    public LinearLayout registerLlyt;
-    private FragmentManager fm;
-    private FragmentTransaction transaction;
-    private int flag = 0;//0为导游，1为土著，2为随游
+    private Button verificationBtn;
+    private EditText phoneEt, verifyEt, pwEt, repwEt;
+    private int time = 60;
+    private RegisterBeans beans = new RegisterBeans();
+    private String code="";
 
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (time > 0) {
+                time--;
+                verificationBtn.setTextColor(Color.WHITE);
+                verificationBtn.setBackgroundResource(R.drawable.bg_verification_style);
+                if (time > 9) {
+                    verificationBtn.setText(getResources().getString(R.string.reset_verification) + "(" + time + "s)");
+                } else {
+                    verificationBtn.setText(getResources().getString(R.string.reset_verification) + "(0" + time + "s)");
+                }
+                verificationBtn.setEnabled(false);
+                handler.postDelayed(this, 1000);
+            } else {
+                verificationBtn.setTextColor(getResources().getColor(R.color.head_text_color));
+                verificationBtn.setBackgroundResource(R.drawable.bg_roundbtn_verification_style);
+                verificationBtn.setText(getResources().getString(R.string.get_verification));
+                verificationBtn.setEnabled(true);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        fm = getFragmentManager();
-        transaction = fm.beginTransaction();
-
         initView();
-
-
     }
 
-
     private void initView() {
-        registerLlyt=(LinearLayout)findViewById(R.id.llyt_register);
         returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-
-        guideRlyt = (RelativeLayout) findViewById(R.id.rlyt_guide);
-        nativeRlyt = (RelativeLayout) findViewById(R.id.rlyt_native);
-        accompanyRlyt = (RelativeLayout) findViewById(R.id.rlyt_accompany);
-
-        guideTv = (TextView) findViewById(R.id.tv_guide);
-        nativeTv = (TextView) findViewById(R.id.tv_native);
-        accompanyTv = (TextView) findViewById(R.id.tv_accompany);
-
-        guideV = findViewById(R.id.line_guide);
-        nativeV = findViewById(R.id.line_native);
-        accompanyV = findViewById(R.id.line_accompany);
-
+        zackTv = (TextView) findViewById(R.id.tv_register_zack);
         nextTv = (TextView) findViewById(R.id.tv_next);
+        verificationBtn = (Button) findViewById(R.id.btn_verification);
+        phoneEt = (EditText) findViewById(R.id.et_phone);
+        verifyEt = (EditText) findViewById(R.id.et_verification);
+        pwEt = (EditText) findViewById(R.id.et_pw);
+        repwEt = (EditText) findViewById(R.id.et_confirm_pw);
 
         returnIbtn.setOnClickListener(this);
-        guideRlyt.setOnClickListener(this);
-        nativeRlyt.setOnClickListener(this);
-        accompanyRlyt.setOnClickListener(this);
+        zackTv.setOnClickListener(this);
         nextTv.setOnClickListener(this);
-
-        transaction.add(R.id.fragment_register, new GuideRegisterFragment());
-        transaction.commit();
+        verificationBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        fm = getFragmentManager();
-        transaction = fm.beginTransaction();
         switch (v.getId()) {
             case R.id.ibtn_return:
                 finish();
                 break;
-
-            case R.id.rlyt_guide:
-                flag = 0;
-                guideTv.setTextColor(getResources().getColor(R.color.head_bg_color));
-                nativeTv.setTextColor(getResources().getColor(R.color.gray_color));
-                accompanyTv.setTextColor(getResources().getColor(R.color.gray_color));
-
-                guideV.setVisibility(View.VISIBLE);
-                nativeV.setVisibility(View.GONE);
-                accompanyV.setVisibility(View.GONE);
-
-                transaction.replace(R.id.fragment_register, new GuideRegisterFragment());
-                transaction.commit();
+            case R.id.tv_register_zack://注册协议
 
                 break;
 
-            case R.id.rlyt_native:
-                flag = 1;
-                guideTv.setTextColor(getResources().getColor(R.color.gray_color));
-                nativeTv.setTextColor(getResources().getColor(R.color.head_bg_color));
-                accompanyTv.setTextColor(getResources().getColor(R.color.gray_color));
+            case R.id.tv_next://下一步
 
-                guideV.setVisibility(View.GONE);
-                nativeV.setVisibility(View.VISIBLE);
-                accompanyV.setVisibility(View.GONE);
+                beans.setMobile(phoneEt.getText().toString().trim());
+                String verify = verifyEt.getText().toString();
+                String pw = pwEt.getText().toString();
+                String repw = repwEt.getText().toString();
 
-                transaction.replace(R.id.fragment_register, new NativeRegisterFragment());
-                transaction.commit();
-                break;
-
-            case R.id.rlyt_accompany:
-                flag = 2;
-                guideTv.setTextColor(getResources().getColor(R.color.gray_color));
-                nativeTv.setTextColor(getResources().getColor(R.color.gray_color));
-                accompanyTv.setTextColor(getResources().getColor(R.color.head_bg_color));
-
-                guideV.setVisibility(View.GONE);
-                nativeV.setVisibility(View.GONE);
-                accompanyV.setVisibility(View.VISIBLE);
-
-                transaction.replace(R.id.fragment_register, new AccompanyRegisterFragment());
-                transaction.commit();
-                break;
-
-            case R.id.tv_next:
+                if (VerifyUtil.isNullOrEmpty(verify)) {
+                    Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (VerifyUtil.isNullOrEmpty(pw)) {
+                    Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (pw.length() < 6 || pw.length() > 18) {
+                    Toast.makeText(this, "密码长度为6-18位，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!VerifyUtil.isPassWord(pw) && !VerifyUtil.isNumber(pw)
+                        && !VerifyUtil.isLetter(pw)) {
+                    Toast.makeText(this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (VerifyUtil.isNullOrEmpty(repw)) {
+                    Toast.makeText(this, "请输入确认密码", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!pw.equals(repw)) {
+                    Toast.makeText(this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (code.equals(verify)){
+                    beans.setVerify_code(verify);
+                }else{
+                    Toast.makeText(this,"验证码错误",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                beans.setPassword(pw);
+                beans.setRepassword(repw);
 
                 Intent intent = new Intent(this, RegisterNextActivity.class);
-                intent.putExtra("flag", flag);
+                intent.putExtra("bean", beans);
                 startActivity(intent);
+                break;
 
+            case R.id.btn_verification://获取验证码
+                String phone = phoneEt.getText().toString().trim();
+                if (VerifyUtil.isNullOrEmpty(phone)) {
+                    Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!VerifyUtil.isTelPhoneNumber(phone)) {
+                    Toast.makeText(this, "您输入的手机号码有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                time = 60;
+                handler.postDelayed(runnable, 1000);
+                getVerifyCode(phone);
                 break;
             default:
                 break;
+
         }
+    }
+
+    /**
+     * 获取验证码
+     */
+    private void getVerifyCode(String phone) {
+
+        String url = HttpUrl.GET_VERIFYCODE + "?mobile=" + phone + "&check_regester=" + 0;
+
+        IRequest.get(this, url, VerifyBeans.class, "验证码已发送", true, new RequestJsonListener<VerifyBeans>() {
+            @Override
+            public void requestSuccess(VerifyBeans result) {
+
+                Log.i("log",result.getVierfy_code().toString());
+                code = result.getVierfy_code();
+            }
+
+            @Override
+            public void requestError(VolleyError e) {
+
+            }
+        });
+
     }
 }

@@ -1,6 +1,7 @@
 package com.xbx.tourguide.http;
 
 import android.content.Context;
+import android.util.Log;
 
 
 public class IRequest {
@@ -39,7 +40,7 @@ public class IRequest {
 	 */
 	public static <T> void get(Context context, String url, Class<T> classOfT,
 			RequestJsonListener<T> l) {
-		RequestManager.get(url, context, classOfT, null, false, l);
+		RequestManager.get(context,url, context, classOfT, null, false, l);
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class IRequest {
 	 */
 	public static <T> void get(Context context, String url, Class<T> classOfT,
 			String progressTitle, RequestJsonListener<T> l) {
-		RequestManager.get(url, context, classOfT, progressTitle, true, l);
+		RequestManager.get(context,url, context, classOfT, progressTitle, true, l);
 
 	}
 
@@ -70,7 +71,7 @@ public class IRequest {
 	 */
 	public static <T> void get(Context context, String url, Class<T> classOfT,
 			String progressTitle, boolean LoadingShow, RequestJsonListener<T> l) {
-		RequestManager.get(url, context, classOfT, progressTitle, LoadingShow,
+		RequestManager.get(context,url, context, classOfT, progressTitle, LoadingShow,
 				l);
 
 	}
@@ -99,7 +100,7 @@ public class IRequest {
 	 */
 	public static <T> void post(Context context, String url, Class<T> classOfT,
 			RequestParams params, RequestJsonListener<T> l) {
-		RequestManager.post(url, context, classOfT, params, null, false, l);
+		RequestManager.post(context,url, context, classOfT, params, null, false, l);
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class IRequest {
 	 */
 	public static <T> void post(Context context, String url, Class<T> classOfT,
 			RequestParams params, String progressTitle, RequestJsonListener<T> l) {
-		RequestManager.post(url, context, classOfT, params, progressTitle,
+		RequestManager.post(context,url, context, classOfT, params, progressTitle,
 				true, l);
 
 	}
@@ -147,7 +148,7 @@ public class IRequest {
 	public static <T> void post(Context context, String url, Class<T> classOfT,
 			RequestParams params, String progressTitle, boolean LoadingShow,
 			RequestJsonListener<T> l) {
-		RequestManager.post(url, context, classOfT, params, progressTitle,
+		RequestManager.post(context,url, context, classOfT, params, progressTitle,
 				true, l);
 	}
 }

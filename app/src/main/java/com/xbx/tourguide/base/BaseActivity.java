@@ -1,10 +1,14 @@
 package com.xbx.tourguide.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.ComponentName;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -14,7 +18,7 @@ import com.xbx.tourguide.util.SystemBarTintManager;
 /**
  * Created by shuzhen on 2016/3/29.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
     protected Intent intent = new Intent();
 
@@ -54,4 +58,5 @@ public class BaseActivity extends Activity {
         }
         win.setAttributes(winParams);
     }
+
 }

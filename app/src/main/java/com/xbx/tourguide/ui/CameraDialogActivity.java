@@ -289,9 +289,9 @@ public class CameraDialogActivity extends BaseActivity implements View.OnClickLi
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
 
-        // // 裁切后图片的尺寸
-        // intent.putExtra("outputX", mCropWidth);
-        // intent.putExtra("outputY", mCropHeight);
+         // 裁切后图片的尺寸
+         intent.putExtra("outputX", 192);
+         intent.putExtra("outputY", 192);
 
         // 自动缩放
         intent.putExtra("scale", true);

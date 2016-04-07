@@ -1,10 +1,21 @@
 package com.xbx.tourguide.ui;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseStatusActivity;
 
 /**
@@ -15,6 +26,7 @@ import com.xbx.tourguide.base.BaseStatusActivity;
 public class HomeActivity extends BaseStatusActivity implements View.OnClickListener{
 
     private RelativeLayout myOrderRlyt;
+    private TextView startTv,serviceTimeTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +38,12 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
 
     private void initView(){
         myOrderRlyt=(RelativeLayout)findViewById(R.id.rlyt_myorder);
+        startTv=(TextView)findViewById(R.id.tv_start_order);
+        serviceTimeTv=(TextView)findViewById(R.id.tv_service_time);
 
         myOrderRlyt.setOnClickListener(this);
+        startTv.setOnClickListener(this);
+        serviceTimeTv.setOnClickListener(this);
     }
 
     @Override
@@ -36,8 +52,17 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
             case R.id.rlyt_myorder:
                 startIntent(MyOrderListActivity.class,false);
                 break;
+
+            case R.id.tv_start_order:
+               XbxTGApplication.getInstance().showNotification();
+                break;
+
+            case R.id.tv_service_time:
+                startIntent(ServiceTimeActivity.class,false);
+                break;
             default:
                 break;
         }
     }
+
 }
