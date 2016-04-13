@@ -24,6 +24,8 @@ import com.xbx.tourguide.http.RequestJsonListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.VerifyUtil;
 
+import java.util.List;
+
 
 /**
  * Created by shuzhen on 2016/4/1.
@@ -173,6 +175,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 Log.i("log",result.getVierfy_code().toString());
                 code = result.getVierfy_code();
+            }
+
+            @Override
+            public void requestSuccess(List<VerifyBeans> list) {
+
             }
 
             @Override

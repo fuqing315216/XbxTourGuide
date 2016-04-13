@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,10 +18,12 @@ import android.view.WindowManager;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.util.SystemBarTintManager;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by shuzhen on 2016/3/29.
  */
-public class BaseStatusActivity extends Activity {
+public class BaseStatusActivity extends FragmentActivity {
 
     protected Intent intent = new Intent();
 
@@ -61,5 +64,19 @@ public class BaseStatusActivity extends Activity {
         }
         win.setAttributes(winParams);
     }
+
+//    @Override
+//    protected void onResume() {
+//        // TODO Auto-generated method stub
+//        super.onResume();
+//        JPushInterface.onResume(this);
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        // TODO Auto-generated method stub
+//        super.onPause();
+//        JPushInterface.onPause(this);
+//    }
 
 }

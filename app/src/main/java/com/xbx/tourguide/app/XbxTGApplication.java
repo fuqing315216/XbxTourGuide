@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.TelephonyManager;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,6 +18,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.ui.HomeActivity;
+import com.xbx.tourguide.util.Cookie;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/28.
@@ -24,13 +29,25 @@ public class XbxTGApplication extends Application {
 
 
     private static XbxTGApplication instance;
+    private static Context mContext;
+
 
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
+        SDKInitializer.initialize(this);
         instance = this;
         initImageLoader(instance);
+        mContext = getApplicationContext();
+        TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        Cookie.putDeviceID(mContext, manager.getDeviceId());
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
+    }
+
+    public Context getmContext() {
+        return mContext;
     }
 
     public static XbxTGApplication getInstance() {
@@ -76,10 +93,10 @@ public class XbxTGApplication extends Application {
 
     }
 
-    public void showNotification(){
+    public void showNotification() {
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(
                 this);
-        Intent intent = new Intent(this,HomeActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         ComponentName componentName = new ComponentName("com.xbx.tourguide.ui",
                 "com.xbx.tourguide.ui.HomeActivity");
         intent.setComponent(componentName);
@@ -109,4 +126,32 @@ public class XbxTGApplication extends Application {
 
     }
 
+    /**
+     * 毫秒转换
+     *
+     * @param ms
+     * @return
+     */
+    public static String formatTime(long ms) {
+
+        int ss = 1000;
+        int mi = ss * 60;
+        int hh = mi * 60;
+        int dd = hh * 24;
+
+        long day = ms / dd;
+        long hour = (ms - day * dd) / hh;
+        long minute = (ms - day * dd - hour * hh) / mi;
+        long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+        long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
+
+        String strDay = day < 10 ? "0" + day : "" + day; //天
+        String strHour = hour < 10 ? "0" + hour : "" + hour;//小时
+        String strMinute = minute < 10 ? "0" + minute : "" + minute;//分钟
+        String strSecond = second < 10 ? "0" + second : "" + second;//秒
+        String strMilliSecond = milliSecond < 10 ? "0" + milliSecond : "" + milliSecond;//毫秒
+        strMilliSecond = milliSecond < 100 ? "0" + strMilliSecond : "" + strMilliSecond;
+
+        return strHour + "小时" + strMinute + "分"+strSecond+"秒";
+    }
 }

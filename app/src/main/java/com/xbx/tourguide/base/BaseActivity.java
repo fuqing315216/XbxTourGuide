@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.util.SystemBarTintManager;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by shuzhen on 2016/3/29.
  */
@@ -34,6 +36,20 @@ public class BaseActivity extends FragmentActivity {
         }
         super.onCreate(savedInstanceState);
     }
+
+//    @Override
+//    protected void onResume() {
+//        // TODO Auto-generated method stub
+//        super.onResume();
+//        JPushInterface.onResume(this);
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        // TODO Auto-generated method stub
+//        super.onPause();
+//        JPushInterface.onPause(this);
+//    }
 
     /**
      * @param cls

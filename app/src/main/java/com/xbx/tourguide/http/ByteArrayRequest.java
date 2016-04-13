@@ -1,4 +1,6 @@
 package com.xbx.tourguide.http;
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.xbx.tourguide.app.XbxTGApplication;
+import com.xbx.tourguide.util.Cookie;
 
 
 class ByteArrayRequest extends Request<byte[]> {
@@ -29,7 +33,6 @@ class ByteArrayRequest extends Request<byte[]> {
         super(method, url, errorListener);
         this.mPostBody = postBody;
         this.mListener = listener;
-
         if (this.mPostBody != null && this.mPostBody instanceof RequestParams) {// contains file
             this.httpEntity = ((RequestParams) this.mPostBody).getEntity();
         }
@@ -51,6 +54,7 @@ class ByteArrayRequest extends Request<byte[]> {
         Map<String, String> headers = super.getHeaders();
         if (null == headers || headers.equals(Collections.emptyMap())) {
             headers = new HashMap<String, String>();
+            headers.put("deviceid", Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext()));
         }
         return headers;
     }

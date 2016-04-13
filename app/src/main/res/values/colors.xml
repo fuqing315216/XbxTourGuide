@@ -15,4 +15,5 @@
     <color name="bg_status_color">#1F1533</color>
     <color name="color_9966ff">#9966ff</color>
     <color name="color_3cde3c">#3cde3c</color>
+    <color name="text_gray_color">#646464</color>
 </resources>

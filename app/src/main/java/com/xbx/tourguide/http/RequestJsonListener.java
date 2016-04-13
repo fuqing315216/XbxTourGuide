@@ -2,6 +2,8 @@ package com.xbx.tourguide.http;
 
 import com.android.volley.VolleyError;
 
+import java.util.List;
+
 
 public interface RequestJsonListener<T> {
     /**
@@ -10,6 +12,8 @@ public interface RequestJsonListener<T> {
      * @param <T>
      */
     public void requestSuccess(T result);
+
+    public void requestSuccess(List<T> list);
 
     /**
      * 错误

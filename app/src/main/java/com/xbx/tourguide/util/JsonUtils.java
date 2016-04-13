@@ -18,7 +18,7 @@ public class JsonUtils {
 		Log.i("json","json==>"+json);
 		return JSON.parseObject(json, classOfT);
 	}
-	public static <T> String toJson(Class<T> param) {
+	public static <T> String toJson(T param) {
 //		return gson.toJson(param);
 		return JSON.toJSONString(param);
 				

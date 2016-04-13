@@ -45,6 +45,7 @@
     <string name="mytravel">我的旅博</string>
     <string name="service_time">服务时间</string>
     <string name="start_order">开始接单</string>
+    <string name="stop_order">停止接单</string>
     <string name="setting">设置</string>
     <string name="mywallet">我的钱包</string>
     <string name="information">消息中心</string>
@@ -61,10 +62,11 @@
     <string name="order_detail">订单详情</string>
     <string name="order_details">订单明细</string>
     <string name="order_status">订单状态：</string>
-    <string name="order_time">订单时间：</string>
+    <string name="order_time">服务时间：</string>
     <string name="pay_details">交易明细</string>
     <string name="cost_sum">消费金额：</string>
     <string name="fee">打赏：</string>
+    <string name="discount">优惠：</string>
     <string name="cost_total">总计：</string>
     <string name="pay_type">支付方式：</string>
     <string name="TA_comment">TA的评价</string>
@@ -76,5 +78,13 @@
     <string name="guide_type">导游性质</string>
     <string name="total">全陪</string>
     <string name="part">地陪</string>
+    <string name="start_service">开始服务</string>
+    <string name="end_service">结束服务</string>
+    <string name="service_time1">服务时间：</string>
+    <string name="pay_money">支付定金：</string>
+    <string name="alipay">支付宝支付</string>
+    <string name="weixin">微信支付</string>
+    <string name="order_remain">订单提醒</string>
+    <string name="remain_content">您有新的订单，请及时查看</string>
 
 </resources>

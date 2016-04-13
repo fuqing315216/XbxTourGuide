@@ -10,53 +10,80 @@ public class MyOrderBeans implements Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
-    private String orderId;
-    private String orderDate;
-    private int touristType;
-    private int orderStatus;
-    private String orderAddress;
+    private String order_number;
+    private String pay_money;
+    private String server_status;
+    private String pay_status;
+    private String end_addr;
+    private String server_type;
+    private String user_type;
+    private String order_time;
+
+    public String getOrder_time() {
+        return order_time;
+    }
+
+    public void setOrder_time(String order_time) {
+        this.order_time = order_time;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getOrder_number() {
+        return order_number;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrder_number(String order_number) {
+        this.order_number = order_number;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getPay_money() {
+        return pay_money;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setPay_money(String pay_money) {
+        this.pay_money = pay_money;
     }
 
-    public int getTouristType() {
-        return touristType;
+    public String getServer_status() {
+        return server_status;
     }
 
-    public void setTouristType(int touristType) {
-        this.touristType = touristType;
+    public void setServer_status(String server_status) {
+        this.server_status = server_status;
     }
 
-    public int getOrderStatus() {
-        return orderStatus;
+    public String getPay_status() {
+        return pay_status;
     }
 
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setPay_status(String pay_status) {
+        this.pay_status = pay_status;
     }
 
-    public String getOrderAddress() {
-        return orderAddress;
+    public String getEnd_addr() {
+        return end_addr;
     }
 
-    public void setOrderAddress(String orderAddress) {
-        this.orderAddress = orderAddress;
+    public void setEnd_addr(String end_addr) {
+        this.end_addr = end_addr;
+    }
+
+    public String getServer_type() {
+        return server_type;
+    }
+
+    public void setServer_type(String server_type) {
+        this.server_type = server_type;
+    }
+
+    public String getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
     }
 }

@@ -23,6 +23,8 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
+import java.util.List;
+
 /**
  * Created by shuzhen on 2016/3/31.
  * <p/>
@@ -126,6 +128,10 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
                 code = result.getVierfy_code();
             }
 
+            @Override
+            public void requestSuccess(List<VerifyBeans> list) {
+
+            }
 
             @Override
             public void requestError(VolleyError e) {
@@ -179,6 +185,11 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
             public void requestSuccess(String result) {
                 Cookie.putUserInfo(ForgetPassWordActivity.this, JsonUtils.toJson(result.getClass()));
                 startIntent(HomeActivity.class, true);
+            }
+
+            @Override
+            public void requestSuccess(List<String> list) {
+
             }
 
             @Override

@@ -15,14 +15,18 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.RegisterBeans;
+import com.xbx.tourguide.beans.TourGuideBeans;
+import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestJsonListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by shuzhen on 2016/3/30.
@@ -194,8 +198,19 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
             @Override
             public void requestSuccess(String result) {
 
-                Cookie.putPhone(RegisterFinalActivity.this, beans.getMobile());
+                TourGuideInfoBeans infoBeans=new TourGuideInfoBeans();
+                TourGuideBeans bean=new TourGuideBeans();
+                infoBeans.setMobile(beans.getMobile());
+                bean.setUser_info(infoBeans);
+
+                Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
+
                 startIntent(LoginActivity.class, true);
+            }
+
+            @Override
+            public void requestSuccess(List<String> list) {
+
             }
 
             @Override

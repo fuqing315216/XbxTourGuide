@@ -1,8 +1,11 @@
 package com.xbx.tourguide.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.Selection;
-import android.text.Spannable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,10 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
+import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by shuzhen on 2016/3/29.
  * <p>
@@ -28,6 +35,7 @@ import com.xbx.tourguide.util.VerifyUtil;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
+    public static boolean isForeground = false;
     private TextView registerTv, forgetPwTv;
     private Button loginBtn;
     private EditText phoneEt, pwEt;
@@ -35,11 +43,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
-
         initView();
     }
+
 
     private void initView() {
 
@@ -104,13 +111,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             params.put("password", pwEt.getText().toString());
         }
         params.put("user_type", "1");
+        Log.i("log","registerId>>>>>>>>>>>>"+JPushInterface.getRegistrationID(this));
+        params.put("push_id", JPushInterface.getRegistrationID(this));
 
         IRequest.post(this, HttpUrl.LOGIN, TourGuideBeans.class, params, "请稍候...", true, new RequestJsonListener<TourGuideBeans>() {
             @Override
             public void requestSuccess(TourGuideBeans result) {
 
-                Cookie.putUserInfo(LoginActivity.this, JsonUtils.toJson(result.getClass()));
+                Cookie.putUserInfo(LoginActivity.this, JsonUtils.toJson(result));
                 startIntent(HomeActivity.class, true);
+            }
+
+            @Override
+            public void requestSuccess(List<TourGuideBeans> list) {
+
             }
 
             @Override
@@ -119,4 +133,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         });
     }
+
+
+
+
 }
