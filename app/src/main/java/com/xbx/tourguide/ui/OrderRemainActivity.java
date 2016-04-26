@@ -14,6 +14,7 @@ import com.xbx.tourguide.api.ServerApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.OrderDetailBeans;
+import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
@@ -25,6 +26,10 @@ import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by shuzhen on 2016/4/13.
@@ -168,7 +173,19 @@ public class OrderRemainActivity extends BaseActivity {
      */
     private void isNext() {
         ToastUtils.showShort(this, "取消及时服务");
-        String nextNum = orderNumberDao.selectFirst();
+        SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            long getMillionSeconds = sdf.parse(sqLiteOrderBean.getDate()).getTime();
+            long nowMillionSeconds = new Date().getTime();
+            if (nowMillionSeconds - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
+                return;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String nextNum = sqLiteOrderBean.getNum();
+
         LogUtils.e("---nextNum:" + nextNum);
         if (VerifyUtil.isNullOrEmpty(nextNum)) {//即时服务没有了
             if (Cookie.getAppointmentOrder(this)) {//有预约服务
