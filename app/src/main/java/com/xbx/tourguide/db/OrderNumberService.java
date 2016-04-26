@@ -2,6 +2,8 @@ package com.xbx.tourguide.db;
 
 import android.content.ContentValues;
 
+import com.xbx.tourguide.beans.SQLiteOrderBean;
+
 import java.util.List;
 
 /**
@@ -9,8 +11,8 @@ import java.util.List;
  */
 public interface OrderNumberService {
     boolean insertLast(ContentValues values);
-    String selectFirst();
+    SQLiteOrderBean selectFirst();
     void deleteFirst();
     void clear();
-    List<String> selectAll();
+    List<SQLiteOrderBean> selectAll();
 }

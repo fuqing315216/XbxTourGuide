@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.util.LogUtils;
 
 import java.util.ArrayList;
@@ -44,15 +45,17 @@ public class OrderNumberDao implements OrderNumberService {
     }
 
     @Override
-    public String selectFirst() {
-        String orderNum = "";
+    public SQLiteOrderBean selectFirst() {
+        SQLiteOrderBean bean = null;
         SQLiteDatabase database = null;
         try {
             database = dbOpenHelper.getReadableDatabase();
-            String sql = "select num from order_number where _id = (select max(_id) from order_number)";
+            bean = new SQLiteOrderBean();
+            String sql = "select * from order_number where _id = (select max(_id) from order_number)";
             Cursor cursor = database.rawQuery(sql, new String[]{});
             while (cursor.moveToNext()) {
-                orderNum = cursor.getString(0);
+                bean.setNum(cursor.getString(1));
+                bean.setDate(cursor.getString(2));
             }
 
         } catch (Exception e) {
@@ -63,8 +66,8 @@ public class OrderNumberDao implements OrderNumberService {
                 database.close();
             }
         }
-        LogUtils.e("---selectFirst_orderNum:" + orderNum);
-        return orderNum;
+        LogUtils.e("---selectFirst:" + bean.toString());
+        return bean;
     }
 
     @Override
@@ -100,17 +103,20 @@ public class OrderNumberDao implements OrderNumberService {
     }
 
     @Override
-    public List<String> selectAll() {
+    public List<SQLiteOrderBean> selectAll() {
         SQLiteDatabase database = null;
         Cursor cursor = null;
-        List<String> list = new ArrayList<>();
+        List<SQLiteOrderBean> list = new ArrayList<>();
 
         try {
             database = dbOpenHelper.getWritableDatabase();
-            cursor = database.rawQuery("select num from order_number", new String[]{});
+            cursor = database.rawQuery("select * from order_number", new String[]{});
 
             while (cursor.moveToNext()) {
-                list.add(cursor.getString(0));
+                SQLiteOrderBean bean = new SQLiteOrderBean();
+                bean.setNum(cursor.getString(1));
+                bean.setDate(cursor.getString(2));
+                list.add(bean);
             }
 
         } catch (Exception e) {
@@ -124,7 +130,7 @@ public class OrderNumberDao implements OrderNumberService {
                 cursor.close();
             }
         }
-        LogUtils.e("---list:" + list);
+        LogUtils.e("---list:" + list.toString());
         return list;
     }
 }

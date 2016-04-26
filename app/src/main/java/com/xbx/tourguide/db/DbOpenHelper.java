@@ -16,7 +16,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		//create table
-		db.execSQL("CREATE TABLE IF NOT EXISTS order_number(_id INTEGER PRIMARY KEY AUTOINCREMENT,num VARCHAR(100))");
+		db.execSQL("CREATE TABLE IF NOT EXISTS order_number(_id INTEGER PRIMARY KEY AUTOINCREMENT,num VARCHAR(100),date DATETIME DEFAULT CURRENT_TIMESTAMP)");
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
+import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.db.OrderNumberDao;
@@ -37,10 +38,14 @@ import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.CircleImageView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * Created by shuzhen on 2016/3/31.
- * <p>
+ * <p/>
  * 首页
  */
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -217,16 +222,28 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 判断是否有缓存的即时订单需要处理
      */
-    private void isShowDialog(){
-        if(!Cookie.getIsDialog(this)){
-            String orderNum = orderNumberDao.selectFirst();
-            if (!VerifyUtil.isNullOrEmpty(orderNum)) {
+    private void isShowDialog() {
+        if (!Cookie.getIsDialog(this)) {
+            SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            try {
+                long getMillionSeconds = sdf.parse(sqLiteOrderBean.getDate()).getTime();
+                long nowMillionSeconds = new Date().getTime();
+                if (nowMillionSeconds - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
+                    return;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            if (!VerifyUtil.isNullOrEmpty(sqLiteOrderBean.getNum())) {
                 Cookie.putIsDialog(this, true);
                 Intent orderIntent = new Intent(this, OrderRemainActivity.class);
                 orderIntent.putExtra("serverType", "0");
-                orderIntent.putExtra("orderNumber", orderNum);
+                orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
                 startActivity(orderIntent);
-            }else {
+            } else {
                 if (Cookie.getAppointmentOrder(this)) {
                     Cookie.putIsDialog(this, true);
                     Intent orderIntent = new Intent(this, OrderRemainActivity.class);

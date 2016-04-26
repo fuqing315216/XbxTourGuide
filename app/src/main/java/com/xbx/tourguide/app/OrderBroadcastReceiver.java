@@ -5,12 +5,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 
+import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.ui.OrderRemainActivity;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by xbx on 2016/4/25.
@@ -48,7 +53,20 @@ public class OrderBroadcastReceiver extends BroadcastReceiver {
 
             if (!Cookie.getIsDialog(context)) {
                 if (serverType.equals("0")) {
-                    orderNum = orderNumberDao.selectFirst();
+                    SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    try {
+                        long getMillionSeconds = sdf.parse(sqLiteOrderBean.getDate()).getTime();
+                        long nowMillionSeconds = new Date().getTime();
+                        if (nowMillionSeconds - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
+                            return;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    orderNum = sqLiteOrderBean.getNum();
+
                     if (VerifyUtil.isNullOrEmpty(orderNum)) {
                         if (Cookie.getAppointmentOrder(context)) {
                             Cookie.putIsDialog(context, true);
