@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/rlyt_order_remain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/white"
+        android:paddingLeft="25dp"
+        android:visibility="gone"
+        android:paddingBottom="29dp"
+        android:paddingRight="25dp"
+        android:paddingTop="29dp">
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            android:text="@string/order_remain"/>
+
+        <TextView
+            android:id="@+id/tv_remain_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_below="@id/tv_dialog_title"
+            android:textColor="@color/text_gray_color"
+            android:textSize="15sp"
+            android:text="@string/remain_content"/>
+
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bg_verification_color"
+            android:text="确认"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_remain_content"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_color"
+            android:text="取消"
+            android:layout_marginTop="25dp"
+            android:layout_toLeftOf="@id/tv_ok"
+            android:layout_marginRight="25dp"
+            android:visibility="gone"
+            android:layout_below="@id/tv_remain_content"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
