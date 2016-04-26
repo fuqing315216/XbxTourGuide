@@ -12,9 +12,7 @@ public interface RequestJsonListener<T> {
      * @param <T>
      */
     public void requestSuccess(T result);
-
     public void requestSuccess(List<T> list);
-
     /**
      * 错误
      */

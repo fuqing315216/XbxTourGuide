@@ -45,14 +45,23 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
             android:src="@drawable/ic_headpic" />
 
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_phone" />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="false"
             android:layout_marginLeft="26dp"
+            android:layout_toLeftOf="@id/iv_phone"
+            android:layout_marginRight="12dp"
             android:layout_toRightOf="@id/civ_headpic">
 
             <TextView
@@ -93,15 +102,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="10sp" />
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/iv_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_phone" />
 
     </RelativeLayout>
 

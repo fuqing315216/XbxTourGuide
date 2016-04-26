@@ -1,12 +1,10 @@
 package com.xbx.tourguide.ui;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateFormat;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -28,20 +25,27 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.ServerApi;
+import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.ProcessOrderDetailBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestJsonListener;
+import com.xbx.tourguide.http.RequestBackListener;
+import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.view.CircleImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/8.
@@ -61,11 +65,67 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private MapView mapView;
     private BaiduMap baiduMap;
     private LocationClient locationClient;
+    private boolean isGoing;
+    private boolean isFirst = true;
+    private LocationMode mCurrentMode;
+    private BitmapDescriptor bdMyself = null;
+    private static final int accuracyCircleFillColor = 0x00000000;
+    private static final int accuracyCircleStrokeColor = 0x00000000;
+    private boolean isFirstInOrd = true;
+    private Marker userMarkers = null;
+
+    private ServerApi serverApi = null;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS:
+                    final ProcessOrderDetailBeans result = JsonUtils.object((String) msg.obj, ProcessOrderDetailBeans.class);
+
+                    phoneIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //用intent启动拨打电话
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            Uri data = Uri.parse("tel:" + result.getMobile());
+                            intent.setData(data);
+                            startActivity(intent);
+                        }
+                    });
+
+                    nameTv.setText(result.getNickname());
+                    addressTv.setText(result.getEnd_addr());
+                    loader.displayImage(result.getHead_image(), headImgCiv);
+
+                    startTime = result.getServer_start_time();
+                    if ("0".equals(startTime)) {
+                        timeTv.setText("未开始");
+                    } else {
+                        long time = Long.parseLong(result.getNow_time());
+                        long serverTime = time - Long.parseLong(startTime);
+                        String timeStr = XbxTGApplication.formatTime(serverTime);
+                        timeTv.setText(timeStr);
+                    }
+                    LogUtils.i("mr.yuan:" + result.getLon() + " -  " + result.getLat());
+                    if (result.getLon() != null && result.getLat() != null) {
+                        initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
+                    }
+                    break;
+                case TaskFlag.PAGEREQUESTWO://开始服务
+                    stopBtn.setText(getResources().getString(R.string.end_service));
+                    break;
+                case TaskFlag.PAGEREQUESTHREE://结束服务
+                    StartServiceActivity.this.finish();
+                    break;
+            }
+        }
+    };
 
     Runnable run = new Runnable() {
         @Override
         public void run() {
-            getOrderDetail();
+            serverApi.getOrderDetail(orderId);
             new Handler().postDelayed(this, 1000);
         }
     };
@@ -76,10 +136,9 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_startservice);
         orderId = getIntent().getStringExtra("orderId");
         loader = ImageLoader.getInstance();
-
-        locationClient = new LocationClient(this);
-        locationClient.start();
-        locationClient.requestLocation();
+        isGoing = getIntent().getBooleanExtra("isgoing", true);
+        bdMyself = BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
+        serverApi = new ServerApi(this, handler);
         initView();
     }
 
@@ -98,13 +157,22 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         baiduMap.setMapStatus(msu);
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 
-        stopBtn.setText(getResources().getString(R.string.end_service));
-
         returnIbtn.setOnClickListener(this);
+
+        Log.i("log", "isgoing============>>>>>>>>" + isGoing);
+        if (isGoing) {//进行中
+            stopBtn.setText(getResources().getString(R.string.end_service));
+        } else {//未开始
+            stopBtn.setText(getResources().getString(R.string.start_service));
+        }
+        stopBtn.setOnClickListener(this);
+
+        locationClient = new LocationClient(this);
+        locationClient.start();
+        locationClient.requestLocation();
 
         getLonAndLat();
         new Handler().postDelayed(run, 1000);
-
     }
 
     @Override
@@ -114,81 +182,40 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
 
+            case R.id.btn_service:
+                if (stopBtn.getText().toString().equals(getResources().getString(R.string.end_service))) {//进行中，点击按钮结束服务
+                    serverApi.endServer(orderId);
+                } else {//未开始，点击按钮开始服务
+                    serverApi.startServer(orderId);
+                }
+                break;
             default:
                 break;
         }
     }
 
     /**
-     * 获取订单详情
-     */
-    private void getOrderDetail() {
-        String url = HttpUrl.ORDER_PROCESS + "?order_number=" + orderId;
-
-        IRequest.get(this, url, ProcessOrderDetailBeans.class, "请稍候...", false, new RequestJsonListener<ProcessOrderDetailBeans>() {
-            @Override
-            public void requestSuccess(final ProcessOrderDetailBeans result) {
-
-                phoneIv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //用intent启动拨打电话
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        Uri data = Uri.parse("tel:" + result.getMobile());
-                        intent.setData(data);
-                        startActivity(intent);
-                    }
-                });
-
-                nameTv.setText(result.getNickname());
-                addressTv.setText(result.getEnd_addr());
-//                loader.displayImage(HttpUrl.IMAGE_URL + result.getHead_image(), headImgCiv);
-
-                startTime = result.getServer_start_time();
-                long time = Long.parseLong(result.getNow_time());
-                long serverTime = time - Long.parseLong(startTime);
-                String timeStr = XbxTGApplication.formatTime(serverTime);
-                timeTv.setText(timeStr);
-
-                if(result.getLon()!=null&&result.getLat()!=null){
-                    initOverlay( Double.parseDouble(result.getLat()),Double.parseDouble(result.getLon()), R.drawable.ic_client);
-                }
-
-            }
-
-            @Override
-            public void requestSuccess(List<ProcessOrderDetailBeans> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
-            }
-        });
-    }
-
-
-    /**
      * 设置覆盖物
+     *
      * @param lon
      * @param lat
      * @param drawable
      */
-    private void initOverlay(double lat,double lon,  int drawable) {
-
-        LatLng llA = new LatLng(lon, lat);
-
-        MarkerOptions options = new MarkerOptions()
-                .position(llA) // 设置marker的位置
-                .icon(BitmapDescriptorFactory
-                        .fromResource(drawable)) // 设置marker图标
-                .zIndex(9) // 设置marker所在层级
-                .period(3) // 设置动画时间
-                .draggable(true); // 设置手势拖拽
-        Marker markers = (Marker) baiduMap.addOverlay(options);
-
-
+    private void initOverlay(double lat, double lon, int drawable) {
+        LatLng llA = new LatLng(lat, lon);
+        if (isFirstInOrd) {
+            isFirstInOrd = false;
+            MarkerOptions options = new MarkerOptions()
+                    .position(llA) // 设置marker的位置
+                    .icon(BitmapDescriptorFactory.fromResource(drawable)) // 设置marker图标
+                    .zIndex(9) // 设置marker所在层级
+                    .period(3) // 设置动画时间
+                    .draggable(true); // 设置手势拖拽
+            userMarkers = (Marker) baiduMap.addOverlay(options);
+        } else {
+            if (userMarkers != null)
+                userMarkers.setPosition(llA);
+        }
     }
 
     /**
@@ -213,24 +240,60 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 if (location == null) {
                     return;
                 }
-
-                initOverlay( location.getLatitude(),location.getLongitude(), R.drawable.ic_guide);
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                MapStatus mMapstatus = new MapStatus.Builder().target(ll).zoom(20f)
-                        .build();
-                MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(mMapstatus);
-                baiduMap.setMapStatus(u);
+                LogUtils.i("---onReceiveLocation");
+                String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
+                if (lonAndlat != null && !"".equals(lonAndlat)) {
+                    double lon = Double.parseDouble(lonAndlat.split(",")[0]);
+                    double lat = Double.parseDouble(lonAndlat.split(",")[1]);
+                    double instance = XbxTGApplication.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
+                    if (instance >= 10) {
+                        setLonLat(location);
+                    }
+                } else {
+                    setLonLat(location);
+                }
+                MyLocationData locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())
+                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(100).latitude(location.getLatitude())
+                        .longitude(location.getLongitude()).build();
+//                initOverlay(location.getLatitude(), location.getLongitude(), R.drawable.ic_guide);
+                baiduMap.setMyLocationData(locData);
+                if (isFirst) {
+                    isFirst = false;
+                    mCurrentMode = LocationMode.NORMAL;
+                    baiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                            mCurrentMode, true, bdMyself, accuracyCircleFillColor, accuracyCircleStrokeColor));
+                    LatLng ll = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    MapStatus mMapstatus = new MapStatus.Builder().target(ll).zoom(20f)
+                            .build();
+                    MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(mMapstatus);
+                    baiduMap.animateMapStatus(u);
+                    baiduMap.setMapStatus(u);
+                    baiduMap.setMyLocationEnabled(true);//开启定位图层
+                }
             }
-
-            public void onReceivePoi(BDLocation location) {
-
-            }
-
         });
-
-
     }
 
+    /**
+     * 上传经纬度
+     *
+     * @param location
+     */
+    private void setLonLat(final BDLocation location) {
 
+        RequestParams params = new RequestParams();
+        params.put("uid", UserInfoParse.getUid(Cookie.getUserInfo(this)));
+        params.put("lon", location.getLongitude() + "");
+        params.put("lat", location.getLatitude() + "");
+        Cookie.putLonAndLat(this, location.getLongitude() + "," + location.getLatitude());
+        IRequest.post(this, HttpUrl.POST_LON_LAT, params, new RequestBackListener(this) {
+            @Override
+            public void requestSuccess(String json) {
+                super.requestSuccess(json);
+            }
+        });
+    }
 }

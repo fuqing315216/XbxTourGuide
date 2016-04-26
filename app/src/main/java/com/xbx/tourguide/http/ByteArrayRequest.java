@@ -1,4 +1,5 @@
 package com.xbx.tourguide.http;
+
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -19,6 +20,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.LogUtils;
 
 
 class ByteArrayRequest extends Request<byte[]> {
@@ -27,7 +29,7 @@ class ByteArrayRequest extends Request<byte[]> {
 
     private Object mPostBody = null;
 
-    private HttpEntity httpEntity =null;
+    private HttpEntity httpEntity = null;
 
     public ByteArrayRequest(int method, String url, Object postBody, Listener<byte[]> listener, ErrorListener errorListener) {
         super(method, url, errorListener);
@@ -53,8 +55,13 @@ class ByteArrayRequest extends Request<byte[]> {
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> headers = super.getHeaders();
         if (null == headers || headers.equals(Collections.emptyMap())) {
-            headers = new HashMap<String, String>();
-            headers.put("deviceid", Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext()));
+            headers = new HashMap<>();
+            String deviceId = Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext());
+            String uid = Cookie.getUid(XbxTGApplication.getInstance().getmContext());
+            AESCrypt aesCrypt = new AESCrypt(deviceId);
+            LogUtils.i(deviceId);
+            headers.put("deviceid", deviceId);
+//            headers.put("uuid", aesCrypt.encrypt(uid));
         }
         return headers;
     }

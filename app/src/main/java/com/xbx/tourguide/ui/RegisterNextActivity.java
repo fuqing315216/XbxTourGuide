@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,12 +19,13 @@ import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.fragment.AccompanyRegisterFragment;
 import com.xbx.tourguide.fragment.GuideRegisterFragment;
 import com.xbx.tourguide.fragment.NativeRegisterFragment;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 /**
  * Created by shuzhen on 2016/3/30.
  * <p/>
- * 注册页
+ * 注册页-下一步
  */
 public class RegisterNextActivity extends BaseActivity implements View.OnClickListener {
 
@@ -126,9 +128,9 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
             case R.id.rlyt_accompany:
                 accompanyRegisterFragment = new AccompanyRegisterFragment();
                 flag = 2;
-                guideTv.setTextColor(getResources().getColor(R.color.gray_color));
-                nativeTv.setTextColor(getResources().getColor(R.color.gray_color));
-                accompanyTv.setTextColor(getResources().getColor(R.color.head_bg_color));
+                guideTv.setTextColor(ContextCompat.getColor(this, R.color.gray_color));
+                nativeTv.setTextColor(ContextCompat.getColor(this, R.color.gray_color));
+                accompanyTv.setTextColor(ContextCompat.getColor(this, R.color.head_bg_color));
 
                 guideV.setVisibility(View.GONE);
                 nativeV.setVisibility(View.GONE);
@@ -167,6 +169,20 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                         beans.setIdcard(guideRegisterFragment.idEt.getText().toString());
                     }
 
+                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.typeEt.getText().toString())) {
+                        Toast.makeText(this, "请选择证件类型", Toast.LENGTH_SHORT).show();
+                        return;
+                    }else{
+                        beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
+                    }
+
+                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.locationTv.getText().toString())) {
+                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                        return;
+                    }else{
+                        beans.setCity(guideRegisterFragment.beans.getCity());
+                    }
+
                     if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.guideIdEt.getText().toString())) {
                         Toast.makeText(this, "请输入导游证号", Toast.LENGTH_SHORT).show();
                         return;
@@ -198,6 +214,14 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                     } else {
                         beans.setIdcard(accompanyRegisterFragment.idEt.getText().toString());
                     }
+
+                    if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.locationTv.getText().toString())) {
+                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                        return;
+                    }else{
+                        beans.setCity(accompanyRegisterFragment.beans.getCity());
+                    }
+
                 } else if (flag == 3) {//土著注册
                     if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.beans.getHead_image())) {
                         Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
@@ -222,12 +246,21 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                     } else {
                         beans.setIdcard(nativeRegisterFragment.idEt.getText().toString());
                     }
+
+                    if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.locationTv.getText().toString())) {
+                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                        return;
+                    }else{
+                        beans.setCity(nativeRegisterFragment.beans.getCity());
+                    }
+
                 }
 
                 beans.setUser_type(flag);
                 Intent intent = new Intent(this, RegisterFinalActivity.class);
                 intent.putExtra("flag", flag);
                 intent.putExtra("bean", beans);
+                LogUtils.e(beans.toString());
                 startActivity(intent);
 
                 break;

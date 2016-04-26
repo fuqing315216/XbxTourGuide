@@ -2,6 +2,8 @@ package com.xbx.tourguide.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,16 +15,20 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.LoginApi;
+import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
+import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestJsonListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import java.io.File;
@@ -30,8 +36,8 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/3/30.
- * <p>
- * 导游注册下一步
+ * <p/>
+ * 导游注册-完成
  */
 public class RegisterFinalActivity extends BaseActivity implements View.OnClickListener {
 
@@ -43,6 +49,26 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     private ImageLoader loader;
     private RegisterBeans beans;
 
+    private LoginApi loginApi = null;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS:
+                    TourGuideInfoBeans infoBeans = new TourGuideInfoBeans();
+                    TourGuideBeans bean = new TourGuideBeans();
+                    infoBeans.setMobile(beans.getMobile());
+                    bean.setUser_info(infoBeans);
+
+                    Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
+
+                    startIntent(LoginActivity.class, true);
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +76,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         loader = ImageLoader.getInstance();
         flag = getIntent().getIntExtra("flag", 0);
         beans = (RegisterBeans) getIntent().getSerializableExtra("bean");
+        LogUtils.e(beans.toString());
         initView();
     }
 
@@ -176,48 +203,29 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("idcard_back", new File(beans.getIdcard_back()));
         params.put("guide_card", new File(beans.getGuide_card()));
         params.put("guide_idcard", new File(beans.getGuide_idcard()));
+        params.put("server_language", beans.getLanguage() + "");
+        params.put("now_address", beans.getCity().getId());
 
-        Log.i("log", "mobile=" + beans.getMobile() + "" +
-                        "\npassword=" + beans.getPassword()
-                        + "\nrepassword=" + beans.getRepassword()
-                        + "\nverify_code=" + beans.getVerify_code()
-                        + "\nrealname=" + beans.getRealname()
-                        + "\nsex=" + beans.getSex()
-                        + "\nidcard=" + beans.getIdcard()
-                        + "\nguide_type=" + beans.getGuide_type()
-                        + "\nguide_number=" + beans.getGuide_number()
-                        + "\nuser_type=" + beans.getUser_type()
-                        + "\nhead_image=" + beans.getHead_image()
-                        + "\nidcard_front=" + beans.getIdcard_front()
-                        + "\nidcard_back=" + beans.getIdcard_back()
-                        + "\nguide_card=" + beans.getGuide_card()
-                        + "\nguide_idcard=" + beans.getGuide_idcard()
-        );
+        LogUtils.i("mobile=" + beans.getMobile() + "" +
+                "\npassword=" + beans.getPassword()
+                + "\nrepassword=" + beans.getRepassword()
+                + "\nverify_code=" + beans.getVerify_code()
+                + "\nrealname=" + beans.getRealname()
+                + "\nsex=" + beans.getSex()
+                + "\nidcard=" + beans.getIdcard()
+                + "\nguide_type=" + beans.getGuide_type()
+                + "\nguide_number=" + beans.getGuide_number()
 
-        IRequest.post(this, HttpUrl.REGISTER, String.class, params, "请稍后...", true, new RequestJsonListener<String>() {
-            @Override
-            public void requestSuccess(String result) {
+                + "\nuser_type=" + beans.getUser_type()
+                + "\nhead_image=" + beans.getHead_image()
+                + "\nidcard_front=" + beans.getIdcard_front()
+                + "\nidcard_back=" + beans.getIdcard_back()
+                + "\nguide_card=" + beans.getGuide_card()
+                + "\nguide_idcard=" + beans.getGuide_idcard()
+                + "\nserver_language=" + beans.getLanguage()
+                + "\nnow_address=" + beans.getCity().getName());
 
-                TourGuideInfoBeans infoBeans=new TourGuideInfoBeans();
-                TourGuideBeans bean=new TourGuideBeans();
-                infoBeans.setMobile(beans.getMobile());
-                bean.setUser_info(infoBeans);
-
-                Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
-
-                startIntent(LoginActivity.class, true);
-            }
-
-            @Override
-            public void requestSuccess(List<String> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
-            }
-        });
-
+        loginApi = new LoginApi(this,handler);
+        loginApi.register(params);
     }
 }

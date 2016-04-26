@@ -9,8 +9,17 @@ public class GetServiceTime implements Serializable {
 
     private String free_time;
     private int server_type;
+    private String server_city_name;
     private String guide_instant_price;
     private String guide_reserve_price;
+
+    public String getServer_city_name() {
+        return server_city_name;
+    }
+
+    public void setServer_city_name(String server_city_name) {
+        this.server_city_name = server_city_name;
+    }
 
     public String getFree_time() {
         return free_time;
@@ -43,4 +52,16 @@ public class GetServiceTime implements Serializable {
     public void setGuide_reserve_price(String guide_reserve_price) {
         this.guide_reserve_price = guide_reserve_price;
     }
+
+    @Override
+    public String toString() {
+        return "GetServiceTime{" +
+                "free_time='" + free_time + '\'' +
+                ", server_type=" + server_type +
+                ", server_city_name='" + server_city_name + '\'' +
+                ", guide_instant_price='" + guide_instant_price + '\'' +
+                ", guide_reserve_price='" + guide_reserve_price + '\'' +
+                '}';
+    }
+
 }

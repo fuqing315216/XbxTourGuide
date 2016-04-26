@@ -4,16 +4,29 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ComponentName;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.app.XbxTGApplication;
+import com.xbx.tourguide.beans.TourGuideBeans;
+import com.xbx.tourguide.beans.TourGuideInfoBeans;
+import com.xbx.tourguide.ui.OrderRemainActivity;
+import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SystemBarTintManager;
+import com.xbx.tourguide.util.ToastUtils;
 
 import cn.jpush.android.api.JPushInterface;
 

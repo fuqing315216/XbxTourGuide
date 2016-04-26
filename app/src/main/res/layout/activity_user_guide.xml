@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rlyt_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/head_bg_color">
+
+        <ImageButton
+            android:id="@+id/ibtn_return"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingLeft="16dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_return" />
+
+        <TextView
+            android:id="@+id/tv_header"
+            style="@style/HeaderTextView"
+            android:text="@string/user_guide" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/line_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlyt_about_guide"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/tv_about_guide"
+                style="@style/TextViewStyle"
+                android:text="@string/about_guide" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_about_native"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/tv_about_native"
+                style="@style/TextViewStyle"
+                android:text="@string/about_native" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_about_accompany"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/tv_about_accompany"
+                style="@style/TextViewStyle"
+                android:text="@string/about_accompany" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rlyt_now_and_order"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/tv_now_and_order"
+                style="@style/TextViewStyle"
+                android:text="@string/now_and_order" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+
+        <RelativeLayout
+            android:id="@+id/rlyt_cancel_order"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <TextView
+                android:id="@+id/tv_cancel_order"
+                style="@style/TextViewStyle"
+                android:text="@string/cancel_order" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_right" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color"/>
+
+</LinearLayout>

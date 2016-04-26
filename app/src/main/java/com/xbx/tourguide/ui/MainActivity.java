@@ -6,12 +6,14 @@ import android.os.Handler;
 import android.os.Bundle;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.db.OrderNumberDao;
+import com.xbx.tourguide.util.Cookie;
 
 import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/28.
- * <p>
+ * <p/>
  * loading页
  */
 public class MainActivity extends Activity {
@@ -21,13 +23,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Cookie.putAppointmentOrder( this, false);
+        Cookie.putIsDialog(this, false);
 
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -46,6 +50,5 @@ public class MainActivity extends Activity {
 //        super.onPause();
 //        JPushInterface.onPause(this);
 //    }
-
 
 }

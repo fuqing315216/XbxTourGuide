@@ -18,6 +18,15 @@ public class MyOrderBeans implements Serializable {
     private String server_type;
     private String user_type;
     private String order_time;
+    private String order_status;
+
+    public String getOrder_status() {
+        return order_status;
+    }
+
+    public void setOrder_status(String order_status) {
+        this.order_status = order_status;
+    }
 
     public String getOrder_time() {
         return order_time;
@@ -85,5 +94,19 @@ public class MyOrderBeans implements Serializable {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    @Override
+    public String toString() {
+        return "MyOrderBeans{" +
+                "order_number='" + order_number + '\'' +
+                ", pay_money='" + pay_money + '\'' +
+                ", server_status='" + server_status + '\'' +
+                ", pay_status='" + pay_status + '\'' +
+                ", end_addr='" + end_addr + '\'' +
+                ", server_type='" + server_type + '\'' +
+                ", user_type='" + user_type + '\'' +
+                ", order_time='" + order_time + '\'' +
+                '}';
     }
 }

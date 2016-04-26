@@ -192,11 +192,11 @@ public class RequestManager {
                 } else if (result.getCode() == 1) {//成功
                     String jsonData = JsonUtils.toJson(result.getData());
                     if (jsonData.contains("[")){
-                        Log.i("log","集合====================");
+                        Log.i("log","collection====================");
                         l.requestSuccess(JSON.parseArray(jsonData,classOfT));
                         //JSON.parseObject(Person.getUtil(2), new  TypeReference>(){});
                     }else{
-                        Log.i("log","对象====================");
+                        Log.i("log","object====================");
                         l.requestSuccess(JsonUtils.object(jsonData, classOfT));
                     }
 

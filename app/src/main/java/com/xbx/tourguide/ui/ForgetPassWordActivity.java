@@ -3,42 +3,59 @@ package com.xbx.tourguide.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.LoginApi;
+import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.beans.VerifyBeans;
-import com.xbx.tourguide.http.HttpUrl;
-import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestJsonListener;
-import com.xbx.tourguide.http.RequestListener;
-import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
-
-import java.util.List;
 
 /**
  * Created by shuzhen on 2016/3/31.
- * <p/>
+ * <p>
  * 忘记密码
  */
 public class ForgetPassWordActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageButton returnIbtn;
-    private Button verificationBtn,loginBtn;
-    private EditText phoneEt, pwEt,codeEt;
+    private Button verificationBtn, loginBtn;
+    private EditText phoneEt, pwEt, codeEt;
     private int time = 60;
     private String code;
 
-    Handler handler = new Handler();
+    private LoginApi loginApi = null;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS:
+                    code = (String) msg.obj;
+                    LogUtils.i("---runde:"+code);
+                    time = 60;
+                    handler.postDelayed(runnable, 1000);
+                    break;
+                case TaskFlag.PAGEREQUESTWO:
+                    loginApi.forgetPwLogin(phoneEt.getText().toString(), pwEt.getText().toString(), "1");
+                    break;
+                case TaskFlag.PAGEREQUESTHREE:
+                    Cookie.putUserInfo(ForgetPassWordActivity.this, (String) msg.obj);
+                    startIntent(HomeActivity.class, true);
+                    break;
+            }
+        }
+    };
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -69,6 +86,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_forgetpassword);
 
         initView();
+        loginApi = new LoginApi(this, handler);
 
     }
 
@@ -77,8 +95,8 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
         verificationBtn = (Button) findViewById(R.id.btn_verification);
         phoneEt = (EditText) findViewById(R.id.et_phone);
         pwEt = (EditText) findViewById(R.id.et_code);
-        loginBtn=(Button)findViewById(R.id.btn_login);
-        codeEt=(EditText)findViewById(R.id.et_verification);
+        loginBtn = (Button) findViewById(R.id.btn_login);
+        codeEt = (EditText) findViewById(R.id.et_verification);
 
         returnIbtn.setOnClickListener(this);
         verificationBtn.setOnClickListener(this);
@@ -94,16 +112,15 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
             case R.id.btn_verification:
                 String phone = phoneEt.getText().toString().trim();
                 if (VerifyUtil.isNullOrEmpty(phone)) {
-                    Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShort(this,"请输入手机号");
                     return;
                 }
                 if (!VerifyUtil.isTelPhoneNumber(phone)) {
-                    Toast.makeText(this, "您输入的手机号码有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShort(this,"您输入的手机号码有误，请重新输入");
                     return;
                 }
-                time = 60;
-                handler.postDelayed(runnable, 1000);
-                getVerifyCode(phone);
+
+                loginApi.getVerifyCode(phone, "1");
                 break;
 
             case R.id.btn_login:
@@ -115,87 +132,33 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
     }
 
     /**
-     * 获取验证码
-     */
-    private void getVerifyCode(String phone) {
-
-        String url = HttpUrl.GET_VERIFYCODE + "?mobile=" + phone + "&check_regester=" + 1;
-
-        IRequest.get(this, url, VerifyBeans.class, "验证码已发送", true, new RequestJsonListener<VerifyBeans>() {
-            @Override
-            public void requestSuccess(VerifyBeans result) {
-                Log.i("log", result.getVierfy_code().toString());
-                code = result.getVierfy_code();
-            }
-
-            @Override
-            public void requestSuccess(List<VerifyBeans> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
-            }
-        });
-    }
-
-    /**
      * 找回密码
      */
     private void updatePw() {
-        RequestParams params = new RequestParams();
-        params.put("mobile", phoneEt.getText().toString().trim());
-        if (code.equals(codeEt.getText().toString())) {
-            params.put("verify_code", code);
-        } else {
-            Toast.makeText(this, "验证码错误", Toast.LENGTH_SHORT).show();
+
+        if (VerifyUtil.isNullOrEmpty(phoneEt.getText().toString())) {
+            ToastUtils.showShort(this,"请输入手机号码");
+            return;
         }
 
-        if (VerifyUtil.isNullOrEmpty(pwEt.getText().toString())){
-            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
-        }else{
-            params.put("password",pwEt.getText().toString());
+        if (VerifyUtil.isNullOrEmpty(codeEt.getText().toString())) {
+            ToastUtils.showShort(this,"请输入验证码");
+            return;
         }
 
-        IRequest.post(this, HttpUrl.UPDATE_PW, params, new RequestListener() {
-            @Override
-            public void requestSuccess(String json) {
-                login();
-            }
+        LogUtils.i("---runde:"+code+"--"+codeEt.getText().toString());
+//        if (!code.equals(codeEt.getText().toString())) {
+//            ToastUtils.showShort(this,"验证码错误");
+//            return;
+//        }
 
-            @Override
-            public void requestError(VolleyError e) {
+        if (VerifyUtil.isNullOrEmpty(pwEt.getText().toString())) {
+            ToastUtils.showShort(this,"请输入密码");
+            return;
+        }
 
-            }
-        });
+        loginApi.updatePw(phoneEt.getText().toString().trim(),code, pwEt.getText().toString());
+
     }
 
-    /**
-     * 登录
-     */
-    private void login() {
-        RequestParams params = new RequestParams();
-        params.put("mobile", phoneEt.getText().toString());
-        params.put("password", pwEt.getText().toString());
-        params.put("user_type", "1");
-
-        IRequest.post(this, HttpUrl.LOGIN, String.class, params, "请稍候...", true, new RequestJsonListener<String>() {
-            @Override
-            public void requestSuccess(String result) {
-                Cookie.putUserInfo(ForgetPassWordActivity.this, JsonUtils.toJson(result.getClass()));
-                startIntent(HomeActivity.class, true);
-            }
-
-            @Override
-            public void requestSuccess(List<String> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
-            }
-        });
-    }
 }

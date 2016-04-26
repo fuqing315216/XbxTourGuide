@@ -27,9 +27,10 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class XbxTGApplication extends Application {
 
-
+    private static final double EARTH_RADIUS = 6378137.0;
     private static XbxTGApplication instance;
     private static Context mContext;
+    public static String BROADCAST="order_broadcast";
 
 
     @Override
@@ -134,6 +135,8 @@ public class XbxTGApplication extends Application {
      */
     public static String formatTime(long ms) {
 
+        ms=ms*1000;
+
         int ss = 1000;
         int mi = ss * 60;
         int hh = mi * 60;
@@ -153,5 +156,24 @@ public class XbxTGApplication extends Application {
         strMilliSecond = milliSecond < 100 ? "0" + strMilliSecond : "" + strMilliSecond;
 
         return strHour + "小时" + strMinute + "分"+strSecond+"秒";
+    }
+
+    // 返回单位是米
+    public static double getDistance(double longitude1, double latitude1,
+                                     double longitude2, double latitude2) {
+        double Lat1 = rad(latitude1);
+        double Lat2 = rad(latitude2);
+        double a = Lat1 - Lat2;
+        double b = rad(longitude1) - rad(longitude2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(Lat1) * Math.cos(Lat2)
+                * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+    }
+
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
     }
 }

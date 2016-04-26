@@ -1,45 +1,89 @@
 package com.xbx.tourguide.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.os.Message;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.base.BaseStatusActivity;
+import com.xbx.tourguide.api.ServerApi;
+import com.xbx.tourguide.api.TaskFlag;
+import com.xbx.tourguide.app.XbxTGApplication;
+import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
 import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
+import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestJsonListener;
+import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-
-import java.util.List;
+import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.CircleImageView;
 
 
 /**
  * Created by shuzhen on 2016/3/31.
- * <p/>
+ * <p>
  * 首页
  */
-public class HomeActivity extends BaseStatusActivity implements View.OnClickListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final double EARTH_RADIUS = 6378137.0;
     private RelativeLayout myOrderRlyt;
-    private TextView startTv, serviceTimeTv, travelTv;
+    private RatingBar starRab;
+    private TextView startTv, serviceTimeTv, travelTv, orderNumTv, msgNumTv, nameTv, scoreTv;
     private LocationClient locationClient;
     private String online = "";
-    private String uid="";
+    private String uid = "";
+    private int unreadNum = 0, unreadMsg = 0;
+    private CircleImageView headPicCiv;
+    private ImageLoader loader;
+    private TourGuideInfoBeans beans;
+    private ServerApi serverApi = null;
+    private String userInfo = "";
+    private OrderNumberDao orderNumberDao;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS://设置是否开始接单
+                    OnLineBeans onLineBean = JsonUtils.object((String) msg.obj, OnLineBeans.class);
+//                    TourGuideBeans bean = new TourGuideBeans();
+//                    TourGuideBeans bean = Cookie.getUserInfo(HomeActivity.this);
+                    startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    if (onLineBean.getIs_online() == 0) {//不在线
+                        startTv.setText(getResources().getString(R.string.start_order));
+//                        beans.setIs_online("0");
+                        startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
+                    } else if (onLineBean.getIs_online() == 1) {
+                        startTv.setText(getResources().getString(R.string.stop_order));
+//                        beans.setIs_online("1");
+                        startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
+                    }
+//                    bean.setUser_info(beans);
+//                    Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
+                    break;
+            }
+        }
+    };
 
     private Runnable run = new Runnable() {
         @Override
@@ -53,41 +97,85 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        uid=Cookie.getUserInfo(this).getUid();
-
+        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        loader = ImageLoader.getInstance();
+        serverApi = new ServerApi(this, handler);
+        userInfo = Cookie.getUserInfo(this);
+        orderNumberDao = new OrderNumberDao(this);
+        LogUtils.i("---userInfo:" + userInfo);
+        isShowDialog();
         initView();
     }
 
     private void initView() {
         myOrderRlyt = (RelativeLayout) findViewById(R.id.rlyt_myorder);
+        starRab = (RatingBar) findViewById(R.id.rab_home);
+        scoreTv = (TextView) findViewById(R.id.tv_score);
         startTv = (TextView) findViewById(R.id.tv_start_order);
         serviceTimeTv = (TextView) findViewById(R.id.tv_service_time);
         travelTv = (TextView) findViewById(R.id.tv_my_travel);
+        orderNumTv = (TextView) findViewById(R.id.tv_order_sum);
+        msgNumTv = (TextView) findViewById(R.id.tv_information_sum);
+        headPicCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        nameTv = (TextView) findViewById(R.id.tv_username);
 
         myOrderRlyt.setOnClickListener(this);
         startTv.setOnClickListener(this);
         serviceTimeTv.setOnClickListener(this);
         travelTv.setOnClickListener(this);
+        findViewById(R.id.rlyt_head).setOnClickListener(this);
+        findViewById(R.id.tv_my_wallet).setOnClickListener(this);
+        findViewById(R.id.tv_setting).setOnClickListener(this);
 
-        online=Cookie.getUserInfo(HomeActivity.this).getUser_info().getIs_online();
+        beans = UserInfoParse.getUserInfo(userInfo);
+
+        if ("going".equals(UserInfoParse.getDataType(userInfo))) {
+            GoingBeans goingBeans = UserInfoParse.getGoing(userInfo);
+            startActivity(new Intent(HomeActivity.this, StartServiceActivity.class).putExtra("isgoing", true)
+                    .putExtra("orderId", goingBeans.getOrder_number()));
+        }
+
+        online = beans.getIs_online();
+        startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         if ("0".equals(online)) {//不在线
             startTv.setText(getResources().getString(R.string.start_order));
+            startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
         } else if ("1".equals(online)) {
             startTv.setText(getResources().getString(R.string.stop_order));
+            startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
         }
+
+        unreadNum = Integer.parseInt(beans.getUnread_order());
+        unreadMsg = Integer.parseInt(beans.getUnread_message());
+        if (unreadNum == 0) {
+            orderNumTv.setVisibility(View.GONE);
+        } else {
+            orderNumTv.setText(unreadNum + "");
+        }
+
+        if (unreadMsg == 0) {
+            msgNumTv.setVisibility(View.GONE);
+        } else {
+
+            msgNumTv.setText(unreadMsg + "");
+        }
+        loader.displayImage(beans.getHead_image(), headPicCiv);
+        ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_number());//导游证号
+        nameTv.setText(beans.getNickname());
+
+        scoreTv.setText(beans.getStar() + "分");
+        starRab.setRating(Util.getStar(beans.getStar()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
 //        getLocation();
         new Handler().postDelayed(run, 6000);
 
         locationClient = new LocationClient(this);
         locationClient.start();
         locationClient.requestLocation();
-
     }
 
     @Override
@@ -99,7 +187,7 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
 
             case R.id.tv_start_order:
 //               XbxTGApplication.getInstance().showNotification();
-                setStartService();
+                serverApi.setIsOnline(uid);
                 break;
 
             case R.id.tv_service_time:
@@ -107,7 +195,19 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
                 break;
 
             case R.id.tv_my_travel:
-                startIntent(StartServiceActivity.class, false);
+//                Intent intent = new Intent(this, OrderRemainActivity.class);
+//                intent.putExtra("orderNumber", "");//541654646468484
+//                startActivity(intent);
+                break;
+
+            case R.id.rlyt_head:
+                startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
+                break;
+            case R.id.tv_my_wallet:
+                startIntent(MyWalletActivity.class, false);
+                break;
+            case R.id.tv_setting:
+                startIntent(SettingActivity.class, false);
                 break;
             default:
                 break;
@@ -115,39 +215,28 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
     }
 
     /**
-     * 开始服务
+     * 判断是否有缓存的即时订单需要处理
      */
-    private void setStartService() {
-        Log.i("log","==================="+uid);
-        String url = HttpUrl.START_SERVICE + "?uid=" + uid;
-        IRequest.get(this, url, OnLineBeans.class, "请稍候...", new RequestJsonListener<OnLineBeans>() {
-            @Override
-            public void requestSuccess(OnLineBeans result) {
-
-                TourGuideInfoBeans infoBeans = new TourGuideInfoBeans();
-                TourGuideBeans bean = new TourGuideBeans();
-
-                if (result.getIs_online()==0) {//不在线
-                    startTv.setText(getResources().getString(R.string.start_order));
-                    infoBeans.setIs_online("0");
-                } else if (result.getIs_online()==1) {
-                    startTv.setText(getResources().getString(R.string.stop_order));
-                    infoBeans.setIs_online("1");
+    private void isShowDialog(){
+        if(!Cookie.getIsDialog(this)){
+            String orderNum = orderNumberDao.selectFirst();
+            if (!VerifyUtil.isNullOrEmpty(orderNum)) {
+                Cookie.putIsDialog(this, true);
+                Intent orderIntent = new Intent(this, OrderRemainActivity.class);
+                orderIntent.putExtra("serverType", "0");
+                orderIntent.putExtra("orderNumber", orderNum);
+                startActivity(orderIntent);
+            }else {
+                if (Cookie.getAppointmentOrder(this)) {
+                    Cookie.putIsDialog(this, true);
+                    Intent orderIntent = new Intent(this, OrderRemainActivity.class);
+                    orderIntent.putExtra("serverType", "1");
+                    orderIntent.putExtra("orderNumber", "");
+                    orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(orderIntent);
                 }
-                bean.setUser_info(infoBeans);
-                Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
             }
-
-            @Override
-            public void requestSuccess(List<OnLineBeans> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
-            }
-        });
+        }
     }
 
     /**
@@ -177,7 +266,7 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double lon = Double.parseDouble(lonAndlat.split(",")[0]);
                     double lat = Double.parseDouble(lonAndlat.split(",")[1]);
-                    double instance = getDistance(lon, lat, location.getLongitude(), location.getLatitude());
+                    double instance = XbxTGApplication.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
 
                     if (instance >= 10) {
                         setLonLat(location);
@@ -201,45 +290,24 @@ public class HomeActivity extends BaseStatusActivity implements View.OnClickList
     private void setLonLat(final BDLocation location) {
 
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUserInfo(HomeActivity.this).getUid());
+        params.put("uid", UserInfoParse.getUid(userInfo));
         params.put("lon", location.getLongitude() + "");
         params.put("lat", location.getLatitude() + "");
         Cookie.putLonAndLat(HomeActivity.this, location.getLongitude() + "," + location.getLatitude());
-        IRequest.post(HomeActivity.this, HttpUrl.POST_LON_LAT, String.class, params, new RequestJsonListener<String>() {
+        IRequest.post(HomeActivity.this, HttpUrl.POST_LON_LAT, params, new RequestBackListener(this) {
             @Override
-            public void requestSuccess(String result) {
-
-            }
-
-            @Override
-            public void requestSuccess(List<String> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
+            public void requestSuccess(String json) {
 
             }
         });
     }
 
-    // 返回单位是米
-    public static double getDistance(double longitude1, double latitude1,
-                                     double longitude2, double latitude2) {
-        double Lat1 = rad(latitude1);
-        double Lat2 = rad(latitude2);
-        double a = Lat1 - Lat2;
-        double b = rad(longitude1) - rad(longitude2);
-        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-                + Math.cos(Lat1) * Math.cos(Lat2)
-                * Math.pow(Math.sin(b / 2), 2)));
-        s = s * EARTH_RADIUS;
-        s = Math.round(s * 10000) / 10000;
-        return s;
-    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    private static double rad(double d) {
-        return d * Math.PI / 180.0;
+        if (requestCode == 102) {//修改个人信息
+            loader.displayImage(UserInfoParse.getUserInfo(userInfo).getHead_image(), headPicCiv);
+        }
     }
-
 }

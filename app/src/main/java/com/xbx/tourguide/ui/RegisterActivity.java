@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,16 +13,26 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.LoginApi;
+import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.beans.Result;
 import com.xbx.tourguide.beans.VerifyBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
+import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestJsonListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import java.util.List;
@@ -29,7 +40,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p/>
+ * <p>
  * 注册页
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
@@ -40,9 +51,25 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText phoneEt, verifyEt, pwEt, repwEt;
     private int time = 60;
     private RegisterBeans beans = new RegisterBeans();
-    private String code="";
+    private String code = "";
 
-    Handler handler = new Handler();
+    private LoginApi loginApi = null;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS:
+                    VerifyBeans result = JsonUtils.object((String) msg.obj, VerifyBeans.class);
+                    code = result.getVierfy_code();
+                    time = 60;
+                    handler.postDelayed(runnable, 1000);
+                    break;
+            }
+        }
+    };
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -128,10 +155,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (code.equals(verify)){
+                if (code.equals(verify)) {
                     beans.setVerify_code(verify);
-                }else{
-                    Toast.makeText(this,"验证码错误",Toast.LENGTH_SHORT).show();
+                } else {
+                    ToastUtils.showShort(this, "验证码错误");
                     return;
                 }
                 beans.setPassword(pw);
@@ -152,9 +179,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(this, "您输入的手机号码有误，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                time = 60;
-                handler.postDelayed(runnable, 1000);
-                getVerifyCode(phone);
+                loginApi = new LoginApi(this,handler);
+                loginApi.getVerifyCode(phone, "0");
+//                getVerifyCode(phone);
                 break;
             default:
                 break;
@@ -168,25 +195,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void getVerifyCode(String phone) {
 
         String url = HttpUrl.GET_VERIFYCODE + "?mobile=" + phone + "&check_regester=" + 0;
-
-        IRequest.get(this, url, VerifyBeans.class, "验证码已发送", true, new RequestJsonListener<VerifyBeans>() {
+        IRequest.get(this, url, "验证码发送中", new RequestBackListener(this) {
             @Override
-            public void requestSuccess(VerifyBeans result) {
-
-                Log.i("log",result.getVierfy_code().toString());
-                code = result.getVierfy_code();
-            }
-
-            @Override
-            public void requestSuccess(List<VerifyBeans> list) {
-
-            }
-
-            @Override
-            public void requestError(VolleyError e) {
-
+            public void requestSuccess(String json) {
+                if (UtilParse.getRequestCode(json) == 1) {
+                    VerifyBeans result = JsonUtils.object(UtilParse.getRequestData(json), VerifyBeans.class);
+                    code = result.getVierfy_code();
+                    time = 60;
+                    handler.postDelayed(runnable, 1000);
+                }
             }
         });
-
     }
 }

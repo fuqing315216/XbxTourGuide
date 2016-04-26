@@ -24,6 +24,8 @@ import java.util.Date;
 
 /**
  * Created by shuzhen on 2016/3/30.
+ *
+ * 弹框
  */
 public class CameraDialogActivity extends BaseActivity implements View.OnClickListener {
 

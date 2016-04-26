@@ -78,6 +78,15 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <!--输入框项textview -->
+    <style name="CenterTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <!--button -->
     <style name="ButtonStyle">
 
@@ -101,4 +110,19 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
+    <style name="smallStarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/smallstar_drawable</item>
+        <item name="android:numStars">5</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="android:maxHeight">12dp</item>
+        <item name="android:isIndicator">true</item>
+    </style>
+
+    <style name="bigStarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/bigstar_drawable</item>
+        <item name="android:numStars">5</item>
+        <item name="android:minHeight">49dp</item>
+        <item name="android:maxHeight">49dp</item>
+        <item name="android:isIndicator">true</item>
+    </style>
 </resources>

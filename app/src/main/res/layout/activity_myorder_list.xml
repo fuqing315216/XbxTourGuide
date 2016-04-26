@@ -26,16 +26,24 @@
             android:text="@string/myorder" />
     </RelativeLayout>
 
-    <View
+    <com.xbx.tourguide.view.PullToRefreshLayout
+        android:id="@+id/pulllayout_myorder"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/line_color" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/lv_myorder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        android:listSelector="@null" />
+        <include layout="@layout/refresh_head" />
+
+        <com.xbx.tourguide.view.PullableListView
+            android:id="@+id/pulllv_myorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:divider="@null"
+            android:dividerHeight="1dp"
+            android:listSelector="@null"
+            android:scrollbars="none" />
+
+        <include layout="@layout/load_more" />
+    </com.xbx.tourguide.view.PullToRefreshLayout>
+
 </LinearLayout>
