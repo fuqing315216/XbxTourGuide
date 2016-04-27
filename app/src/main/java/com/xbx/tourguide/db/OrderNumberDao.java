@@ -54,6 +54,7 @@ public class OrderNumberDao implements OrderNumberService {
             String sql = "select * from order_number where _id = (select max(_id) from order_number)";
             Cursor cursor = database.rawQuery(sql, new String[]{});
             while (cursor.moveToNext()) {
+                bean.set_id(cursor.getInt(0) + "");
                 bean.setNum(cursor.getString(1));
                 bean.setDate(cursor.getString(2));
             }
@@ -71,11 +72,11 @@ public class OrderNumberDao implements OrderNumberService {
     }
 
     @Override
-    public void deleteFirst() {
+    public void deleteFirst(String _id) {
         SQLiteDatabase database = null;
         try {
             database = dbOpenHelper.getWritableDatabase();
-            database.execSQL("delete from order_number where _id = (select max(_id) from order_number)");
+            database.execSQL("delete from order_number where _id = " + _id);
 //            flag = (id > 0 ? true : false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +115,7 @@ public class OrderNumberDao implements OrderNumberService {
 
             while (cursor.moveToNext()) {
                 SQLiteOrderBean bean = new SQLiteOrderBean();
+                bean.set_id(cursor.getInt(0) + "");
                 bean.setNum(cursor.getString(1));
                 bean.setDate(cursor.getString(2));
                 list.add(bean);

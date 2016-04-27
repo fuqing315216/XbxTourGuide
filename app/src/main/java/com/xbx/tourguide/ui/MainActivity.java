@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Bundle;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.db.DbOpenHelper;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.util.Cookie;
 
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Cookie.putAppointmentOrder( this, false);
         Cookie.putIsDialog(this, false);
-
+        Cookie.putIsJPush(this,false);
         new Handler().postDelayed(new Runnable() {
 
             @Override

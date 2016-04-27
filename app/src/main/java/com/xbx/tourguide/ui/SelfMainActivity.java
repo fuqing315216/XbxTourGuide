@@ -54,8 +54,14 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     ImageLoader.getInstance().displayImage(result.getHead_image(), headCiv);
                     nameTv.setText(result.getRealname());
                     guideIdTv.setText(result.getGuide_number());
-                    startRab.setRating(Util.getStar(result.getStars()));
-                    scoreTv.setText(result.getStars() + "分");
+
+                    scoreTv.setText(Util.getStar(result.getStars()) + "分");
+                    if ("0.0".equals(Util.getStar(result.getStars()))) {
+                        startRab.setVisibility(View.GONE);
+                    } else {
+                        startRab.setRating(Util.getStar(result.getStars()) / 2);
+                    }
+
                     pricehTv.setText(result.getGuide_instant_price());
                     pricedTv.setText(result.getGuide_reserve_price());
                     int userType = Integer.valueOf(UserInfoParse.getUserInfo(Cookie.getUserInfo(SelfMainActivity.this)).getUser_type());
@@ -138,7 +144,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
 
-                settingApi.updateGuideDetail(UserInfoParse.getUid(Cookie.getUserInfo(this)),introduceEt.getText().toString(), serviceEt.getText().toString());
+                settingApi.updateGuideDetail(UserInfoParse.getUid(Cookie.getUserInfo(this)), introduceEt.getText().toString(), serviceEt.getText().toString());
                 break;
         }
     }

@@ -55,91 +55,101 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         if ("0".equals(bean.getServer_type())) {//0-及时服务，1-预约服务
             holder.serviceTypeTv.setText("即时服务");
             //0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
-            switch (order_status){
+            switch (order_status) {
                 case 0:
                     holder.statusTv.setText("待处理");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 1:
                     holder.statusTv.setText("进行中");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.color_3cde3c));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.color_3cde3c));
+                    setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 2:
                     holder.statusTv.setText("进行中");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.forgetpass_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 3:
                     holder.statusTv.setText("未付款");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.forgetpass_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
                 case 4:
                     holder.statusTv.setText("未评论");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.forgetpass_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
                 case 5:
                     holder.statusTv.setText("已完成");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
                 case 6:
                     holder.statusTv.setText("已关闭");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.gray_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
                 case 7:
                     holder.statusTv.setText("已关闭");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.gray_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
+                    setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
             }
         } else {
             holder.serviceTypeTv.setText("预约服务");
             //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
-            switch (order_status){
+            switch (order_status) {
                 case 0:
                     holder.statusTv.setText("待支付");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 1:
                     holder.statusTv.setText("待确认");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 2:
                     holder.statusTv.setText("已预约");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.color_3cde3c));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.color_3cde3c));
                     break;
                 case 3:
                     holder.statusTv.setText("进行中");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.forgetpass_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     break;
                 case 4:
                     holder.statusTv.setText("未评论");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.forgetpass_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     break;
                 case 5:
                     holder.statusTv.setText("已完成");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 6:
                     holder.statusTv.setText("已关闭");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 7:
                     holder.statusTv.setText("已关闭");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext,R.color.gray_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     break;
             }
+            setPrice(holder.priceTv, bean.getPay_money(), true);
         }
 
-        if ("0".equals(bean.getPay_status()) && !"0.00".equals(bean.getPay_money())) {//0-未支付，1-未评论，2-已完成
-            holder.priceTv.setVisibility(View.VISIBLE);
-            holder.priceTv.setText("¥" + bean.getPay_money());
-        } else {
-            holder.priceTv.setVisibility(View.GONE);
-        }
         return convertView;
     }
 
+    private void setPrice(TextView priceTv, String price, boolean isShow) {
+        if (isShow) {
+            priceTv.setVisibility(View.VISIBLE);
+            priceTv.setText("¥" + price);
+        } else {
+            priceTv.setVisibility(View.GONE);
+        }
+    }
+
     private static class ViewHolder {
-
         private TextView dateTv, typeTv, statusTv, addressTv, serviceTypeTv, priceTv;
-
     }
 }

@@ -28,10 +28,12 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
+import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,8 +45,9 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
 
     private PullableListView myOrderLv;
     private MyOrderListAdapter adapter;
-    private List<MyOrderBeans> myOrderBeansList = null;
-    private List<MyOrderBeans> cashMyOrderBeansList = null;
+    private List<MyOrderBeans> myOrderBeansList = null;//显示list
+    private List<MyOrderBeans> cashMyOrderBeansList = null;//返回list
+    private List<MyOrderBeans> showOrderBeansList = null;//能显示到页面的list 从返回list中筛选
     private PullToRefreshLayout pullToRefreshLayout;
     private String uid = "";
     private int nowPage = 1;
@@ -58,6 +61,7 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS://初始化 和下拉刷新
+                    myOrderBeansList = new ArrayList<>();
                     cashMyOrderBeansList = JSON.parseArray((String) msg.obj, MyOrderBeans.class);
                     if (isRefresh) {
                         isRefresh = false;
@@ -67,33 +71,44 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
                             pullToRefreshLayout.refreshFinish(pullToRefreshLayout.SUCCEED);
                         }
                     }
-
+                    showOrderBeansList = new ArrayList<>();
                     for (int i = 0; i < cashMyOrderBeansList.size(); i++) {
                         //即时服务 0-待处理订单 不在订单列表显示
                         if (cashMyOrderBeansList.get(i).getServer_type().equals("0")
                                 && cashMyOrderBeansList.get(i).getOrder_status().equals("0")) {
-                            cashMyOrderBeansList.remove(i);
+                        } else {
+                            showOrderBeansList.add(cashMyOrderBeansList.get(i));
                         }
                     }
 
-                    myOrderBeansList.addAll(cashMyOrderBeansList);
+                    myOrderBeansList.addAll(showOrderBeansList);
                     if (myOrderBeansList != null && myOrderBeansList.size() > 0) {
-                        adapter = new MyOrderListAdapter(MyOrderListActivity.this, myOrderBeansList);
+                        adapter = new MyOrderListAdapter(MyOrderListActivity.this,myOrderBeansList);
                         myOrderLv.setAdapter(adapter);
                     }
 
                     break;
                 case TaskFlag.REQUESTLOADMORE://加载更多
                     if (isLoadMore) {
+                        isLoadMore = false;
                         cashMyOrderBeansList = JSON.parseArray((String) msg.obj, MyOrderBeans.class);
                         if (cashMyOrderBeansList.size() == 0) {
                             nowPage--;
                             pullToRefreshLayout.loadmoreFinish(pullToRefreshLayout.NOMORE);
                         } else {
-                            myOrderBeansList.addAll(cashMyOrderBeansList);
+                            pullToRefreshLayout.refreshFinish(pullToRefreshLayout.SUCCEED);
+                            showOrderBeansList = new ArrayList<>();
+                            for (int i = 0; i < cashMyOrderBeansList.size(); i++) {
+                                //即时服务 0-待处理订单 不在订单列表显示
+                                if (cashMyOrderBeansList.get(i).getServer_type().equals("0")
+                                        && cashMyOrderBeansList.get(i).getOrder_status().equals("0")) {
+                                } else {
+                                    showOrderBeansList.add(cashMyOrderBeansList.get(i));
+                                }
+                            }
+                            myOrderBeansList.addAll(showOrderBeansList);
                             adapter.notifyDataSetChanged();
                         }
-                        isLoadMore = false;
                     }
                     break;
                 case TaskFlag.REQUESTERROR://刷新 或加载失败
@@ -115,6 +130,10 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder_list);
         myOrderBeansList = new ArrayList<>();
+        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        nowPage = 1;
+        serverApi = new ServerApi(this, handler);
+        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS, false);
         initView();
     }
 
@@ -131,10 +150,6 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
-        nowPage = 1;
-        serverApi = new ServerApi(this, handler);
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS, false);
     }
 
     @Override
@@ -159,6 +174,9 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         if ("0".equals(server_type)) {//即时服务
             if ("2".equals(order_status)) {//进行中
                 intent.putExtra("isgoing", true);
+                intent.setClass(this, StartServiceActivity.class);
+            } else if ("1".equals(order_status)) {//进行中
+                intent.putExtra("isgoing", false);
                 intent.setClass(this, StartServiceActivity.class);
             } else {
                 intent.setClass(this, MyOrderDetailActivity.class);

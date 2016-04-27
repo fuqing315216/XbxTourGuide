@@ -11,8 +11,12 @@ import java.util.List;
  */
 public interface OrderNumberService {
     boolean insertLast(ContentValues values);
+
     SQLiteOrderBean selectFirst();
-    void deleteFirst();
+
+    void deleteFirst(String _id);
+
     void clear();
+
     List<SQLiteOrderBean> selectAll();
 }

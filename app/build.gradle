@@ -19,6 +19,7 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+
     buildTypes {
         release {
             minifyEnabled false

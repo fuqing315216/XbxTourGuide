@@ -45,11 +45,12 @@ import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.view.CircleImageView;
 
 /**
  * Created by shuzhen on 2016/4/8.
- * <p>
+ * <p/>
  * 开始/结束服务页
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {

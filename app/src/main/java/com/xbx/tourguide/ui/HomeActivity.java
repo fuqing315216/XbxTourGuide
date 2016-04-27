@@ -1,9 +1,11 @@
 package com.xbx.tourguide.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -17,12 +19,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
 import com.xbx.tourguide.api.TaskFlag;
+import com.xbx.tourguide.app.LocalOrderReceiver;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
 import com.xbx.tourguide.beans.SQLiteOrderBean;
-import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
@@ -30,17 +32,11 @@ import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.Util;
-import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.CircleImageView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 /**
@@ -63,6 +59,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private ServerApi serverApi = null;
     private String userInfo = "";
     private OrderNumberDao orderNumberDao;
+
+    private LocalOrderReceiver localOrderReceiver =null;
+//    private LocalBroadcastManager lBManager = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -107,7 +106,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         serverApi = new ServerApi(this, handler);
         userInfo = Cookie.getUserInfo(this);
         orderNumberDao = new OrderNumberDao(this);
-        LogUtils.i("---userInfo:" + userInfo);
+//        lBManager = LocalBroadcastManager.getInstance(this);
+
+        Cookie.putIsJPush(this,true);
+        localOrderReceiver = new LocalOrderReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(XbxTGApplication.BROADCAST);
+        registerReceiver(localOrderReceiver,intentFilter);
+
         isShowDialog();
         initView();
     }
@@ -168,8 +174,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_number());//导游证号
         nameTv.setText(beans.getNickname());
 
-        scoreTv.setText(beans.getStar() + "分");
-        starRab.setRating(Util.getStar(beans.getStar()));
+        scoreTv.setText(Util.getStar(beans.getStar())+ "分");
+        if ("0.0".equals(Util.getStar(beans.getStar()))) {
+            starRab.setVisibility(View.GONE);
+        } else {
+            starRab.setRating(Util.getStar(beans.getStar()) / 2);
+        }
     }
 
     @Override
@@ -225,23 +235,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void isShowDialog() {
         if (!Cookie.getIsDialog(this)) {
             SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            try {
-                long getMillionSeconds = sdf.parse(sqLiteOrderBean.getDate()).getTime();
-                long nowMillionSeconds = new Date().getTime();
-                if (nowMillionSeconds - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
+            LogUtils.i("---sqLiteOrderBean:" + sqLiteOrderBean.toString());
+            if (sqLiteOrderBean.getNum() != null) {//有缓存
+                if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+                    orderNumberDao.clear();
                     return;
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-
-            if (!VerifyUtil.isNullOrEmpty(sqLiteOrderBean.getNum())) {
                 Cookie.putIsDialog(this, true);
                 Intent orderIntent = new Intent(this, OrderRemainActivity.class);
                 orderIntent.putExtra("serverType", "0");
                 orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
+                orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
                 startActivity(orderIntent);
             } else {
                 if (Cookie.getAppointmentOrder(this)) {
@@ -249,7 +253,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     Intent orderIntent = new Intent(this, OrderRemainActivity.class);
                     orderIntent.putExtra("serverType", "1");
                     orderIntent.putExtra("orderNumber", "");
-                    orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(orderIntent);
                 }
             }

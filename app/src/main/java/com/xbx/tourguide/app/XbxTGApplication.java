@@ -63,9 +63,9 @@ public class XbxTGApplication extends Application {
      */
     public static void initImageLoader(Context context) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.ic_headpic)
+                .showImageForEmptyUri(R.drawable.ic_headpic)
+                .showImageOnFail(R.drawable.ic_headpic)
                 .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 

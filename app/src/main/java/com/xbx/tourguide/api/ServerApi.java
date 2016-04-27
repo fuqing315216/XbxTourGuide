@@ -10,6 +10,7 @@ import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.LogUtils;
 
 /**
  * Created by rudne on 2016/4/25.
@@ -92,7 +93,7 @@ public class ServerApi {
     public void endServer(String order_number) {
         RequestParams params = new RequestParams();
         params.put("order_number", order_number);
-        IRequest.post(context, HttpUrl.END_SERVER, params,context.getString(R.string.loding),new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.END_SERVER, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTHREE, json);
@@ -102,22 +103,24 @@ public class ServerApi {
 
     /**
      * 获取我的订单列表
+     *
      * @param uid
-     * @param now_page 分页
+     * @param now_page    分页
      * @param page_number
-     * @param taskFlag 返回标记
-     * @param isPull 是否下拉刷新或下拉加载
+     * @param taskFlag    返回标记
+     * @param isPull      是否下拉刷新或下拉加载
      */
     public void getMyOrderData(String uid, int now_page, int page_number, final int taskFlag, final boolean isPull) {
         String url = HttpUrl.MY_ORDER + "?uid=" + uid + "&now_page=" + now_page + "&page_number=" + page_number;
         IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
+                LogUtils.i("---getMyOrderData:" + json);
                 if (UtilParse.getRequestCode(json) == 0 && isPull) {
                     Message msg = sendShowMessage.getmHandler().obtainMessage();
                     msg.what = TaskFlag.REQUESTERROR;
                     sendShowMessage.getmHandler().sendMessage(msg);
-                } else{
+                } else {
                     sendShowMessage.sendShowMsg(taskFlag, json);
                 }
             }

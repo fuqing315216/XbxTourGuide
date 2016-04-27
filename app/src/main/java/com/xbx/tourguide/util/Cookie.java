@@ -205,4 +205,24 @@ public class Cookie {
         return info;
     }
 
+    //是否能接收JPush
+    public static void putIsJPush(Context context, Boolean isDialog) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor editor = share.edit();
+        if (isDialog != null) {
+            editor.putBoolean("isJPush", isDialog);
+        }
+
+        editor.commit();
+        editor.clear();
+
+    }
+
+    public static boolean getIsJPush(Context context) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_READABLE);
+        boolean info = share.getBoolean("isJPush", false);
+        return info;
+    }
 }

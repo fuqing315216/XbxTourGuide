@@ -1,10 +1,17 @@
 package com.xbx.tourguide.util;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xbx.tourguide.R;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xbx on 2016/4/21.
@@ -18,22 +25,16 @@ public class Util {
      * @return
      */
     public static float getStar(String star) {
-        if (star.contains(".")) {
-            int i = Integer.valueOf(star.charAt(0));
-            int j = Integer.valueOf(star.charAt(2));
-            LogUtils.i(i + j + "");
-            if (j > 5) {
-                LogUtils.i(Float.valueOf(i + 1) + "");
-                return Float.valueOf(i + 1);
-            }
-            LogUtils.i(Float.valueOf(i + "." + 5) + "");
-            return Float.valueOf(i + "." + 5);
-        } else {
-            LogUtils.i(Float.valueOf(Integer.valueOf(star) / 2) + "");
-            return Float.valueOf(Integer.valueOf(star) / 2);
-        }
+        return new BigDecimal(Float.valueOf(star)).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
+    /**
+     * Flowlayout add Text
+     *
+     * @param context
+     * @param txt
+     * @return
+     */
     public static TextView addTextView(Context context, String txt) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -45,5 +46,28 @@ public class Util {
         textView.setBackgroundResource(R.drawable.guide_tag_bg);
         textView.setLayoutParams(params);
         return textView;
+    }
+
+    public static boolean isOverTime(long getMillionSeconds) {
+        if (SystemClock.currentThreadTimeMillis() - getMillionSeconds > 10 * 1000) {//时间超过一个小时
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * list倒序
+     *
+     * @param list
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> reverseList(List<T> list) {
+        List<T> relist = new ArrayList<>();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            relist.add(list.get(i));
+        }
+        return relist;
     }
 }

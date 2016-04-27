@@ -177,7 +177,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                             setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
                             setText(R.id.tv_fee, result.getTip_money() + "元");
                             setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                            setText(R.id.llyt_cost_total, result.getPay_money() + "元");
+                            setText(R.id.tv_cost_total, result.getPay_money() + "元");
                             setPayType(result.getPay_type());//1-支付宝，2-微信支付
 
                             if (!VerifyUtil.isNullOrEmpty(result.getContent())) {
@@ -187,7 +187,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                             }
 
                             if (!VerifyUtil.isNullOrEmpty(result.getStar())) {
-                                starRab.setRating(Util.getStar(result.getStar()));
+                                starRab.setRating(Util.getStar(result.getStar()) / 2);
                             } else {
                                 starRab.setVisibility(View.GONE);
                             }
@@ -220,10 +220,10 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
 
     /**
-     *即时服务：未付款
+     * 即时服务：未付款
      * 预约服务：待支付 已预约 进行中
      */
-    private void stateNormal(OrderDetailBeans result){
+    private void stateNormal(OrderDetailBeans result) {
         findViewById(R.id.llyt_myorder_detail_deposit).setVisibility(View.VISIBLE);
         findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
 
@@ -239,9 +239,10 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
     /**
      * 已关闭
+     *
      * @param result
      */
-    private void stateClose(OrderDetailBeans result){
+    private void stateClose(OrderDetailBeans result) {
         findViewById(R.id.llyt_order_time).setVisibility(View.GONE);
 
         findViewById(R.id.llyt_myorder_detail_cancle_money).setVisibility(View.VISIBLE);
@@ -259,9 +260,10 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
     /**
      * 设置电话可拨打
+     *
      * @param mobile
      */
-    private void setPhoneOn(final String mobile){
+    private void setPhoneOn(final String mobile) {
         phoneIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_phone_ok));
         phoneIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,6 +279,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
     /**
      * 设置支付方式
+     *
      * @param pay_type 1-支付宝，2-微信支付
      */
     private void setPayType(String pay_type) {

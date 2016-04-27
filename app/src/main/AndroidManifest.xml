@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".app.XbxTGApplication"
@@ -77,6 +78,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MyOrderListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MyOrderDetailActivity"
@@ -131,16 +133,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <receiver android:name=".app.OrderBroadcastReceiver">
-            <intent-filter android:priority="1000">
-                <action android:name="order_broadcast" />
-            </intent-filter>
-        </receiver>
-
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="XsrRgVtOUW0jfbsc2p8ydavwYUbNBpPT" />
+            android:value="8gqwS5AeIAoquS49RbpqIhVgzzQRL0DQ" />
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
