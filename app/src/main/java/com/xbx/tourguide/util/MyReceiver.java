@@ -1,21 +1,28 @@
 package com.xbx.tourguide.util;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.beans.OrderDetailBeans;
+import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.beans.TourGuideBeans;
+import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.ui.HomeActivity;
+import com.xbx.tourguide.ui.MyOrderListActivity;
+import com.xbx.tourguide.ui.OrderRemainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
@@ -30,13 +37,14 @@ import cn.jpush.android.api.JPushInterface;
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "JPush";
     private Bundle bundle;
-//    private LocalBroadcastManager lBManager = null;
+    private OrderNumberDao orderNumberDao;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "----Cookie.getIsJPush(context):" + Cookie.getIsJPush(context));
         if (Cookie.getIsJPush(context)) {
             bundle = intent.getExtras();
-//        lBManager = LocalBroadcastManager.getInstance(context);
+            orderNumberDao = new OrderNumberDao(context);
             Log.d(TAG, "[MyReceiver] intent - " + intent.getAction() + intent.toString());
             Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 
@@ -46,34 +54,94 @@ public class MyReceiver extends BroadcastReceiver {
                 //send the Registration Id to your server...
 
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+                Log.d(TAG, "----[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+                Log.d(TAG, "----Util.isAppOnForeground(context): " + Util.isAction(context));
                 OrderDetailBeans orderNumber = JsonUtils.object(bundle.getString(JPushInterface.EXTRA_EXTRA), OrderDetailBeans.class);
                 Log.i("log", orderNumber.getOrder_number() + "************************");
-                Log.i("log", "JPushInterface==================" + UserInfoParse.getUid(Cookie.getUserInfo(context)));
+                Log.i("log", "----JPushInterface==================" + orderNumber.toString());
 
                 Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
+                //
+                orderNumberDao = new OrderNumberDao(context);
+//                String action = intent.getAction();
+                Intent orderIntent = new Intent(context, OrderRemainActivity.class);
+                String orderNum = orderNumber.getOrder_number();
+                String serverType = orderNumber.getServer_type();
 
-                Intent intentOrder = new Intent(XbxTGApplication.BROADCAST);
-                intentOrder.putExtra("orderNumber", orderNumber.getOrder_number());
-                intentOrder.putExtra("serverType", orderNumber.getServer_type());
-                context.sendBroadcast(intentOrder);
+                switch (Integer.valueOf(serverType)) {//100-即时 101-预约 102-取消 103-用户已支付
+                    case 100:
+                        ToastUtils.showShort(context, "新的及時服務");
+                        //将新接受的及时订单添加到sqlite
+                        ContentValues values = new ContentValues();
+                        values.put("num", orderNum);
+                        values.put("date", new Date().getTime() + "");
+                        orderNumberDao.insertLast(values);
+                        break;
+                    case 101:
+                        if (VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
+                            ToastUtils.showShort(context, "新的預約服務");
+                            Cookie.putAppointmentOrder(context, orderNum);
+                        } else {
+                            return;
+                        }
+                        break;
+                    case 102:
+                        if (true) {
+                            context.startActivity(new Intent(context, MyOrderListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            ToastUtils.showShort(context, "您有个订单已被用户取消！！！请注意查看");
+                            return;
+                        }
+                        break;
+                    case 103://只有预约服务有推送
+                        break;
+                }
 
+                LogUtils.i("----JPush_isAction(context)" + Util.isAction(context) + "");
+                LogUtils.i("----JPush_getIsDialog(context)" + Cookie.getIsDialog(context) + "");
+
+                if (Util.isAction(context)) {
+                    //dialog是否显示
+                    if (!Cookie.getIsDialog(context)) {
+                        SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+                        if (sqLiteOrderBean.getNum() != null) {
+                            if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+                                orderNumberDao.clear();
+                                return;
+                            }
+                            orderNum = sqLiteOrderBean.getNum();
+                            orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
+                        } else {
+                            if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
+                                Cookie.putIsDialog(context, true);
+                                orderIntent.putExtra("serverType", "1");
+                                orderIntent.putExtra("orderNumber", Cookie.getAppointmentOrder(context));
+                                orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(orderIntent);
+                            }
+                        }
+
+                        Cookie.putIsDialog(context, true);
+                        orderIntent.putExtra("serverType", "0");
+                        orderIntent.putExtra("orderNumber", orderNum);
+                        orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(orderIntent);
+                    }
+                }
 //        	processCustomMessage(context, bundle);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
-                int notifiacationId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifiacationId);
+                Log.d(TAG, "---[MyReceiver] 接收到推送下来的通知");
+                int notificationId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+                Log.d(TAG, "---[MyReceiver] 接收到推送下来的通知的ID: " + notificationId);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
+                Log.d(TAG, "---[MyReceiver] 用户点击打开了通知");
 
                 //打开自定义的Activity
-//        	Intent i = new Intent(context, TestActivity.class);
-//        	i.putExtras(bundle);
-//        	//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//        	context.startActivity(i);
+                Intent i = new Intent(context, HomeActivity.class);
+                i.putExtras(bundle);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(i);
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

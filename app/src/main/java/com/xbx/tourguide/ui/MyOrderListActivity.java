@@ -47,7 +47,6 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     private MyOrderListAdapter adapter;
     private List<MyOrderBeans> myOrderBeansList = null;//显示list
     private List<MyOrderBeans> cashMyOrderBeansList = null;//返回list
-    private List<MyOrderBeans> showOrderBeansList = null;//能显示到页面的list 从返回list中筛选
     private PullToRefreshLayout pullToRefreshLayout;
     private String uid = "";
     private int nowPage = 1;
@@ -71,19 +70,10 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
                             pullToRefreshLayout.refreshFinish(pullToRefreshLayout.SUCCEED);
                         }
                     }
-                    showOrderBeansList = new ArrayList<>();
-                    for (int i = 0; i < cashMyOrderBeansList.size(); i++) {
-                        //即时服务 0-待处理订单 不在订单列表显示
-                        if (cashMyOrderBeansList.get(i).getServer_type().equals("0")
-                                && cashMyOrderBeansList.get(i).getOrder_status().equals("0")) {
-                        } else {
-                            showOrderBeansList.add(cashMyOrderBeansList.get(i));
-                        }
-                    }
 
-                    myOrderBeansList.addAll(showOrderBeansList);
+                    myOrderBeansList.addAll(cashMyOrderBeansList);
                     if (myOrderBeansList != null && myOrderBeansList.size() > 0) {
-                        adapter = new MyOrderListAdapter(MyOrderListActivity.this,myOrderBeansList);
+                        adapter = new MyOrderListAdapter(MyOrderListActivity.this, myOrderBeansList);
                         myOrderLv.setAdapter(adapter);
                     }
 
@@ -92,21 +82,12 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
                     if (isLoadMore) {
                         isLoadMore = false;
                         cashMyOrderBeansList = JSON.parseArray((String) msg.obj, MyOrderBeans.class);
-                        if (cashMyOrderBeansList.size() == 0) {
+                        if (cashMyOrderBeansList.size() == 0 || cashMyOrderBeansList == null) {
                             nowPage--;
                             pullToRefreshLayout.loadmoreFinish(pullToRefreshLayout.NOMORE);
                         } else {
                             pullToRefreshLayout.refreshFinish(pullToRefreshLayout.SUCCEED);
-                            showOrderBeansList = new ArrayList<>();
-                            for (int i = 0; i < cashMyOrderBeansList.size(); i++) {
-                                //即时服务 0-待处理订单 不在订单列表显示
-                                if (cashMyOrderBeansList.get(i).getServer_type().equals("0")
-                                        && cashMyOrderBeansList.get(i).getOrder_status().equals("0")) {
-                                } else {
-                                    showOrderBeansList.add(cashMyOrderBeansList.get(i));
-                                }
-                            }
-                            myOrderBeansList.addAll(showOrderBeansList);
+                            myOrderBeansList.addAll(cashMyOrderBeansList);
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -178,29 +159,17 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
             } else if ("1".equals(order_status)) {//进行中
                 intent.putExtra("isgoing", false);
                 intent.setClass(this, StartServiceActivity.class);
+            } else if ("0".equals(order_status)) {
+                intent.putExtra("isgoing", false);
+                intent.setClass(this, StartServiceActivity.class);
             } else {
                 intent.setClass(this, MyOrderDetailActivity.class);
             }
         } else if ("1".equals(server_type)) {//预约服务
-//            if("0".equals(server_status)){//待确认
-//            }else{//1-已确认未开始 3-进行中 4-已完成
             intent.setClass(this, MyOrderDetailActivity.class);
-//            }
         }
-//
-//        if ("3".equals(bean.getServer_status())) {//进行中
-//            intent.putExtra("isgoing", true);
-//            intent.setClass(this, StartServiceActivity.class);
-//        } else if ("1".equals(bean.getServer_status())) {//未开始
-//            intent.putExtra("isgoing", false);
-//            intent.setClass(this, StartServiceActivity.class);
-//        } else {
-//            intent.setClass(this, MyOrderDetailActivity.class);
-//        }
-
         intent.putExtra("orderId", bean.getOrder_number());
         startActivity(intent);
-
     }
 
     @Override
@@ -214,8 +183,8 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onLoadMore(final PullToRefreshLayout pullToRefreshLayout) {
         // 加载操作
-        isLoadMore = true;
         nowPage++;
+        isLoadMore = true;
         serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTLOADMORE, true);
     }
 }

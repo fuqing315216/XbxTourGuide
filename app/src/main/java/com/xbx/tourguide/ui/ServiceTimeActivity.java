@@ -244,6 +244,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == 200 && resultCode == RESULT_OK) {
             ((EditText) findViewById(R.id.et_service_time_location)).setText("");
             List<CityBeans> cityBeans = (List<CityBeans>) data.getSerializableExtra("locations");
+            locations = "";
             for (int i = 0; i < cityBeans.size(); i++) {
                 locations += "," + cityBeans.get(i).getName();
                 locationIds += "," + cityBeans.get(i).getId();
@@ -382,7 +383,6 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         }
-        Log.i("log", "service_time=====" + service_time);
         RequestParams params = new RequestParams();
         params.put("uid", uid);
         params.put("free_time", service_time);//2016-04-05,2016-04-09

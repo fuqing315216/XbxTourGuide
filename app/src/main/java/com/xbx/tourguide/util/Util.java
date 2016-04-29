@@ -1,5 +1,7 @@
 package com.xbx.tourguide.util;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.SystemClock;
 import android.widget.LinearLayout;
@@ -9,7 +11,6 @@ import com.xbx.tourguide.R;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class Util {
     }
 
     public static boolean isOverTime(long getMillionSeconds) {
-        if (SystemClock.currentThreadTimeMillis() - getMillionSeconds > 10 * 1000) {//时间超过一个小时
+        if (new Date().getTime() - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
             return true;
         } else {
             return false;
@@ -70,4 +71,17 @@ public class Util {
         }
         return relist;
     }
+
+    public static boolean isAction(final Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

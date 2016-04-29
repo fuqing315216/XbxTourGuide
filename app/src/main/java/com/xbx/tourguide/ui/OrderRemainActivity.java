@@ -20,6 +20,7 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
@@ -45,35 +46,14 @@ public class OrderRemainActivity extends BaseActivity {
     private String _id;
     private OrderNumberDao orderNumberDao;
 
-    private ServerApi serverApi = null;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case TaskFlag.REQUESTSUCCESS:
-                    OrderDetailBeans result = JsonUtils.object((String) msg.obj, OrderDetailBeans.class);
-                    orderType = result.getServer_type();
-                    if ("0".equals(orderType)) {//及时服务
-                        titleTv.setText(getResources().getString(R.string.fast_remain));
-                        contentTv.setText(getResources().getString(R.string.remain_content1) + result.getEnd_addr() + getResources().getString(R.string.remain_content2) + result.getNumbers() + getResources().getString(R.string.remain_content3));
-                        cancelTv.setVisibility(View.VISIBLE);
-                        remainRlyt.setVisibility(View.VISIBLE);
-                    }
-                    break;
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_remain);
         orderNum = getIntent().getStringExtra("orderNumber");
         orderType = getIntent().getStringExtra("serverType");
+        LogUtils.i("---orderType+orderNum" + orderType);
         orderNumberDao = new OrderNumberDao(this);
-        serverApi = new ServerApi(this, handler);
-        LogUtils.e(orderNum);
         initView();
     }
 
@@ -89,7 +69,7 @@ public class OrderRemainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 confirmOrder(1 + "");//接单
-//                remainRlyt.setVisibility(View.GONE);
+                OKTv.setEnabled(false);
             }
         });
 
@@ -103,7 +83,7 @@ public class OrderRemainActivity extends BaseActivity {
 
         if ("0".equals(orderType)) {//及时服务
             _id = getIntent().getStringExtra("_id");
-            serverApi.getDetail(orderNum);
+            getDetail();
         } else if ("1".equals(orderType)) {//预约服务
             titleTv.setText(getResources().getString(R.string.order_remain));
             contentTv.setText(getResources().getString(R.string.remain_content));
@@ -120,33 +100,62 @@ public class OrderRemainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+    private void getDetail() {
+        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + orderNum;
+        IRequest.get(this, url, getString(R.string.loding), new RequestBackListener(this) {
+            @Override
+            public void requestSuccess(String json) {
+                if (UtilParse.getRequestCode(json) == 0) {
+                    ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
+                    Cookie.putIsDialog(OrderRemainActivity.this, false);
+                    orderNumberDao.deleteFirst(_id);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 2000);
+
+                } else if (UtilParse.getRequestCode(json) == 1) {
+                    OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json), OrderDetailBeans.class);
+                    orderType = result.getServer_type();
+                    if ("0".equals(orderType)) {//及时服务
+                        titleTv.setText(getResources().getString(R.string.fast_remain));
+                        contentTv.setText(getResources().getString(R.string.remain_content1) + result.getEnd_addr() + getResources().getString(R.string.remain_content2) + result.getNumbers() + getResources().getString(R.string.remain_content3));
+                        cancelTv.setVisibility(View.VISIBLE);
+                        remainRlyt.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * 确认/拒绝订单
      *
      * @param tag
      */
     private void confirmOrder(final String tag) {
-
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", UserInfoParse.getUid(Cookie.getUserInfo(this)));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.loding), new RequestBackListener(this) {
                     @Override
                     public void requestSuccess(String json) {
-//                            findViewById(R.id.llyt_button).setVisibility(View.GONE);
+                        OKTv.setEnabled(true);
                         LogUtils.e("---confirmOrder:" + json);
                         if (UtilParse.getRequestCode(json) == 0) {
+                            ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
                             if ("0".equals(orderType)) {
                                 //订单被抢走
                                 orderNumberDao.deleteFirst(_id);
 //                              orderNumberDao.selectAll();
                                 isNext();
-                            } else if ("1".equals(orderType)) {
-
                             }
-                            ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
                         } else if (UtilParse.getRequestCode(json) == 1) {
+                            LogUtils.i("----" + UtilParse.getRequestMsg(json));
                             if ("0".equals(tag)) {//拒单
                                 orderNumberDao.deleteFirst(_id);
 //                                orderNumberDao.selectAll();
@@ -162,7 +171,7 @@ public class OrderRemainActivity extends BaseActivity {
                                     startActivity(intent);
                                     finish();
                                 } else if ("1".equals(orderType)) {//预约服务
-                                    Cookie.putAppointmentOrder(OrderRemainActivity.this, false);
+                                    Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
                                     startIntent(MyOrderListActivity.class, true);
                                     finish();
                                 }
@@ -177,11 +186,9 @@ public class OrderRemainActivity extends BaseActivity {
      * 即时订单被抢走或取消 判断是否还有即时订单或预约订单
      */
     private void isNext() {
-        ToastUtils.showShort(this, "取消及时服务");
         SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
-
         if (sqLiteOrderBean.getNum() == null) {//即时服务没有了
-            if (Cookie.getAppointmentOrder(this)) {//有预约服务
+            if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(this))) {//有预约服务
                 titleTv.setText(getResources().getString(R.string.order_remain));
                 contentTv.setText(getResources().getString(R.string.remain_content));
                 cancelTv.setVisibility(View.GONE);
@@ -198,7 +205,7 @@ public class OrderRemainActivity extends BaseActivity {
             } else {
                 orderNum = sqLiteOrderBean.getNum();
                 _id = sqLiteOrderBean.get_id();
-                serverApi.getDetail(orderNum);
+                getDetail();
             }
         }
     }

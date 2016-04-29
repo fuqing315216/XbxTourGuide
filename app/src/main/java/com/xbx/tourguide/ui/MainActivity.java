@@ -24,9 +24,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Cookie.putAppointmentOrder( this, false);
+        Cookie.putAppointmentOrder(this, "");
         Cookie.putIsDialog(this, false);
-        Cookie.putIsJPush(this,false);
+        Cookie.putIsJPush(this, false);
         new Handler().postDelayed(new Runnable() {
 
             @Override

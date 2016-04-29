@@ -369,9 +369,10 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/tv_cancle_money_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="取消费用"
+                        android:text="违约金"
                         android:textColor="@color/text_color"
                         android:textSize="14sp" />
 

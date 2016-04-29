@@ -82,6 +82,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         englishRb = (RadioButton) findViewById(R.id.rb_english);
         allRb = (RadioButton) findViewById(R.id.rb_all);
 
+        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getUser_type())) {
+            findViewById(R.id.rlyt_personalinfo_guide).setVisibility(View.GONE);
+        }
+
         initData();
 
         titleRightTv.setOnClickListener(this);
@@ -127,7 +131,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
                     settingApi.updateInfo(UserInfoParse.getUid(userInfo), new File(beans.getHead_image())
-                            , beans.getNow_address(),beans.getServer_language());
+                            , beans.getNow_address(), beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);
                 }

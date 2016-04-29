@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.OrderDetailBeans;
+import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
@@ -27,6 +28,9 @@ import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.CircleImageView;
 import com.xbx.tourguide.view.FlowLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by shuzhen on 2016/4/5.
@@ -94,6 +98,9 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private String server_type = "";
+    private String order_status = "";
+
     private void getOrderDetail() {
         String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + orderNum;
         IRequest.get(this, url, getString(R.string.loding), new RequestBackListener(this) {
@@ -105,8 +112,8 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                     loader.displayImage(result.getHead_image(), headPicCiv);
                     nickNameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());
-                    String server_type = result.getServer_type();
-                    String order_status = result.getOrder_status();
+                    server_type = result.getServer_type();
+                    order_status = result.getOrder_status();
 
                     //即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
                     //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
@@ -114,6 +121,9 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                         case 0://待支付
                             if ("1".equals(server_type)) {
                                 stateNormal(result);
+                            } else if ("0".equals(server_type)) {
+                                stateNormal(result);
+                                findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
                             }
                             break;
                         case 1://待确认
@@ -194,6 +204,12 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
                             if (!VerifyUtil.isNullOrEmpty(result.getTag())) {
                                 String tag = result.getTag();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(tag);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                                 if (tag.contains(",")) {
                                     String[] tagArray = tag.split(",");
                                     for (int i = 0; i < tagArray.length; i++) {
@@ -207,10 +223,24 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                             }
                             break;
                         case 6://已关闭
-                            stateClose(result);
+                            if ("0".equals(server_type)) {//未付违约金
+                                stateClose0(result);
+                            } else if ("1".equals(server_type)) {//退款中
+                                stateClose1(result, "已关闭-退款中");
+                            }
                             break;
                         case 7://已关闭
-                            stateClose(result);
+                            if ("0".equals(server_type)) {//已付违约金
+                                stateClose0(result);
+                            } else if ("1".equals(server_type)) {//已退款
+                                stateClose1(result, "已关闭-已退款");
+                            }
+                            break;
+                        case 8://已拒接，退款进行中
+                            stateClose1(result, "已拒接-退款中");
+                            break;
+                        case 9://已关闭（拒单并退款成功）
+                            stateClose1(result, "已拒接-已退款");
                             break;
                     }
                 }
@@ -239,15 +269,17 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
     /**
      * 已关闭
+     * 即时服务
      *
      * @param result
      */
-    private void stateClose(OrderDetailBeans result) {
+    private void stateClose0(OrderDetailBeans result) {
         findViewById(R.id.llyt_order_time).setVisibility(View.GONE);
 
         findViewById(R.id.llyt_myorder_detail_cancle_money).setVisibility(View.VISIBLE);
 
         setText(R.id.tv_order_status, "已关闭");
+        setText(R.id.tv_cancle_money_name, "违约金");
 
         if ("0.00".equals(result.getPay_money())) {
             setText(R.id.tv_myorder_detail_cancle_money, "免费");
@@ -256,6 +288,23 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
             setText(R.id.tv_myorder_detail_cancle_money, result.getPay_money() + "元");
             setPayType(result.getPay_type());//1-支付宝，2-微信支付
         }
+    }
+
+    /**
+     * 已关闭
+     * 预约服务
+     *
+     * @param result
+     */
+    private void stateClose1(OrderDetailBeans result, String status) {
+        findViewById(R.id.llyt_order_time).setVisibility(View.GONE);
+
+        findViewById(R.id.llyt_myorder_detail_cancle_money).setVisibility(View.VISIBLE);
+
+        setText(R.id.tv_order_status, status);
+        setText(R.id.tv_cancle_money_name, "退款金额");
+        setText(R.id.tv_myorder_detail_cancle_money, result.getPay_money() + "元");
+
     }
 
     /**
@@ -308,27 +357,10 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, "", new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
-                if (UtilParse.getRequestCode(json) == 1) {
-//                    findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.GONE);
-                    if ("0".equals(tag)) {//拒单
-//                        phoneIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_phone_no));
-//                        findViewById(R.id.rlyt_comment).setVisibility(View.GONE);
-//                        commentConTv.setVisibility(View.GONE);
-//                        tagFlyt.setVisibility(View.GONE);
-//                        starRab.setVisibility(View.GONE);
-//                        findViewById(R.id.llyt_fee).setVisibility(View.GONE);
-//                        findViewById(R.id.llyt_rebate_money).setVisibility(View.GONE);
-//                        findViewById(R.id.llyt_cost_total).setVisibility(View.GONE);
-//                        ((TextView) findViewById(R.id.tv_cost)).setText(getResources().getString(R.string.cancel_pay));
-//                        costSumTv.setText("0.00元");
-                        finish();
-                    } else if ("1".equals(tag)) {//接单
-//                        Intent intent = new Intent(MyOrderDetailActivity.this, StartServiceActivity.class);
-//                        intent.putExtra("isgoing", false);
-//                        intent.putExtra("orderId", orderNum);
-//                        startActivity(intent);
-                        finish();
-                    }
+                if ("0".equals(tag)) {//拒单
+                    finish();
+                } else if ("1".equals(tag)) {//接单
+                    finish();
                 }
             }
         });

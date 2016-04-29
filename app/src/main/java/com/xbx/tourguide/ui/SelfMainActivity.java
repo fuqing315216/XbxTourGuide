@@ -62,8 +62,8 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                         startRab.setRating(Util.getStar(result.getStars()) / 2);
                     }
 
-                    pricehTv.setText(result.getGuide_instant_price());
-                    pricedTv.setText(result.getGuide_reserve_price());
+                    pricehTv.setText(result.getGuide_instant_price() + "/小时");
+                    pricedTv.setText(result.getGuide_reserve_price() + "/天");
                     int userType = Integer.valueOf(UserInfoParse.getUserInfo(Cookie.getUserInfo(SelfMainActivity.this)).getUser_type());
                     switch (userType) {
                         case 1:
@@ -119,6 +119,10 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
         tagFlyt = (FlowLayout) findViewById(R.id.flyt_self_main_tag);
         introduceEt = (EditText) findViewById(R.id.et_self_main_introduce);
         serviceEt = (EditText) findViewById(R.id.et_self_main_service);
+
+        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getUser_type())) {
+            guideIdTv.setVisibility(View.GONE);
+        }
 
         findViewById(R.id.btn_self_main_back).setOnClickListener(this);
         findViewById(R.id.btn_self_main_confirm).setOnClickListener(this);

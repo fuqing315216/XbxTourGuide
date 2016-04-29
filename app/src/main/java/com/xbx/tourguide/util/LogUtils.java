@@ -151,7 +151,7 @@ public class LogUtils {
         String tag = generateTag(caller);
 
         if (customLogger != null) {
-            customLogger.i(tag, content);
+            customLogger.i(tag, "---runde:" + content);
         } else {
             Log.i(tag, content);
         }

@@ -39,20 +39,20 @@ public class ServerApi {
         });
     }
 
-    /**
-     * 获取即时服务详情
-     *
-     * @param order_number
-     */
-    public void getDetail(String order_number) {
-        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + order_number;
-        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
-            @Override
-            public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
-            }
-        });
-    }
+//    /**
+//     * 获取即时服务详情
+//     *
+//     * @param order_number
+//     */
+//    public void getDetail(String order_number) {
+//        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + order_number;
+//        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
+//            @Override
+//            public void requestSuccess(String json) {
+//                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+//            }
+//        });
+//    }
 
     /**
      * 获取订单详情

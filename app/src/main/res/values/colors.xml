@@ -18,4 +18,5 @@
     <color name="text_gray_color">#646464</color>
     <color name="head_with_color">#8f7db3</color>
     <color name="colorTag">#eee5ff</color>
+    <color name="serverTime">#ffd400</color>
 </resources>

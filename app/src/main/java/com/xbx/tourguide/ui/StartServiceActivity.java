@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -108,13 +109,15 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         String timeStr = XbxTGApplication.formatTime(serverTime);
                         timeTv.setText(timeStr);
                     }
-                    LogUtils.i("mr.yuan:" + result.getLon() + " -  " + result.getLat());
                     if (result.getLon() != null && result.getLat() != null) {
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO://开始服务
                     stopBtn.setText(getResources().getString(R.string.end_service));
+                    startActivity(new Intent(StartServiceActivity.this, ConfirmActivity.class)
+                            .putExtra("title", "服务开始")
+                            .putExtra("content", "您的即时导游服务已经开始计时"));
                     break;
                 case TaskFlag.PAGEREQUESTHREE://结束服务
                     StartServiceActivity.this.finish();
@@ -184,14 +187,31 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 break;
 
             case R.id.btn_service:
-                if (stopBtn.getText().toString().equals(getResources().getString(R.string.end_service))) {//进行中，点击按钮结束服务
-                    serverApi.endServer(orderId);
+                if (stopBtn.getText().toString().equals(getString(R.string.end_service))) {//进行中，点击按钮结束服务
+                    startActivityForResult(new Intent(StartServiceActivity.this, ConfirmActivity.class)
+                            .putExtra("title", "提醒")
+                            .putExtra("content", "是否结束服务并计算费用"), 102);
                 } else {//未开始，点击按钮开始服务
-                    serverApi.startServer(orderId);
+                    startActivityForResult(new Intent(StartServiceActivity.this, ConfirmActivity.class)
+                            .putExtra("title", "提醒")
+                            .putExtra("content", "是否开始服务并计时"), 101);
                 }
+
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 101) {
+                serverApi.startServer(orderId);
+            } else if (requestCode == 102) {
+                serverApi.endServer(orderId);
+            }
         }
     }
 

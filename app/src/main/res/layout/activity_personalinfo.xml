@@ -212,6 +212,7 @@
                     android:background="@color/line_color" />
 
                 <RelativeLayout
+                    android:id="@+id/rlyt_personalinfo_guide"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 

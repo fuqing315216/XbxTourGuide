@@ -154,6 +154,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             return;
         }
 
+        if (VerifyUtil.isNullOrEmpty(JPushInterface.getRegistrationID(this))) {
+            ToastUtils.showShort(this, "登录失败，请稍候重试");
+        }
+
         loginApi = new LoginApi(this, handler);
         loginApi.Login(phoneEt.getText().toString(), pwEt.getText().toString(), "1", JPushInterface.getRegistrationID(this));
     }

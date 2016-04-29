@@ -34,13 +34,12 @@ public class Cookie {
 //            return null;
 //        }
 //    }
-
     public static String getUserInfo(Context context) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_READABLE);
         String info = share.getString("userbean", "");
         if (info.length() > 0) {
-            LogUtils.i("---userbean:"+info);
+            LogUtils.i("---userbean:" + info);
             return info;
         } else {
             return null;
@@ -160,16 +159,17 @@ public class Cookie {
     }
 
     /**
-     * 是否有预约订单
+     * 预约订单num
+     *
      * @param context
-     * @param isAppointOrder
+     * @param appointOrder
      */
-    public static void putAppointmentOrder(Context context, Boolean isAppointOrder) {
+    public static void putAppointmentOrder(Context context, String appointOrder) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = share.edit();
-        if (isAppointOrder != null) {
-            editor.putBoolean("isAppointOrder", isAppointOrder);
+        if (appointOrder != null) {
+            editor.putString("appointOrder", appointOrder);
         }
 
         editor.commit();
@@ -177,11 +177,15 @@ public class Cookie {
 
     }
 
-    public static boolean getAppointmentOrder(Context context) {
+    public static String getAppointmentOrder(Context context) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_READABLE);
-        boolean info = share.getBoolean("isAppointOrder", false);
-        return info;
+        String info = share.getString("appointOrder", "");
+        if (info.length() > 0) {
+            return info;
+        } else {
+            return null;
+        }
     }
 
     //接单对话框是否显示

@@ -54,16 +54,16 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         int order_status = Integer.valueOf(bean.getOrder_status());
         if ("0".equals(bean.getServer_type())) {//0-及时服务，1-预约服务
             holder.serviceTypeTv.setText("即时服务");
-            //0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
+            //即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
             switch (order_status) {
                 case 0:
                     holder.statusTv.setText("待处理");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 1:
                     holder.statusTv.setText("进行中");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.color_3cde3c));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 2:
@@ -72,7 +72,7 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     setPrice(holder.priceTv, bean.getPay_money(), false);
                     break;
                 case 3:
-                    holder.statusTv.setText("未付款");
+                    holder.statusTv.setText("待支付");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
@@ -86,12 +86,12 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
-                case 6:
+                case 6://未付违约金
                     holder.statusTv.setText("已关闭");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     setPrice(holder.priceTv, bean.getPay_money(), true);
                     break;
-                case 7:
+                case 7://已付违约金
                     holder.statusTv.setText("已关闭");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     setPrice(holder.priceTv, bean.getPay_money(), true);
@@ -100,14 +100,15 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         } else {
             holder.serviceTypeTv.setText("预约服务");
             //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
+            //8-已拒接，退款进行中；9-已关闭（拒单并退款成功）
             switch (order_status) {
                 case 0:
                     holder.statusTv.setText("待支付");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 1:
-                    holder.statusTv.setText("待确认");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
+                    holder.statusTv.setText("待处理");
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     break;
                 case 2:
                     holder.statusTv.setText("已预约");
@@ -130,6 +131,14 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 7:
+                    holder.statusTv.setText("已关闭");
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
+                    break;
+                case 8:
+                    holder.statusTv.setText("已拒接");
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
+                    break;
+                case 9://已关闭（拒单并退款成功）
                     holder.statusTv.setText("已关闭");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
                     break;

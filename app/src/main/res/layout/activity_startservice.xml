@@ -99,7 +99,7 @@
                 android:layout_below="@id/tv_add"
                 android:text="未开始"
                 android:layout_toRightOf="@id/tv_service"
-                android:textColor="@android:color/white"
+                android:textColor="@color/serverTime"
                 android:textSize="10sp" />
         </RelativeLayout>
 

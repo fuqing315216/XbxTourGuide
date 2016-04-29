@@ -33,7 +33,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".app.XbxTGApplication"
@@ -55,7 +56,8 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" />
@@ -90,6 +92,13 @@
         <activity
             android:name=".ui.StartServiceActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.ConfirmActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogStyle" />
+
         <activity
             android:name=".ui.OrderRemainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

@@ -1,11 +1,9 @@
 package com.xbx.tourguide.ui;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -19,7 +17,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
 import com.xbx.tourguide.api.TaskFlag;
-import com.xbx.tourguide.app.LocalOrderReceiver;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GoingBeans;
@@ -33,10 +30,14 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.JPushUtils;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.view.CircleImageView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -58,10 +59,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private TourGuideInfoBeans beans;
     private ServerApi serverApi = null;
     private String userInfo = "";
-    private OrderNumberDao orderNumberDao;
+    private Timer timer = null;
 
-    private LocalOrderReceiver localOrderReceiver =null;
-//    private LocalBroadcastManager lBManager = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -85,6 +84,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 //                    bean.setUser_info(beans);
 //                    Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
                     break;
+                case 0x123:
+                    SQLiteOrderBean sqlBean = new OrderNumberDao(HomeActivity.this).selectFirst();
+                    LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
+                    LogUtils.i("----sqlBean.getIsDialog():" + Cookie.getIsDialog(HomeActivity.this));
+                    if (sqlBean.getNum() == null || Cookie.getIsDialog(HomeActivity.this)) {
+                        timer.cancel();
+                    }
+                    break;
             }
         }
     };
@@ -97,6 +104,23 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
+    private void setTimerTask() {
+        if("1".equals(online)){
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    JPushUtils.isShowDialog(HomeActivity.this);
+
+                    Message message = new Message();
+                    message.what = 0x123;
+                    handler.sendMessage(message);
+                }
+            }, 1000, 1000);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,16 +129,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         loader = ImageLoader.getInstance();
         serverApi = new ServerApi(this, handler);
         userInfo = Cookie.getUserInfo(this);
-        orderNumberDao = new OrderNumberDao(this);
-//        lBManager = LocalBroadcastManager.getInstance(this);
-
-        Cookie.putIsJPush(this,true);
-        localOrderReceiver = new LocalOrderReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(XbxTGApplication.BROADCAST);
-        registerReceiver(localOrderReceiver,intentFilter);
-
-        isShowDialog();
+        Cookie.putIsJPush(this, true);
+        Cookie.putIsDialog(this, false);
+//        setTimerTask();
+//        JPushUtils.isShowDialog(this);
         initView();
     }
 
@@ -174,7 +192,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_number());//导游证号
         nameTv.setText(beans.getNickname());
 
-        scoreTv.setText(Util.getStar(beans.getStar())+ "分");
+        scoreTv.setText(Util.getStar(beans.getStar()) + "分");
         if ("0.0".equals(Util.getStar(beans.getStar()))) {
             starRab.setVisibility(View.GONE);
         } else {
@@ -187,6 +205,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
 //        getLocation();
         new Handler().postDelayed(run, 6000);
+        setTimerTask();
 
         locationClient = new LocationClient(this);
         locationClient.start();
@@ -229,35 +248,35 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    /**
-     * 判断是否有缓存的即时订单需要处理
-     */
-    private void isShowDialog() {
-        if (!Cookie.getIsDialog(this)) {
-            SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
-            LogUtils.i("---sqLiteOrderBean:" + sqLiteOrderBean.toString());
-            if (sqLiteOrderBean.getNum() != null) {//有缓存
-                if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
-                    orderNumberDao.clear();
-                    return;
-                }
-                Cookie.putIsDialog(this, true);
-                Intent orderIntent = new Intent(this, OrderRemainActivity.class);
-                orderIntent.putExtra("serverType", "0");
-                orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
-                orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
-                startActivity(orderIntent);
-            } else {
-                if (Cookie.getAppointmentOrder(this)) {
-                    Cookie.putIsDialog(this, true);
-                    Intent orderIntent = new Intent(this, OrderRemainActivity.class);
-                    orderIntent.putExtra("serverType", "1");
-                    orderIntent.putExtra("orderNumber", "");
-                    startActivity(orderIntent);
-                }
-            }
-        }
-    }
+//    /**
+//     * 判断是否有缓存的即时订单需要处理
+//     */
+//    private void isShowDialog() {
+//        if (!Cookie.getIsDialog(this)) {
+//            SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+//            LogUtils.i("---sqLiteOrderBean:" + sqLiteOrderBean.toString());
+//            if (sqLiteOrderBean.getNum() != null) {//有缓存
+//                if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+//                    orderNumberDao.clear();
+//                    return;
+//                }
+//                Cookie.putIsDialog(this, true);
+//                Intent orderIntent = new Intent(this, OrderRemainActivity.class);
+//                orderIntent.putExtra("serverType", "0");
+//                orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
+//                orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
+//                startActivity(orderIntent);
+//            } else {
+//                if (Cookie.getAppointmentOrder(this)) {
+//                    Cookie.putIsDialog(this, true);
+//                    Intent orderIntent = new Intent(this, OrderRemainActivity.class);
+//                    orderIntent.putExtra("serverType", "1");
+//                    orderIntent.putExtra("orderNumber", "");
+//                    startActivity(orderIntent);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * 上传经纬度
@@ -329,5 +348,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         if (requestCode == 102) {//修改个人信息
             loader.displayImage(UserInfoParse.getUserInfo(userInfo).getHead_image(), headPicCiv);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
