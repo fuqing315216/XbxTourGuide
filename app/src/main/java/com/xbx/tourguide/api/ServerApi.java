@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
@@ -108,21 +109,18 @@ public class ServerApi {
      * @param now_page    分页
      * @param page_number
      * @param taskFlag    返回标记
-     * @param isPull      是否下拉刷新或下拉加载
      */
-    public void getMyOrderData(String uid, int now_page, int page_number, final int taskFlag, final boolean isPull) {
+    public void getMyOrderData(String uid, int now_page, int page_number, final int taskFlag) {
         String url = HttpUrl.MY_ORDER + "?uid=" + uid + "&now_page=" + now_page + "&page_number=" + page_number;
         IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("---getMyOrderData:" + json);
-                if (UtilParse.getRequestCode(json) == 0 && isPull) {
-                    Message msg = sendShowMessage.getmHandler().obtainMessage();
-                    msg.what = TaskFlag.REQUESTERROR;
-                    sendShowMessage.getmHandler().sendMessage(msg);
-                } else {
-                    sendShowMessage.sendShowMsg(taskFlag, json);
-                }
+                sendShowMessage.getmHandler().sendMessage(sendShowMessage.getmHandler().obtainMessage(taskFlag, UtilParse.getRequestData(json)));
+            }
+
+            @Override
+            public void requestError(VolleyError e) {
+                sendShowMessage.sendMsg(TaskFlag.REQUESTERROR, "");
             }
         });
     }

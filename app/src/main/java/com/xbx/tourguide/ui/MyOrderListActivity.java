@@ -82,6 +82,7 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
                     if (isLoadMore) {
                         isLoadMore = false;
                         cashMyOrderBeansList = JSON.parseArray((String) msg.obj, MyOrderBeans.class);
+                        LogUtils.i("===cashMyOrderBeansList" + cashMyOrderBeansList.toString());
                         if (cashMyOrderBeansList.size() == 0 || cashMyOrderBeansList == null) {
                             nowPage--;
                             pullToRefreshLayout.loadmoreFinish(pullToRefreshLayout.NOMORE);
@@ -114,7 +115,7 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
         nowPage = 1;
         serverApi = new ServerApi(this, handler);
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS, false);
+        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
         initView();
     }
 
@@ -177,14 +178,16 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         // 下拉刷新操作
         nowPage = 1;
         isRefresh = true;
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS, true);
+        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
     @Override
     public void onLoadMore(final PullToRefreshLayout pullToRefreshLayout) {
         // 加载操作
-        nowPage++;
+        if (myOrderBeansList.size() > 0) {
+            nowPage++;
+        }
         isLoadMore = true;
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTLOADMORE, true);
+        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTLOADMORE);
     }
 }

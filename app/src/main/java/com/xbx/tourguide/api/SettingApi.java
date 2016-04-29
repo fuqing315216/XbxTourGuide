@@ -94,7 +94,7 @@ public class SettingApi {
         IRequest.post(context, HttpUrl.GUIDE_MAIN, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
+                sendShowMessage.sendMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });
     }

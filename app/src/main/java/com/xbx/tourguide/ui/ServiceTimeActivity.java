@@ -140,7 +140,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO:
-                    ToastUtils.showShort(ServiceTimeActivity.this, (String) msg.obj);
+                    ToastUtils.showShort(ServiceTimeActivity.this, "修改成功");
                     break;
             }
         }
