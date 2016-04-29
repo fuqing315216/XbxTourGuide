@@ -4,36 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.adapter.MyOrderListAdapter;
 import com.xbx.tourguide.api.ServerApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.MyOrderBeans;
-import com.xbx.tourguide.http.HttpUrl;
-import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestBackListener;
-import com.xbx.tourguide.http.RequestJsonListener;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
-import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

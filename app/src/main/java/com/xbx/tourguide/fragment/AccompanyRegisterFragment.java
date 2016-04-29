@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.baidu.mapapi.map.Text;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.beans.CityBeans;

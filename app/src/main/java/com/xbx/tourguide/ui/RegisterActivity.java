@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,29 +12,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.RegisterBeans;
-import com.xbx.tourguide.beans.Result;
 import com.xbx.tourguide.beans.VerifyBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
-import com.xbx.tourguide.http.RequestJsonListener;
-import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
-
-import java.util.List;
 
 
 /**
