@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -43,8 +43,8 @@
                 android:id="@+id/rlyt_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp16">
 
                 <com.xbx.tourguide.view.CircleImageView
                     android:id="@+id/civ_headpic"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="@dimen/dp16"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_phone_no" />
 
@@ -69,8 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="@dimen/dp12"
+                    android:layout_marginRight="@dimen/dp12"
                     android:layout_toLeftOf="@id/iv_phone"
                     android:layout_toRightOf="@id/civ_headpic"
                     android:orientation="vertical">
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:text="小明"
                         android:textColor="@color/text_color"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp18" />
 
                     <TextView
                         android:id="@+id/tv_useradd"
@@ -90,7 +90,7 @@
                         android:layout_marginTop="6dp"
                         android:text="青城山正门口"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/sp10" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -107,8 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <TextView
@@ -116,11 +116,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:background="@color/bg_color"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:paddingLeft="@dimen/dp12"
+                    android:paddingRight="@dimen/dp12"
                     android:text="@string/order_details"
                     android:textColor="@color/gray_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -128,9 +128,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rlyt_status"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp12"
                 android:orientation="horizontal">
 
                 <TextView
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/order_status"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
                 <TextView
                     android:id="@+id/tv_order_status"
@@ -147,7 +147,7 @@
                     android:layout_alignParentRight="true"
                     android:text="已完成"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
             </RelativeLayout>
 
@@ -156,9 +156,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_order_status"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12sp"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
+                android:layout_marginTop="@dimen/sp12"
                 android:orientation="horizontal">
 
                 <TextView
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/order_time"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
                 <TextView
                     android:id="@+id/tv_order_time"
@@ -175,7 +175,7 @@
                     android:layout_alignParentRight="true"
                     android:text="2小时"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
             </RelativeLayout>
 
@@ -184,9 +184,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_order_time"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12sp"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
+                android:layout_marginTop="@dimen/sp12"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:text="顾客人数"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
                 <TextView
                     android:id="@+id/tv_person_num"
@@ -204,7 +204,7 @@
                     android:layout_alignParentRight="true"
                     android:text="2-5人"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
             </RelativeLayout>
 
@@ -220,8 +220,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <TextView
@@ -229,11 +229,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:background="@color/bg_color"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:paddingLeft="@dimen/dp12"
+                    android:paddingRight="@dimen/dp12"
                     android:text="@string/pay_details"
                     android:textColor="@color/gray_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
             </RelativeLayout>
 
 
@@ -249,9 +249,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_order_status"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -261,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cost_sum"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_cost_sum"
@@ -270,7 +270,7 @@
                         android:layout_alignParentRight="true"
                         android:text="500元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -278,9 +278,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_order_status"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -289,7 +289,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/fee"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_fee"
@@ -298,7 +298,7 @@
                         android:layout_alignParentRight="true"
                         android:text="+50元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -306,9 +306,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_fee"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -317,7 +317,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/discount"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_rebate_money"
@@ -326,7 +326,7 @@
                         android:layout_alignParentRight="true"
                         android:text="-50元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -334,9 +334,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_rebate_money"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -345,7 +345,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cost_total"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_cost_total"
@@ -354,7 +354,7 @@
                         android:layout_alignParentRight="true"
                         android:text="550元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -362,9 +362,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_cost_total"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -374,7 +374,7 @@
                         android:layout_height="wrap_content"
                         android:text="违约金"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_myorder_detail_cancle_money"
@@ -383,7 +383,7 @@
                         android:layout_alignParentRight="true"
                         android:text="10元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -391,9 +391,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_myorder_detail_cancle_money"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -402,7 +402,7 @@
                         android:layout_height="wrap_content"
                         android:text="支付定金"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_myorder_detail_deposit"
@@ -411,7 +411,7 @@
                         android:layout_alignParentRight="true"
                         android:text="540元"
                         android:textColor="@color/forgetpass_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -419,9 +419,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/llyt_myorder_detail_deposit"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12sp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/sp12"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -430,7 +430,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/pay_type"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/tv_pay_type"
@@ -439,7 +439,7 @@
                         android:layout_alignParentRight="true"
                         android:text="微信支付"
                         android:textColor="@color/text_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -464,8 +464,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
                         android:background="@color/line_color" />
 
                     <TextView
@@ -473,11 +473,11 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:background="@color/bg_color"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
+                        android:paddingLeft="@dimen/dp12"
+                        android:paddingRight="@dimen/dp12"
                         android:text="@string/TA_comment"
                         android:textColor="@color/gray_color"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
                 </RelativeLayout>
 
                 <TextView
@@ -485,15 +485,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rlyt_comment"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp16"
                     android:background="@drawable/bg_comment_style"
                     android:gravity="center"
-                    android:padding="8dp"
+                    android:padding="@dimen/dp8"
                     android:text="非常棒"
                     android:textColor="@color/text_color"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <com.xbx.tourguide.view.FlowLayout
                     android:id="@+id/flyt_myorder_detail_tag"
@@ -501,9 +501,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_comment_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="12dp" />
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp12" />
 
                 <RatingBar
                     android:id="@+id/rab_myorder_detail"
@@ -512,9 +512,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/flyt_myorder_detail_tag"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp16"
                     android:orientation="horizontal"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="@dimen/dp16"
                     android:rating="3.5" />
             </LinearLayout>
 
@@ -527,31 +527,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="14dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
         android:orientation="horizontal"
         android:visibility="gone">
 
         <Button
             android:id="@+id/btn_refuse"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/dp48"
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:background="@drawable/bg_refuse_style"
             android:text="@string/refuse"
             android:textColor="@android:color/white"
-            android:textSize="17sp" />
+            android:textSize="@dimen/sp17" />
 
         <Button
             android:id="@+id/btn_accept"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/dp48"
             android:layout_marginLeft="4dp"
             android:layout_weight="1"
             android:background="@drawable/bg_accept_style"
             android:text="@string/accept"
             android:textColor="@android:color/white"
-            android:textSize="17sp" />
+            android:textSize="@dimen/sp17" />
     </LinearLayout>
 </RelativeLayout>

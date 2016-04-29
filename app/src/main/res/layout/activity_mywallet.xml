@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -29,7 +29,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp8"
         android:background="@color/line_color" />
 
     <LinearLayout
@@ -41,7 +41,7 @@
         <RelativeLayout
             android:id="@+id/rlyt_balance"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="@dimen/dp48">
 
             <TextView
                 android:id="@+id/tv_balance"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="@dimen/dp16"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
@@ -63,14 +63,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line_color"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"/>
 
 
         <RelativeLayout
             android:id="@+id/rlyt_bank_card"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="@dimen/dp48">
 
             <TextView
                 android:id="@+id/tv_bank_card"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="@dimen/dp16"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 

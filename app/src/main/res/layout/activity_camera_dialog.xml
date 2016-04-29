@@ -13,38 +13,38 @@
         <TextView
             android:id="@+id/tv_camera"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/camera"
+            android:layout_height="@dimen/dp48"
             android:background="@color/head_text_color"
-            android:textColor="@color/text_color"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:text="@string/camera"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/sp18" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_color"/>
+            android:background="@color/line_color" />
 
         <TextView
             android:id="@+id/tv_photo"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/photo"
+            android:layout_height="@dimen/dp48"
             android:background="@color/head_text_color"
-            android:textColor="@color/text_color"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:text="@string/photo"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/sp18" />
 
         <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/cancel"
-            android:layout_marginTop="12dp"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginTop="@dimen/dp12"
             android:background="@color/head_text_color"
-            android:textColor="@color/head_bg_color"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:text="@string/cancel"
+            android:textColor="@color/head_bg_color"
+            android:textSize="@dimen/sp18" />
     </LinearLayout>
 
 </RelativeLayout>

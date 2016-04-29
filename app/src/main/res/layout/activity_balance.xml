@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -31,10 +32,11 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/pay_details"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
     </RelativeLayout>
 
     <ImageView
@@ -48,33 +50,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/dp24"
         android:text="@string/my_balance"
         android:textColor="@color/text_color"
-        android:textSize="15sp" />
+        android:textSize="@dimen/sp15" />
 
     <TextView
         android:id="@+id/tv_my_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_color"
-        android:textSize="36sp"
-        android:layout_marginTop="12dp"
         android:layout_gravity="center_horizontal"
-        android:text="¥123.00"/>
+        android:layout_marginTop="@dimen/dp12"
+        android:text="¥123.00"
+        android:textColor="@color/text_color"
+        android:textSize="36sp" />
 
     <Button
         android:id="@+id/btn_recharge"
         style="@style/ButtonStyle"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/dp40"
         android:text="@string/recharge" />
 
     <Button
         android:id="@+id/btn_deposit"
         style="@style/ButtonStyle"
+        android:layout_marginTop="@dimen/dp12"
         android:background="@drawable/bg_deposit_style"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/text_color"
-        android:text="@string/deposit" />
+        android:text="@string/deposit"
+        android:textColor="@color/text_color" />
 
 </LinearLayout>

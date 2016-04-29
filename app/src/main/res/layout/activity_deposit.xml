@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -30,12 +31,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@android:color/white">
 
         <TextView
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/dp16"
             android:src="@drawable/ic_arrow_right" />
 
         <TextView
@@ -57,11 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="@dimen/dp8"
             android:layout_toLeftOf="@id/iv_arrow_right_balance"
             android:text="123456789"
             android:textColor="@color/gray_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 
@@ -73,12 +74,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@android:color/white">
 
         <TextView
@@ -92,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/dp16"
             android:src="@drawable/ic_arrow_right" />
 
         <TextView
@@ -100,11 +101,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="@dimen/dp8"
             android:layout_toLeftOf="@id/iv_arrow_right_get_time"
             android:text="两小时内到账"
             android:textColor="@color/gray_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 
@@ -116,12 +117,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@android:color/white">
 
         <TextView
@@ -133,7 +134,7 @@
         <EditText
             android:id="@+id/et_put_money"
             style="@style/EditTextStyle"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="@dimen/dp8"
             android:layout_toRightOf="@id/tv_put_money"
             android:hint="@string/et_put_money" />
     </RelativeLayout>
@@ -147,6 +148,6 @@
     <Button
         android:id="@+id/btn_recharge"
         style="@style/ButtonStyle"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/dp24"
         android:text="@string/sure" />
 </LinearLayout>

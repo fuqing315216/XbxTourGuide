@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/next"
             android:textColor="@color/head_text_color"
             android:textSize="14sp" />
@@ -46,7 +46,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_text_color">
 
         <TextView
@@ -66,13 +66,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
         android:background="@color/line_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_text_color">
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_height="28dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/dp16"
             android:gravity="center"
             android:background="@drawable/bg_roundbtn_verification_style"
             android:text="@string/get_verification"
@@ -105,14 +105,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
         android:background="@color/line_color" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_text_color">
 
         <TextView
@@ -132,14 +132,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
         android:background="@color/line_color" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_text_color">
 
         <TextView
@@ -165,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/dp8">
 
         <TextView
             android:layout_width="wrap_content"
@@ -178,7 +178,7 @@
             android:id="@+id/tv_register_zack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/register_zack"
             android:textColor="@color/bg_verification_color"
             android:textSize="10sp" />

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
 
@@ -23,10 +23,10 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/register"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="99dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@color/head_text_color"
         android:orientation="vertical">
 
@@ -46,7 +46,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="@dimen/dp48">
 
             <TextView
                 android:id="@+id/tv_phone"
@@ -65,14 +65,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
             android:background="@color/line_color" />
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="@dimen/dp48">
 
             <TextView
                 android:id="@+id/tv_code"
@@ -99,12 +99,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:paddingBottom="16dp"
-        android:paddingRight="16dp"
+        android:paddingBottom="@dimen/dp16"
+        android:paddingRight="@dimen/dp16"
         android:paddingTop="12dp"
         android:text="@string/forgetpass"
         android:textColor="@color/forgetpass_color"
-        android:textSize="10sp" />
+        android:textSize="@dimen/sp10" />
 
 
     <Button

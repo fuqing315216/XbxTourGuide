@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -32,17 +32,17 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/next"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:background="@color/head_text_color"
-        android:layout_height="48dp">
+        android:layout_height="@dimen/dp48">
 
         <RelativeLayout
             android:id="@+id/rlyt_guide"

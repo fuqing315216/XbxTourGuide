@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -31,10 +31,10 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/update_ok"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 
@@ -52,7 +52,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <LinearLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:orientation="horizontal"
-                android:paddingTop="16dp">
+                android:paddingTop="@dimen/dp16">
 
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:gravity="center"
                     android:text="日"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -79,7 +79,7 @@
                     android:gravity="center"
                     android:text="一"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -88,7 +88,7 @@
                     android:gravity="center"
                     android:text="二"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -97,7 +97,7 @@
                     android:gravity="center"
                     android:text="三"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -106,7 +106,7 @@
                     android:gravity="center"
                     android:text="四"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -115,7 +115,7 @@
                     android:gravity="center"
                     android:text="五"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -124,7 +124,7 @@
                     android:gravity="center"
                     android:text="六"
                     android:textColor="@color/head_bg_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,7 +152,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <RelativeLayout
@@ -160,17 +160,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:paddingLeft="16dp">
+                android:paddingLeft="@dimen/dp16">
 
                 <TextView
                     android:id="@+id/tv_price_h"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp"
+                    android:paddingBottom="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16"
                     android:text="@string/price_per_h"
                     android:textColor="@color/text_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
 
                 <EditText
@@ -178,16 +178,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
                     android:layout_toRightOf="@id/tv_price_h"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入每小时服务价格"
                     android:inputType="number"
                     android:paddingBottom="5dp"
-                    android:paddingRight="16dp"
+                    android:paddingRight="@dimen/dp16"
                     android:paddingTop="5dp"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
             </RelativeLayout>
 
@@ -201,17 +201,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:paddingLeft="16dp">
+                android:paddingLeft="@dimen/dp16">
 
                 <TextView
                     android:id="@+id/tv_price_d"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp"
+                    android:paddingBottom="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16"
                     android:text="@string/price_per_d"
                     android:textColor="@color/text_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
 
                 <EditText
@@ -219,16 +219,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
                     android:layout_toRightOf="@id/tv_price_d"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入每天价格"
                     android:inputType="number"
                     android:paddingBottom="5dp"
-                    android:paddingRight="16dp"
+                    android:paddingRight="@dimen/dp16"
                     android:paddingTop="5dp"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
 
             </RelativeLayout>
@@ -243,18 +243,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16">
 
                 <TextView
                     android:id="@+id/tv_service_time_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp"
+                    android:paddingBottom="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16"
                     android:text="@string/service_location"
                     android:textColor="@color/text_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
 
                 <EditText
@@ -262,7 +262,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
                     android:layout_toRightOf="@id/tv_service_time_location"
                     android:background="@null"
                     android:ellipsize="end"
@@ -271,7 +271,7 @@
                     android:hint="请选择服务地区，可多选"
                     android:inputType="number"
                     android:singleLine="true"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
             </RelativeLayout>
 
@@ -285,18 +285,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16">
 
                 <TextView
                     android:id="@+id/tv_guide_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp"
+                    android:paddingBottom="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16"
                     android:text="@string/guide_type"
                     android:textColor="@color/text_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp15" />
 
 
                 <RadioGroup
@@ -305,8 +305,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:orientation="horizontal"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp">
+                    android:paddingBottom="@dimen/dp8"
+                    android:paddingTop="@dimen/dp8">
 
                     <RadioButton
                         android:id="@+id/rb_total"
@@ -315,10 +315,10 @@
                         android:background="@null"
                         android:button="@null"
                         android:drawableLeft="@drawable/ic_gender_selected"
-                        android:drawablePadding="8dp"
+                        android:drawablePadding="@dimen/dp8"
                         android:text="@string/total"
                         android:textColor="@color/text_color"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <RadioButton
                         android:id="@+id/rb_part"
@@ -329,10 +329,10 @@
                         android:button="@null"
                         android:checked="false"
                         android:drawableLeft="@drawable/ic_gender_normal"
-                        android:drawablePadding="8dp"
+                        android:drawablePadding="@dimen/dp8"
                         android:text="@string/part"
                         android:textColor="@color/text_color"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/sp15" />
 
                     <RadioButton
                         android:id="@+id/rb_leader"
@@ -343,10 +343,10 @@
                         android:button="@null"
                         android:checked="false"
                         android:drawableLeft="@drawable/ic_gender_normal"
-                        android:drawablePadding="8dp"
+                        android:drawablePadding="@dimen/dp8"
                         android:text="@string/leader"
                         android:textColor="@color/text_color"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/sp15" />
                 </RadioGroup>
             </RelativeLayout>
 

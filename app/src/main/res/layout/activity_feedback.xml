@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -29,7 +30,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
     <EditText
@@ -39,9 +40,9 @@
         android:background="@android:color/white"
         android:gravity="top"
         android:hint="@string/et_feedback"
-        android:padding="8dp"
+        android:padding="@dimen/dp8"
         android:textColor="@color/text_color"
-        android:textSize="12sp" />
+        android:textSize="@dimen/sp12" />
 
     <View
         android:layout_width="match_parent"
@@ -51,7 +52,7 @@
     <Button
         android:id="@+id/btn_feedback"
         style="@style/ButtonStyle"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:text="@string/submit" />
 
 </LinearLayout>

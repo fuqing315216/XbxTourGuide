@@ -7,14 +7,14 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="@dimen/dp48">
 
         <ImageButton
             android:id="@+id/ibtn_return"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
 
             android:src="@drawable/ic_arrow_back" />
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rlyt_header"
         android:background="@color/black_trans"
-        android:padding="16dp">
+        android:padding="@dimen/dp16">
 
         <com.xbx.tourguide.view.CircleImageView
             android:id="@+id/civ_headpic"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="小明"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp18" />
 
             <TextView
                 android:id="@+id/tv_add"
@@ -90,7 +90,7 @@
                 android:layout_below="@id/tv_add"
                 android:text="@string/service_time1"
                 android:textColor="@android:color/white"
-                android:textSize="10sp" />
+                android:textSize="@dimen/sp10" />
             <TextView
                 android:id="@+id/tv_service_time"
                 android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                 android:text="未开始"
                 android:layout_toRightOf="@id/tv_service"
                 android:textColor="@color/serverTime"
-                android:textSize="10sp" />
+                android:textSize="@dimen/sp10" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -116,14 +116,14 @@
             android:id="@+id/btn_service"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:layout_marginTop="@dimen/dp8"
             android:background="@drawable/bg_roundbtn_style"
             android:text="@string/start_service"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="@dimen/sp15" />
 
     </LinearLayout>
 </RelativeLayout>

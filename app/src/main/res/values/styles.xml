@@ -52,7 +52,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/head_text_color</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/sp18</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:gravity">center</item>
     </style>
@@ -62,8 +62,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/text_color</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="android:layout_marginLeft">@dimen/dp16</item>
         <item name="android:gravity">center</item>
     </style>
     <!--输入框edittext -->
@@ -71,7 +71,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/text_color</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sp14</item>
         <item name="android:textColorHint">@color/gray_color</item>
         <item name="android:background">@null</item>
         <item name="android:layout_marginLeft">90dp</item>
@@ -83,7 +83,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/text_color</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sp14</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -93,10 +93,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/bg_roundbtn_style</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/dp16</item>
+        <item name="android:layout_marginRight">@dimen/dp16</item>
         <item name="android:textColor">@color/head_text_color</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/sp17</item>
     </style>
 
     <!--首页textview-->
@@ -104,7 +104,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/color_9966ff</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/sp15</item>
         <item name="android:drawablePadding">8dp</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_gravity">center_horizontal</item>
@@ -113,8 +113,8 @@
     <style name="smallStarStyle" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/smallstar_drawable</item>
         <item name="android:numStars">5</item>
-        <item name="android:minHeight">12dp</item>
-        <item name="android:maxHeight">12dp</item>
+        <item name="android:minHeight">@dimen/dp12</item>
+        <item name="android:maxHeight">@dimen/dp12</item>
         <item name="android:isIndicator">true</item>
     </style>
 

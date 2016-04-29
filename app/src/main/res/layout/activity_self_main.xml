@@ -34,21 +34,21 @@
             <TextView
                 android:id="@+id/tv_self_main_name"
                 style="@style/CenterTextView"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/dp12"
                 android:text="李晓琪"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_self_main_id"
                 style="@style/CenterTextView"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:text="112354***213"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp12" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -62,7 +62,7 @@
                 <TextView
                     android:id="@+id/tv_self_main_score"
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="@dimen/dp8"
                     android:text="9.7分"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -71,41 +71,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12.5dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/dp12"
                 android:src="@drawable/ic_guide_line" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/CenterTextView"
                     android:text="价格"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <TextView
                     android:id="@+id/tv_self_main_price_h"
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="@dimen/dp12"
                     android:text="50/小时"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <TextView
                     android:id="@+id/tv_self_main_price_d"
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="@dimen/dp12"
                     android:text="500/天"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp8"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -113,32 +113,32 @@
                     android:id="@+id/tv_self_main_user_type"
                     style="@style/CenterTextView"
                     android:text="导游"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <TextView
                     android:id="@+id/tv_self_main_count"
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="@dimen/dp12"
                     android:text="25次"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
             </LinearLayout>
 
             <com.xbx.tourguide.view.FlowLayout
                 android:id="@+id/flyt_self_main_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="@dimen/dp8"
                 android:background="@color/bg_color" />
 
             <View
@@ -153,24 +153,24 @@
 
                 <TextView
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8"
                     android:text="@string/self_introduce"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <EditText
                     android:id="@+id/et_self_main_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8"
                     android:background="@drawable/bg_selfmain_style"
                     android:gravity="top|left"
                     android:lines="5"
                     android:textColor="@color/text_color"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
             </LinearLayout>
 
             <View
@@ -180,7 +180,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="@dimen/dp8"
                 android:background="@color/bg_color" />
 
             <View
@@ -195,24 +195,24 @@
 
                 <TextView
                     style="@style/CenterTextView"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8"
                     android:text="@string/self_service"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
 
                 <EditText
                     android:id="@+id/et_self_main_service"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8"
                     android:background="@drawable/bg_selfmain_style"
                     android:gravity="top|left"
                     android:lines="7"
                     android:textColor="@color/text_color"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp12" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -229,30 +229,30 @@
         <Button
             android:id="@+id/btn_self_main_back"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginBottom="@dimen/dp16"
+            android:layout_marginLeft="@dimen/dp16"
             android:layout_marginRight="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/dp16"
             android:layout_weight="1"
             android:background="@drawable/bg_roundbtn_style"
             android:text="@string/btn_back"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="@dimen/sp15" />
 
         <Button
             android:id="@+id/btn_self_main_confirm"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginBottom="@dimen/dp16"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/dp16"
+            android:layout_marginTop="@dimen/dp16"
             android:layout_weight="1"
             android:background="@drawable/bg_roundbtn_style"
             android:text="@string/confirm_update"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="@dimen/sp15" />
     </LinearLayout>
 
 </RelativeLayout>

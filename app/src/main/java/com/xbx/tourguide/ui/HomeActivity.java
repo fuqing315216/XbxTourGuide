@@ -248,36 +248,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-//    /**
-//     * 判断是否有缓存的即时订单需要处理
-//     */
-//    private void isShowDialog() {
-//        if (!Cookie.getIsDialog(this)) {
-//            SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
-//            LogUtils.i("---sqLiteOrderBean:" + sqLiteOrderBean.toString());
-//            if (sqLiteOrderBean.getNum() != null) {//有缓存
-//                if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
-//                    orderNumberDao.clear();
-//                    return;
-//                }
-//                Cookie.putIsDialog(this, true);
-//                Intent orderIntent = new Intent(this, OrderRemainActivity.class);
-//                orderIntent.putExtra("serverType", "0");
-//                orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
-//                orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
-//                startActivity(orderIntent);
-//            } else {
-//                if (Cookie.getAppointmentOrder(this)) {
-//                    Cookie.putIsDialog(this, true);
-//                    Intent orderIntent = new Intent(this, OrderRemainActivity.class);
-//                    orderIntent.putExtra("serverType", "1");
-//                    orderIntent.putExtra("orderNumber", "");
-//                    startActivity(orderIntent);
-//                }
-//            }
-//        }
-//    }
-
     /**
      * 上传经纬度
      */

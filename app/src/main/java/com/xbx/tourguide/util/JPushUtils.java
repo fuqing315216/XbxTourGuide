@@ -13,8 +13,6 @@ import com.xbx.tourguide.ui.OrderRemainActivity;
 public class JPushUtils {
 
     public static void isShowDialog(Context context) {
-        LogUtils.i("----isShowDialog"+Cookie.getIsDialog(context));
-        LogUtils.i("----isShowDialogisShowDialogisShowDialogisShowDialog");
         if (!Cookie.getIsDialog(context)) {
             OrderNumberDao orderNumberDao = new OrderNumberDao(context);
             SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();

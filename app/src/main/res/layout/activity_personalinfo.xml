@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlyt_header"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dp48"
         android:background="@color/head_bg_color">
 
         <ImageButton
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:paddingLeft="16dp"
+            android:paddingLeft="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -31,10 +31,10 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:paddingRight="16dp"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/personal_main"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
     </RelativeLayout>
 
     <ScrollView
@@ -51,32 +51,32 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:paddingBottom="8dp">
+                android:paddingBottom="@dimen/dp8">
 
                 <TextView
                     style="@style/TextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
                     android:text="@string/headpic"
                     android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp14" />
 
                 <com.xbx.tourguide.view.CircleImageView
                     android:id="@+id/circle_head"
                     android:layout_width="76dp"
                     android:layout_height="76dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8" />
             </RelativeLayout>
 
             <View
@@ -87,7 +87,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <LinearLayout
@@ -98,7 +98,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -108,20 +108,20 @@
                         android:id="@+id/tv_name"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="@string/et_name" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -131,20 +131,20 @@
                         android:id="@+id/tv_sex"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="女" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -154,20 +154,20 @@
                         android:id="@+id/tv_birthday"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="1991/02/22" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -177,20 +177,20 @@
                         android:id="@+id/tv_phone"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="18888888888" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -200,21 +200,21 @@
                         android:id="@+id/tv_id"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="123456789" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:id="@+id/rlyt_personalinfo_guide"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -224,21 +224,21 @@
                         android:id="@+id/tv_guide"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="19910222" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:id="@+id/rlyt_location"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         style="@style/TextViewStyle"
@@ -248,20 +248,20 @@
                         android:id="@+id/tv_location"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:text="成都" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
                     android:background="@color/line_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="@dimen/dp48">
 
                     <TextView
                         android:id="@+id/tv_language"
@@ -278,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="@dimen/dp16"
                         android:orientation="horizontal">
 
                         <RadioButton
@@ -288,7 +288,7 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/ic_gender_selected"
-                            android:drawablePadding="8dp"
+                            android:drawablePadding="@dimen/dp8"
                             android:text="@string/chinese"
                             android:textColor="@color/text_color"
                             android:textSize="15sp" />
@@ -302,7 +302,7 @@
                             android:button="@null"
                             android:checked="false"
                             android:drawableLeft="@drawable/ic_gender_normal"
-                            android:drawablePadding="8dp"
+                            android:drawablePadding="@dimen/dp8"
                             android:text="@string/english"
                             android:textColor="@color/text_color"
                             android:textSize="15sp" />
@@ -316,7 +316,7 @@
                             android:button="@null"
                             android:checked="false"
                             android:drawableLeft="@drawable/ic_gender_normal"
-                            android:drawablePadding="8dp"
+                            android:drawablePadding="@dimen/dp8"
                             android:text="@string/all"
                             android:textColor="@color/text_color"
                             android:textSize="15sp" />
