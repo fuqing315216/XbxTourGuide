@@ -25,6 +25,15 @@ public class TourGuideInfoBeans implements Serializable {
     private String now_address_name;
     private String now_address;
     private String server_language;
+    private String is_auth;
+
+    public String getIs_auth() {
+        return is_auth;
+    }
+
+    public void setIs_auth(String is_auth) {
+        this.is_auth = is_auth;
+    }
 
     public String getIs_online() {
         return is_online;
@@ -192,6 +201,7 @@ public class TourGuideInfoBeans implements Serializable {
                 ", now_address_name='" + now_address_name + '\'' +
                 ", now_address='" + now_address + '\'' +
                 ", server_language='" + server_language + '\'' +
+                ", is_auth='" + is_auth + '\'' +
                 '}';
     }
 }

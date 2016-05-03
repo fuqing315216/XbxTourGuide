@@ -62,7 +62,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private String userInfo = "";
     private Timer timer = null;
 
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -127,14 +126,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
-        LogUtils.i("-----home" + uid);
         loader = ImageLoader.getInstance();
         serverApi = new ServerApi(this, handler);
-        Cookie.putIsJPush(this, true);
+        Cookie.putIsJPush(this, true);//可以接受推送
         Cookie.putIsDialog(this, false);
         Cookie.putLoginOut(this, false);
-//        setTimerTask();
-//        JPushUtils.isShowDialog(this);
         initView();
     }
 
@@ -232,11 +228,21 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.tv_start_order:
 //               XbxTGApplication.getInstance().showNotification();
-                serverApi.setIsOnline(uid);
+                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
+                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
+                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
+                } else {
+                    serverApi.setIsOnline(uid);
+                }
                 break;
 
             case R.id.tv_service_time:
-                startIntent(ServiceTimeActivity.class, false);
+                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
+                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
+                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
+                } else {
+                    startIntent(ServiceTimeActivity.class, false);
+                }
                 break;
 
             case R.id.tv_my_travel:
@@ -246,7 +252,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.rlyt_head:
-                startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
+                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
+                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
+                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
+                } else {
+                    startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
+                }
                 break;
             case R.id.tv_my_wallet:
                 startIntent(MyWalletActivity.class, false);
