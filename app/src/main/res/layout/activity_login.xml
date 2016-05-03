@@ -5,31 +5,7 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlyt_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:background="@color/head_bg_color">
-
-
-        <TextView
-            android:id="@+id/tv_header"
-            style="@style/HeaderTextView"
-            android:text="@string/phone_login" />
-
-        <TextView
-            android:id="@+id/tv_register"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingRight="@dimen/dp16"
-            android:text="@string/register"
-            android:textColor="@color/head_text_color"
-            android:textSize="@dimen/sp14" />
-
-    </RelativeLayout>
-
+    <include layout="@layout/titlebar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,8 +33,8 @@
             <EditText
                 android:id="@+id/et_phone"
                 style="@style/EditTextStyle"
-                android:inputType="phone"
-                android:hint="@string/et_phone" />
+                android:hint="@string/et_phone"
+                android:inputType="phone" />
 
         </RelativeLayout>
 
@@ -83,8 +59,8 @@
             <EditText
                 android:id="@+id/et_code"
                 style="@style/EditTextStyle"
-                android:inputType="textPassword"
-                android:hint="@string/et_password" />
+                android:hint="@string/et_password"
+                android:inputType="textPassword" />
 
         </RelativeLayout>
 

@@ -27,6 +27,7 @@ import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -38,7 +39,8 @@ import cn.jpush.android.api.JPushInterface;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static boolean isForeground = false;
-    private TextView registerTv, forgetPwTv;
+    private TitleBarView titleBarView;
+    private TextView forgetPwTv;
     private Button loginBtn;
     private EditText phoneEt, pwEt;
     private LoginApi loginApi = null;
@@ -73,14 +75,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
         String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
         String user_type = UserInfoParse.getUserType(Cookie.getUserInfo(this));
-        LogUtils.i("---mobile and token--" + mobile + "  " + token + "  " + user_type);
         if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
             RequestParams params = new RequestParams();
             params.put("mobile", mobile);
             params.put("password", token);
             params.put("user_type", user_type);
             params.put("push_id", JPushInterface.getRegistrationID(this));
-            LogUtils.i("---push_id" +JPushInterface.getRegistrationID(this));
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
                 public void requestSuccess(String json) {
@@ -97,14 +97,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
+        titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.hideLeftImageButton();
+        titleBarView.setTitle(getString(R.string.phone_login));
+        titleBarView.setTextRightTextView(getString(R.string.register));
+        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
+            @Override
+            public void onClick(View v) {
+                startIntent(RegisterActivity.class, false);
+            }
+        });
 
-        registerTv = (TextView) findViewById(R.id.tv_register);
         forgetPwTv = (TextView) findViewById(R.id.tv_forgetpass);
         loginBtn = (Button) findViewById(R.id.btn_login);
         phoneEt = (EditText) findViewById(R.id.et_phone);
         pwEt = (EditText) findViewById(R.id.et_code);
 
-        registerTv.setOnClickListener(this);
         forgetPwTv.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
@@ -122,9 +130,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.tv_register:
-                startIntent(RegisterActivity.class, false);
-                break;
 
             case R.id.tv_forgetpass:
                 startIntent(ForgetPassWordActivity.class, false);
