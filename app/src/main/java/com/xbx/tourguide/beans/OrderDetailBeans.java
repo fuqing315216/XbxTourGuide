@@ -24,7 +24,7 @@ public class OrderDetailBeans implements Serializable {
     private String end_addr;
     private String content;
     private String star;
-    private String tag;
+    private String[] tag;
     private String order_number;
     private String server_type;//0-即使服务，1-预约服务
     private String order_status;
@@ -87,11 +87,11 @@ public class OrderDetailBeans implements Serializable {
         this.star = star;
     }
 
-    public String getTag() {
+    public String[] getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(String[] tag) {
         this.tag = tag;
     }
 

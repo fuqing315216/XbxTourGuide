@@ -34,6 +34,7 @@ import com.xbx.tourguide.util.JPushUtils;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.CircleImageView;
 
 import java.util.Timer;
@@ -105,7 +106,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     };
 
     private void setTimerTask() {
-        if("1".equals(online)){
+        if ("1".equals(online)) {
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -126,11 +127,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        LogUtils.i("-----home" + uid);
         loader = ImageLoader.getInstance();
         serverApi = new ServerApi(this, handler);
-        userInfo = Cookie.getUserInfo(this);
         Cookie.putIsJPush(this, true);
         Cookie.putIsDialog(this, false);
+        Cookie.putLoginOut(this, false);
 //        setTimerTask();
 //        JPushUtils.isShowDialog(this);
         initView();
@@ -156,6 +158,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.tv_my_wallet).setOnClickListener(this);
         findViewById(R.id.tv_setting).setOnClickListener(this);
 
+        initData();
+    }
+
+    private void initData() {
+        userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
 
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
@@ -204,6 +211,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 //        getLocation();
+        if (Cookie.getLoginOut(this)) {
+            initData();
+        }
+
         new Handler().postDelayed(run, 6000);
         setTimerTask();
 
@@ -316,7 +327,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 102) {//修改个人信息
-            loader.displayImage(UserInfoParse.getUserInfo(userInfo).getHead_image(), headPicCiv);
+            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicCiv);
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/7.
- *
+ * <p/>
  * 服务时间设置adapter
  */
 public class ServiceTimeGridAdapter extends BaseMyAdapter<ServiceTimeBeans> {
@@ -33,22 +33,20 @@ public class ServiceTimeGridAdapter extends BaseMyAdapter<ServiceTimeBeans> {
 
         TextView date = (TextView) convertView.findViewById(R.id.tv_date);
 
-        ServiceTimeBeans serviceTimeBeans=mList.get(position);
-        DateBeans dateBeans=serviceTimeBeans.getDate();
+        ServiceTimeBeans serviceTimeBeans = mList.get(position);
+        DateBeans dateBeans = serviceTimeBeans.getDate();
 
-        if (serviceTimeBeans.isSelected()){
+        if (serviceTimeBeans.isSelected()) {
             date.setTextColor(mContext.getResources().getColor(R.color.head_bg_color));
-        }else{
+        } else {
             date.setTextColor(mContext.getResources().getColor(R.color.gray_color));
         }
 
-        if (dateBeans!=null&& !VerifyUtil.isNullOrEmpty(dateBeans.getDate())){
+        if (dateBeans != null && !VerifyUtil.isNullOrEmpty(dateBeans.getDate())) {
             date.setText(dateBeans.getDate());
-        }else{
+        } else {
             date.setText("");
         }
-
-
         return convertView;
     }
 }

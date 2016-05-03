@@ -98,11 +98,6 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder_list);
-        myOrderBeansList = new ArrayList<>();
-        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
-        nowPage = 1;
-        serverApi = new ServerApi(this, handler);
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
         initView();
     }
 
@@ -119,6 +114,11 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+        myOrderBeansList = new ArrayList<>();
+        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        nowPage = 1;
+        serverApi = new ServerApi(this, handler);
+        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
     @Override
@@ -147,10 +147,10 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
             } else if ("1".equals(order_status)) {//进行中
                 intent.putExtra("isgoing", false);
                 intent.setClass(this, StartServiceActivity.class);
-            } else if ("0".equals(order_status)) {
-                intent.putExtra("isgoing", false);
-                intent.setClass(this, StartServiceActivity.class);
             } else {
+//                intent.putExtra("isgoing", false);
+//                intent.setClass(this, StartServiceActivity.class);
+//            } else {
                 intent.setClass(this, MyOrderDetailActivity.class);
             }
         } else if ("1".equals(server_type)) {//预约服务

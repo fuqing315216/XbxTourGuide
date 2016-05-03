@@ -60,7 +60,7 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.i("log", orderNumber.getOrder_number() + "************************");
                 Log.i("log", "----JPushInterface==================" + orderNumber.toString());
 
-                Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
+//                Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
                 //
                 orderNumberDao = new OrderNumberDao(context);
 //                String action = intent.getAction();
@@ -74,7 +74,7 @@ public class MyReceiver extends BroadcastReceiver {
                         //将新接受的及时订单添加到sqlite
                         ContentValues values = new ContentValues();
                         values.put("num", orderNum);
-                        values.put("date", new Date().getTime() + "");
+                        values.put("date", System.currentTimeMillis() + "");
                         orderNumberDao.insertLast(values);
                         break;
                     case 101:
@@ -87,7 +87,8 @@ public class MyReceiver extends BroadcastReceiver {
                         break;
                     case 102:
                         if (true) {
-                            context.startActivity(new Intent(context, MyOrderListActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            context.startActivity(new Intent(context, MyOrderListActivity.class)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             ToastUtils.showShort(context, "您有个订单已被用户取消！！！请注意查看");
                             return;
                         }
@@ -136,12 +137,13 @@ public class MyReceiver extends BroadcastReceiver {
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Log.d(TAG, "---[MyReceiver] 用户点击打开了通知");
-
-                //打开自定义的Activity
-                Intent i = new Intent(context, HomeActivity.class);
-                i.putExtras(bundle);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(i);
+                if (!Util.isAction(context)) {
+                    //打开自定义的Activity
+                    Intent i = new Intent(context, HomeActivity.class);
+                    i.putExtras(bundle);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(i);
+                }
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

@@ -94,6 +94,7 @@
 
             <EditText
                 android:id="@+id/et_name"
+                android:maxLength="6"
                 style="@style/EditTextStyle"
                 android:hint="@string/et_name" />
         </RelativeLayout>

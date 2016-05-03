@@ -27,6 +27,7 @@ import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.CalendarUtil;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.UnScrollGridView;
@@ -102,6 +103,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
 
                     ((EditText) findViewById(R.id.et_service_time_location)).setText(result.getServer_city_name());
                     locations = result.getServer_city_name();
+                    locationIds = result.getServer_city();
 
                     String arrayTime = result.getFree_time();
                     if (!VerifyUtil.isNullOrEmpty(arrayTime)) {
@@ -127,7 +129,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO:
-                    ToastUtils.showShort(ServiceTimeActivity.this, "修改成功");
+                    ToastUtils.showShort(ServiceTimeActivity.this, "设置服务时间和地区成功");
                     break;
             }
         }
@@ -144,6 +146,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
 
     private void initView() {
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+
         returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
         updateTv = (TextView) findViewById(R.id.tv_update);
         gridView = (UnScrollGridView) findViewById(R.id.gv_calendar);
@@ -354,15 +357,16 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         if (selectTimeList != null && selectTimeList.size() > 0) {
             for (int i = 0; i < selectTimeList.size(); i++) {
                 String date = "";
-                if (Integer.parseInt(selectTimeList.get(i).getDate().getMonth()) < 10) {
-                    date = selectTimeList.get(i).getDate().getYear() + "-0" + selectTimeList.get(i).getDate().getMonth() + "-" + selectTimeList.get(i).getDate().getDate();
+                if (Integer.parseInt(selectTimeList.get(i).getDate().getMonth()) < 10 && Integer.parseInt(selectTimeList.get(i).getDate().getDate()) < 10) {
+                    date = selectTimeList.get(i).getDate().getYear() + "-0" + selectTimeList.get(i).getDate().getMonth() + "-0" + selectTimeList.get(i).getDate().getDate();
                 } else if (Integer.parseInt(selectTimeList.get(i).getDate().getDate()) < 10) {
                     date = selectTimeList.get(i).getDate().getYear() + "-" + selectTimeList.get(i).getDate().getMonth() + "-0" + selectTimeList.get(i).getDate().getDate();
-                } else if (Integer.parseInt(selectTimeList.get(i).getDate().getMonth()) < 10 && Integer.parseInt(selectTimeList.get(i).getDate().getDate()) < 10) {
-                    date = selectTimeList.get(i).getDate().getYear() + "-0" + selectTimeList.get(i).getDate().getMonth() + "-0" + selectTimeList.get(i).getDate().getDate();
+                } else if (Integer.parseInt(selectTimeList.get(i).getDate().getMonth()) < 10) {
+                    date = selectTimeList.get(i).getDate().getYear() + "-0" + selectTimeList.get(i).getDate().getMonth() + "-" + selectTimeList.get(i).getDate().getDate();
                 } else {
                     date = selectTimeList.get(i).getDate().getYear() + "-" + selectTimeList.get(i).getDate().getMonth() + "-" + selectTimeList.get(i).getDate().getDate();
                 }
+                LogUtils.i("------date:" + date);
                 if (i != selectTimeList.size() - 1) {
                     service_time = service_time + date + ",";
                 } else {
@@ -370,8 +374,10 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         }
+
         RequestParams params = new RequestParams();
         params.put("uid", uid);
+        LogUtils.i("----free_time:" + service_time);
         params.put("free_time", service_time);//2016-04-05,2016-04-09
 
         switch (userType) {//1：导游；2：随游；3：土著
@@ -428,7 +434,8 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
             Toast.makeText(this, "请选择服务地区", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            params.put("server_city", locationIds);
+            LogUtils.i("-----locationIds:" + locationIds.replaceFirst(",", ""));
+            params.put("server_city", locationIds.replaceFirst(",", ""));
         }
 
         settingApi.setServiceTime(params);

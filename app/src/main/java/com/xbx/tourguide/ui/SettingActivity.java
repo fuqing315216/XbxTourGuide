@@ -48,6 +48,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_login_out:
                 Cookie.putUserInfo(SettingActivity.this, "");
+                Cookie.putLoginOut(SettingActivity.this, true);
                 startIntent(LoginActivity.class, false);
                 break;
             default:

@@ -3,7 +3,9 @@
     xmlns:CircleImageView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:focusableInTouchMode="true">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,210 +13,220 @@
         android:layout_above="@+id/llyt_bottom"
         android:scrollbars="none">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_bg_guide_detail" />
-
-            <com.xbx.tourguide.view.CircleImageView
-                android:id="@+id/civ_self_main"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_marginTop="-45dp"
-                android:src="@drawable/ic_launcher"
-                CircleImageView:border_color="@color/head_with_color"
-                CircleImageView:border_width="2dp" />
-
-            <TextView
-                android:id="@+id/tv_self_main_name"
-                style="@style/CenterTextView"
-                android:layout_marginTop="@dimen/dp12"
-                android:text="李晓琪"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_self_main_id"
-                style="@style/CenterTextView"
-                android:layout_marginTop="@dimen/dp8"
-                android:text="112354***213"
-                android:textSize="@dimen/sp12" />
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp8"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-                <RatingBar
-                    android:id="@+id/rab_self_main"
-                    style="@style/smallStarStyle"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bg_guide_detail" />
+
+                <com.xbx.tourguide.view.CircleImageView
+                    android:id="@+id/civ_self_main"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="-45dp"
+                    CircleImageView:border_color="@color/head_with_color"
+                    CircleImageView:border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/tv_self_main_name"
+                    style="@style/CenterTextView"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_self_main_id"
+                    style="@style/CenterTextView"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:textSize="@dimen/sp12" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:rating="3.5" />
-
-                <TextView
-                    android:id="@+id/tv_self_main_score"
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp8"
-                    android:text="9.7分"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12.5dp"
-                android:layout_marginTop="@dimen/dp12"
-                android:src="@drawable/ic_guide_line" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp8"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/CenterTextView"
-                    android:text="价格"
-                    android:textSize="@dimen/sp12" />
-
-                <TextView
-                    android:id="@+id/tv_self_main_price_h"
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp12"
-                    android:text="50/小时"
-                    android:textSize="@dimen/sp12" />
-
-                <TextView
-                    android:id="@+id/tv_self_main_price_d"
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp12"
-                    android:text="500/天"
-                    android:textSize="@dimen/sp12" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp16"
-                android:layout_marginTop="@dimen/dp8"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_self_main_user_type"
-                    style="@style/CenterTextView"
-                    android:text="导游"
-                    android:textSize="@dimen/sp12" />
-
-                <TextView
-                    android:id="@+id/tv_self_main_count"
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp12"
-                    android:text="25次"
-                    android:textSize="@dimen/sp12" />
-            </LinearLayout>
-
-            <com.xbx.tourguide.view.FlowLayout
-                android:id="@+id/flyt_self_main_tag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dp8"
-                android:background="@color/line_color" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp8"
-                android:background="@color/bg_color" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp16"
                     android:layout_marginTop="@dimen/dp8"
-                    android:text="@string/self_introduce"
-                    android:textSize="@dimen/sp12" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/et_self_main_introduce"
+                    <RatingBar
+                        android:id="@+id/rab_self_main"
+                        style="@style/smallStarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="3.5" />
+
+                    <TextView
+                        android:id="@+id/tv_self_main_score"
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp8"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12.5dp"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:src="@drawable/ic_guide_line" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/CenterTextView"
+                        android:text="价格"
+                        android:textSize="@dimen/sp12" />
+
+                    <TextView
+                        android:id="@+id/tv_self_main_price_h"
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp12"
+                        android:text="/小时"
+                        android:textSize="@dimen/sp12" />
+
+                    <TextView
+                        android:id="@+id/tv_self_main_price_d"
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp12"
+                        android:text="/天"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_self_main_user_type"
+                        style="@style/CenterTextView"
+                        android:text="导游"
+                        android:textSize="@dimen/sp12" />
+
+                    <TextView
+                        android:id="@+id/tv_self_main_count"
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp12"
+                        android:text="0次"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <com.xbx.tourguide.view.FlowLayout
+                    android:id="@+id/flyt_self_main_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp8"
                     android:layout_marginLeft="@dimen/dp16"
-                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/dp8"
-                    android:background="@drawable/bg_selfmain_style"
-                    android:gravity="top|left"
-                    android:lines="5"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/sp12" />
-            </LinearLayout>
+                    android:background="@color/line_color" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp8"
+                    android:background="@color/bg_color" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp8"
-                android:background="@color/bg_color" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/CenterTextView"
-                    android:layout_marginLeft="@dimen/dp16"
-                    android:layout_marginTop="@dimen/dp8"
-                    android:text="@string/self_service"
-                    android:textSize="@dimen/sp12" />
-
-                <EditText
-                    android:id="@+id/et_self_main_service"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp8"
-                    android:layout_marginLeft="@dimen/dp16"
-                    android:layout_marginRight="@dimen/dp16"
-                    android:layout_marginTop="@dimen/dp8"
-                    android:background="@drawable/bg_selfmain_style"
-                    android:gravity="top|left"
-                    android:lines="7"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/sp12" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:text="@string/self_introduce"
+                        android:textSize="@dimen/sp12" />
+
+                    <EditText
+                        android:id="@+id/et_self_main_introduce"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp8"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:background="@drawable/bg_selfmain_style"
+                        android:gravity="top|left"
+                        android:lines="5"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp8"
+                    android:background="@color/bg_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CenterTextView"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:text="@string/self_service"
+                        android:textSize="@dimen/sp12" />
+
+                    <EditText
+                        android:id="@+id/et_self_main_service"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp8"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:background="@drawable/bg_selfmain_style"
+                        android:gravity="top|left"
+                        android:lines="7"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_self_main_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="@dimen/dp16"
+                android:scaleType="center"
+                android:src="@drawable/ic_return2" />
+        </RelativeLayout>
     </ScrollView>
 
     <LinearLayout
@@ -225,32 +237,17 @@
         android:background="@color/bg_color"
         android:orientation="horizontal">
 
-
-        <Button
-            android:id="@+id/btn_self_main_back"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp48"
-            android:layout_marginBottom="@dimen/dp16"
-            android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="@dimen/dp16"
-            android:layout_weight="1"
-            android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/btn_back"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/sp15" />
-
         <Button
             android:id="@+id/btn_self_main_confirm"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp48"
-            android:layout_marginBottom="@dimen/dp16"
-            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="@dimen/dp12"
+            android:layout_marginLeft="@dimen/dp16"
             android:layout_marginRight="@dimen/dp16"
-            android:layout_marginTop="@dimen/dp16"
+            android:layout_marginTop="@dimen/dp12"
             android:layout_weight="1"
             android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/confirm_update"
+            android:text="@string/confirm_save"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp15" />
     </LinearLayout>

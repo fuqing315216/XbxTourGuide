@@ -12,6 +12,16 @@ public class GetServiceTime implements Serializable {
     private String server_city_name;
     private String guide_instant_price;
     private String guide_reserve_price;
+    private String server_city;
+
+
+    public String getServer_city() {
+        return server_city;
+    }
+
+    public void setServer_city(String server_city) {
+        this.server_city = server_city;
+    }
 
     public String getServer_city_name() {
         return server_city_name;
@@ -61,6 +71,7 @@ public class GetServiceTime implements Serializable {
                 ", server_city_name='" + server_city_name + '\'' +
                 ", guide_instant_price='" + guide_instant_price + '\'' +
                 ", guide_reserve_price='" + guide_reserve_price + '\'' +
+                ", server_city='" + server_city + '\'' +
                 '}';
     }
 

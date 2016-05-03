@@ -29,7 +29,7 @@ import com.xbx.tourguide.util.VerifyUtil;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p>
+ * <p/>
  * 注册页
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
@@ -129,11 +129,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (VerifyUtil.isNullOrEmpty(pw)) {
                     Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (pw.length() < 6 || pw.length() > 18) {
-                    Toast.makeText(this, "密码长度为6-18位，请重新输入", Toast.LENGTH_SHORT).show();
+                } else if (pw.length() < 6 || pw.length() > 20) {
+                    Toast.makeText(this, "密码长度为8-20位，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!VerifyUtil.isPassWord(pw) && !VerifyUtil.isNumber(pw)
-                        && !VerifyUtil.isLetter(pw)) {
+                } else if (!VerifyUtil.isPassWord(pw)) {
                     Toast.makeText(this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -150,6 +149,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     ToastUtils.showShort(this, "验证码错误");
                     return;
                 }
+
                 beans.setPassword(pw);
                 beans.setRepassword(repw);
 
@@ -168,7 +168,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(this, "您输入的手机号码有误，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                loginApi = new LoginApi(this,handler);
+                loginApi = new LoginApi(this, handler);
                 loginApi.getVerifyCode(phone, "0");
 //                getVerifyCode(phone);
                 break;

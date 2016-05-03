@@ -127,7 +127,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.btn_self_main_back).setOnClickListener(this);
         findViewById(R.id.btn_self_main_confirm).setOnClickListener(this);
 
-        settingApi.getGuideDetail(Cookie.getUid(this));
+        settingApi.getGuideDetail(UserInfoParse.getUid(Cookie.getUserInfo(this)));
     }
 
 

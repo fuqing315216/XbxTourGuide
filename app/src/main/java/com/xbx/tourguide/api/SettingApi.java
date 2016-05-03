@@ -8,6 +8,10 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.ToastUtils;
 
 import java.io.File;
 
@@ -109,6 +113,7 @@ public class SettingApi {
         IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
+                LogUtils.i("-----getServiceTime:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
@@ -117,10 +122,12 @@ public class SettingApi {
     /**
      * 设置服务时间
      */
-    public void setServiceTime(RequestParams params){
+    public void setServiceTime(RequestParams params) {
         IRequest.post(context, HttpUrl.SETTING_SERVICETIME, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
+                LogUtils.i("-----setServiceTime:" + json);
+                LogUtils.i("-----setServiceTime--json:" + UtilParse.getRequestMsg(json));
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });

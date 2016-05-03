@@ -6,7 +6,7 @@
     <string name="phone">手机号</string>
     <string name="et_phone">+86</string>
     <string name="password">密码</string>
-    <string name="et_password">请输入密码</string>
+    <string name="et_password">请输入带大写字母的8-20位密码</string>
     <string name="forgetpass">忘记密码？</string>
     <string name="forgetpw">忘记密码</string>
     <string name="login">登录</string>
@@ -99,6 +99,7 @@
     <string name="personal_info">个人信息</string>
     <string name="personal_main">主页</string>
     <string name="confirm_update">确认修改</string>
+    <string name="confirm_save">保存</string>
     <string name="headpic">头像</string>
     <string name="gender">性别</string>
     <string name="birthday">出生日期</string>

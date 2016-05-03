@@ -50,7 +50,7 @@ public class Util {
     }
 
     public static boolean isOverTime(long getMillionSeconds) {
-        if (new Date().getTime() - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
+        if (System.currentTimeMillis() - getMillionSeconds > 60 * 60 * 1000) {//时间超过一个小时
             return true;
         } else {
             return false;

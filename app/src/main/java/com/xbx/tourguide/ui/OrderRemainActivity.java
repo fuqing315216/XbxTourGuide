@@ -68,7 +68,13 @@ public class OrderRemainActivity extends BaseActivity {
         OKTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmOrder(1 + "");//接单
+                if ("0".equals(orderType)) {//及时服务
+                    confirmOrder(1 + "");//接单
+                } else if ("1".equals(orderType)) {//预约服务
+                    Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
+                    startIntent(MyOrderListActivity.class, true);
+                    finish();
+                }
                 OKTv.setEnabled(false);
             }
         });
@@ -145,9 +151,8 @@ public class OrderRemainActivity extends BaseActivity {
                     @Override
                     public void requestSuccess(String json) {
                         OKTv.setEnabled(true);
-                        LogUtils.e("---confirmOrder:" + json);
+                        ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
                         if (UtilParse.getRequestCode(json) == 0) {
-                            ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
                             if ("0".equals(orderType)) {
                                 //订单被抢走
                                 orderNumberDao.deleteFirst(_id);
@@ -169,10 +174,6 @@ public class OrderRemainActivity extends BaseActivity {
                                     intent.putExtra("isgoing", false);
                                     intent.putExtra("orderId", orderNum);
                                     startActivity(intent);
-                                    finish();
-                                } else if ("1".equals(orderType)) {//预约服务
-                                    Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
-                                    startIntent(MyOrderListActivity.class, true);
                                     finish();
                                 }
                             }

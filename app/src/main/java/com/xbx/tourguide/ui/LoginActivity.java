@@ -50,7 +50,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
                     String data = (String) msg.obj;
-//                    LogUtils.i("---REQUESTSUCCESS:" + data);
                     Cookie.putUserInfo(LoginActivity.this, data);
                     startIntent(HomeActivity.class, true);
                     break;
@@ -73,17 +72,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
         String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
-        LogUtils.i("---mobile and token--" + mobile + "  " + token);
+        String user_type = UserInfoParse.getUserType(Cookie.getUserInfo(this));
+        LogUtils.i("---mobile and token--" + mobile + "  " + token + "  " + user_type);
         if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
             RequestParams params = new RequestParams();
             params.put("mobile", mobile);
             params.put("password", token);
-            params.put("user_type", "1");
+            params.put("user_type", user_type);
             params.put("push_id", JPushInterface.getRegistrationID(this));
+            LogUtils.i("---push_id" +JPushInterface.getRegistrationID(this));
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
                 public void requestSuccess(String json) {
-                    LogUtils.i("---isFirstLogin:" + json);
                     if (UtilParse.getRequestCode(json) == 0) {
                         ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
                     } else if (UtilParse.getRequestCode(json) == 1) {

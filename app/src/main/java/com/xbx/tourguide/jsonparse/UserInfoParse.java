@@ -76,6 +76,22 @@ public class UserInfoParse {
         return "";
     }
 
+    public static String getUserType(String responseResult) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(responseResult);
+            if (UtilParse.checkTag(jsonObject, "user_info")) {
+                JSONObject jsonObject2 = new JSONObject(jsonObject.getString("user_info"));
+                if (UtilParse.checkTag(jsonObject2, "user_type")) {
+                    return jsonObject2.getString("user_type");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String getDataType(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -111,13 +127,12 @@ public class UserInfoParse {
         return goingBeans;
     }
 
-    public static void putUserInfo(Context context,String responseResult, TourGuideInfoBeans tourGuideInfoBeans) {
+    public static void putUserInfo(Context context, String responseResult, TourGuideInfoBeans tourGuideInfoBeans) {
         try {
             JSONObject jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_info")) {
-                jsonObject.put("user_info", tourGuideInfoBeans);
-                Cookie.putUserInfo(context,jsonObject.toString());
-                LogUtils.i("---putUserInfo:"+Cookie.getUserInfo(context));
+                jsonObject.put("user_info", JsonUtils.toJson(tourGuideInfoBeans));
+                Cookie.putUserInfo(context, jsonObject.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();

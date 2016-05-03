@@ -152,8 +152,13 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
 
                     beans.setSex(guideRegisterFragment.beans.getSex());
                     beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
+
                     if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.nameEt.getText().toString())) {
                         Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else if (!VerifyUtil.checkNameChese(guideRegisterFragment.nameEt.getText().toString())
+                            || guideRegisterFragment.nameEt.getText().toString().length() < 2) {
+                        Toast.makeText(this, "请输入正确的中文姓名", Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         beans.setRealname(guideRegisterFragment.nameEt.getText().toString());
@@ -172,14 +177,14 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                     if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.typeEt.getText().toString())) {
                         Toast.makeText(this, "请选择证件类型", Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
                     }
 
                     if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.locationTv.getText().toString())) {
                         Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         beans.setCity(guideRegisterFragment.beans.getCity());
                     }
 
@@ -218,7 +223,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                     if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.locationTv.getText().toString())) {
                         Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         beans.setCity(accompanyRegisterFragment.beans.getCity());
                     }
 
@@ -250,7 +255,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                     if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.locationTv.getText().toString())) {
                         Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         beans.setCity(nativeRegisterFragment.beans.getCity());
                     }
 

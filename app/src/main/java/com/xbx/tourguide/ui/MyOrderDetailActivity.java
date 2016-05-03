@@ -115,8 +115,8 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                     server_type = result.getServer_type();
                     order_status = result.getOrder_status();
 
-                    //即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
-                    //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
+                    //0-即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
+                    //1-预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
                     switch (Integer.valueOf(order_status)) {
                         case 0://待支付
                             if ("1".equals(server_type)) {
@@ -169,7 +169,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                             setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
                             setText(R.id.tv_fee, result.getTip_money() + "元");
                             setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                            setText(R.id.llyt_cost_total, result.getPay_money() + "元");
+                            setText(R.id.tv_cost_total, result.getPay_money() + "元");
                             setPayType(result.getPay_type());//1-支付宝，2-微信支付
 
                             break;
@@ -202,25 +202,15 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                                 starRab.setVisibility(View.GONE);
                             }
 
-                            if (!VerifyUtil.isNullOrEmpty(result.getTag())) {
-                                String tag = result.getTag();
-                                try {
-                                    JSONObject jsonObject = new JSONObject(tag);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                if (tag.contains(",")) {
-                                    String[] tagArray = tag.split(",");
-                                    for (int i = 0; i < tagArray.length; i++) {
-                                        tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tagArray[i]));
-                                    }
-                                } else {
-                                    tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tag));
+                            String[] tags = result.getTag();
+                            if (tags.length > 0) {
+                                for (int i = 0; i < tags.length; i++) {
+                                    tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tags[i]));
                                 }
                             } else {
                                 tagFlyt.setVisibility(View.GONE);
                             }
+
                             break;
                         case 6://已关闭
                             if ("0".equals(server_type)) {//未付违约金

@@ -1,7 +1,5 @@
 package com.xbx.tourguide.util;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
 
 /**

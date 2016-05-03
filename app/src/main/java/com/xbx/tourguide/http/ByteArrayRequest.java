@@ -19,6 +19,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.xbx.tourguide.app.XbxTGApplication;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 
@@ -57,8 +58,6 @@ class ByteArrayRequest extends Request<byte[]> {
         if (null == headers || headers.equals(Collections.emptyMap())) {
             headers = new HashMap<>();
             String deviceId = Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext());
-            String uid = Cookie.getUid(XbxTGApplication.getInstance().getmContext());
-            AESCrypt aesCrypt = new AESCrypt(deviceId);
             LogUtils.i(deviceId);
             headers.put("deviceid", deviceId);
 //            headers.put("uuid", aesCrypt.encrypt(uid));
