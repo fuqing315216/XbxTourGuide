@@ -1,6 +1,7 @@
 package com.xbx.tourguide.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/7.
- * <p/>
+ * <p>
  * 服务时间设置adapter
  */
 public class ServiceTimeGridAdapter extends BaseMyAdapter<ServiceTimeBeans> {
@@ -36,17 +37,24 @@ public class ServiceTimeGridAdapter extends BaseMyAdapter<ServiceTimeBeans> {
         ServiceTimeBeans serviceTimeBeans = mList.get(position);
         DateBeans dateBeans = serviceTimeBeans.getDate();
 
+
         if (serviceTimeBeans.isSelected()) {
-            date.setTextColor(mContext.getResources().getColor(R.color.head_bg_color));
+            date.setTextColor(ContextCompat.getColor(mContext, R.color.head_bg_color));
         } else {
-            date.setTextColor(mContext.getResources().getColor(R.color.gray_color));
+            date.setTextColor(ContextCompat.getColor(mContext, R.color.gray_color));
         }
 
-        if (dateBeans != null && !VerifyUtil.isNullOrEmpty(dateBeans.getDate())) {
-            date.setText(dateBeans.getDate());
+        if (serviceTimeBeans.isDay()) {
+            if (dateBeans != null && !VerifyUtil.isNullOrEmpty(dateBeans.getDate())) {
+                date.setText(dateBeans.getDate());
+            } else {
+                date.setText("");
+            }
         } else {
             date.setText("");
         }
+
+
         return convertView;
     }
 }

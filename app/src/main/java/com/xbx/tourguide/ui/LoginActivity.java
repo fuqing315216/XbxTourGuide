@@ -48,7 +48,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
                     String data = (String) msg.obj;
-                    LogUtils.i("-----login:" + data);
                     Cookie.putUserInfo(LoginActivity.this, data);
                     startIntent(HomeActivity.class, true);
                     break;
@@ -82,7 +81,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
                 public void requestSuccess(String json) {
-                    LogUtils.i("-----login:" + json);
                     if (UtilParse.getRequestCode(json) == 0) {
                         ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
                     } else if (UtilParse.getRequestCode(json) == 1) {

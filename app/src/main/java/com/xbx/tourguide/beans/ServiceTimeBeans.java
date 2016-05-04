@@ -8,7 +8,16 @@ import java.io.Serializable;
 public class ServiceTimeBeans implements Serializable {
 
     private boolean isSelected;
+    private boolean isDay;
     private DateBeans date;
+
+    public boolean isDay() {
+        return isDay;
+    }
+
+    public void setIsDay(boolean day) {
+        isDay = day;
+    }
 
     public boolean isSelected() {
         return isSelected;
@@ -26,13 +35,21 @@ public class ServiceTimeBeans implements Serializable {
         this.date = date;
     }
 
-    public ServiceTimeBeans(boolean isSelected,DateBeans date){
-        this.isSelected=isSelected;
-        this.date=date;
+    public ServiceTimeBeans(boolean isSelected, DateBeans date) {
+        this.isSelected = isSelected;
+        this.date = date;
     }
 
-    public ServiceTimeBeans(){
+    public ServiceTimeBeans() {
 
     }
 
+    @Override
+    public String toString() {
+        return "ServiceTimeBeans{" +
+                "isSelected=" + isSelected +
+                ", isDay=" + isDay +
+                ", date=" + date +
+                '}';
+    }
 }

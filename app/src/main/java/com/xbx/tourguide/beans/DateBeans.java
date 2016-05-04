@@ -35,9 +35,21 @@ public class DateBeans implements Serializable {
         this.date = date;
     }
 
-    public DateBeans(String year,String month,String date){
-        this.year=year;
-        this.month=month;
-        this.date=date;
+    public DateBeans(String year, String month, String date) {
+        this.year = year;
+        this.month = month;
+        this.date = date;
+    }
+
+    public DateBeans() {
+    }
+
+    @Override
+    public String toString() {
+        return "DateBeans{" +
+                "year='" + year + '\'' +
+                ", month='" + month + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

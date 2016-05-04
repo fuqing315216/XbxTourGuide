@@ -11,25 +11,6 @@ import java.util.Calendar;
  * @author Administrator
  */
 public class CalendarUtil {
-    Calendar mCalendar;
-
-    public CalendarUtil() {
-
-        mCalendar = Calendar.getInstance();
-    }
-
-    /**
-     * 根据年 月 获取对应的月份 天数
-     */
-    public int getDaysByYearMonth(int year, int month) {
-        Calendar a = Calendar.getInstance();
-        a.set(Calendar.YEAR, year);
-        a.set(Calendar.MONTH, month - 1);
-        a.set(Calendar.DATE, 1);
-        a.roll(Calendar.DATE, -1);
-        int maxDate = a.get(Calendar.DATE);
-        return maxDate;
-    }
 
     /**
      * 获取星期几
@@ -39,7 +20,7 @@ public class CalendarUtil {
      * @param day
      * @return 0为星期日
      */
-    public int StringData(int year, int month, int day) {
+    public static int StringData(int year, int month, int day) {
         final Calendar c = Calendar.getInstance();
         c.set(year, month - 1, day);
         String mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
@@ -70,41 +51,56 @@ public class CalendarUtil {
     }
 
     /**
-     * 判断今天以前还是最后（之后包括今天）
+     * 增加天数
      *
-     * @return true：之后，false：之前
+     * @param s 起始日期
+     * @param n 增加天数
+     * @return
      */
-    public boolean isCompareTo(Calendar _Calendar) {
-        // 0相当-1之前 1之后
-        if (mCalendar.compareTo(_Calendar) != -1) {
-            return false;
-        } else {
-            return true;
+    public static String addDay(String s, int n) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Calendar cd = Calendar.getInstance();
+            cd.setTime(sdf.parse(s));
+            cd.add(Calendar.DATE, n);//增加一天
+            //cd.add(Calendar.MONTH, n);//增加一个月
+
+            return sdf.format(cd.getTime());
+
+        } catch (Exception e) {
+            return null;
         }
+
     }
 
     /**
-     * 获取某月最后一天
+     * 获取年
      *
-     * @param year
-     * @param month
+     * @param date
      * @return
      */
-    public int getLastDayofMonth(int year, int month) {
-        Calendar cal = Calendar.getInstance();
-        //设置年份
-        cal.set(Calendar.YEAR, year);
-        //设置月份
-        cal.set(Calendar.MONTH, month - 1);
-        //获取某月最大天数
-        int lastDay = cal.getActualMaximum(Calendar.DATE);
-        Log.i("log", lastDay + "lastDay");
-        //设置日历中月份的最大天数
-        cal.set(Calendar.DAY_OF_MONTH, lastDay);
-        //格式化日期
-        SimpleDateFormat sdf = new SimpleDateFormat("dd");
-        String lastDayOfMonth = sdf.format(cal.getTime());
+    public static String getYear(String date) {
+        return date.substring(0, 4);
+    }
 
-        return Integer.parseInt(lastDayOfMonth);
+    /**
+     * 获取月
+     *
+     * @param date
+     * @return
+     */
+    public static String getMonth(String date) {
+        return date.substring(5, 7);
+    }
+
+    /**
+     * 获取日
+     *
+     * @param date
+     * @return
+     */
+    public static String getDay(String date) {
+        return date.substring(8, date.length());
     }
 }
