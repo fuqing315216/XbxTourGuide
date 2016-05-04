@@ -41,7 +41,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/7.
- * <p>
+ * <p/>
  * 服务时间
  */
 public class ServiceTimeActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -108,21 +108,21 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                     String arrayTime = result.getFree_time();
                     if (!VerifyUtil.isNullOrEmpty(arrayTime)) {
                         List<String> timeList = Arrays.asList(arrayTime.split(","));
-                        LogUtils.i("---timeList:" + timeList.toString());
                         for (int i = 0; i < timeList.size(); i++) {
                             String y = CalendarUtil.getYear(timeList.get(i));
                             String m = CalendarUtil.getMonth(timeList.get(i));
                             String d = CalendarUtil.getDay(timeList.get(i));
 
-                            for (int j = 0; j < gridList.size(); j++) {
-                                if (gridList.get(j).getDate().getYear().equals(y)
-                                        && gridList.get(j).getDate().getMonth().equals(m)
-                                        && gridList.get(j).getDate().getDate().equals(d)) {
-                                    gridList.get(j).setIsSelected(true);
+                            for (int j = 0; j < gridList.size(); j++) {//年月日都相等显示选中色
+                                if (gridList.get(j).isDay()) {
+                                    if (gridList.get(j).getDate().getYear().equals(y)
+                                            && gridList.get(j).getDate().getMonth().equals(m)
+                                            && gridList.get(j).getDate().getDate().equals(d)) {
+                                        gridList.get(j).setIsSelected(true);
+                                    }
                                 }
                             }
                         }
-                        LogUtils.i("-----getTime--gridList:" + gridList.toString());
                         adapter.update(gridList);
                     }
                     break;
@@ -257,55 +257,51 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         long time = System.currentTimeMillis();
         Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTimeInMillis(time);
-
+        //获取今天日期
         int year = mCalendar.get(Calendar.YEAR);
         int month = mCalendar.get(Calendar.MONTH) + 1;
         int day = mCalendar.get(Calendar.DATE);
-
+        //明天周几
         int weekDay = CalendarUtil.StringData(year, month, day + 1);
-        LogUtils.i("-----weekDay:" + weekDay);
 
-//        ServiceTimeBeans serviceTimeBean = new ServiceTimeBeans();
-//        DateBeans tomorrow = new DateBeans(year + "", month + "", day + 1 + "");
-//        serviceTimeBean.setIsSelected(false);
-//        serviceTimeBean.setDate(tomorrow);
-//        gridList.add(serviceTimeBean);
-//        LogUtils.i("-----tomorrow:" + gridList.toString());
         String today = "";
         for (int i = 0; i < (30 + weekDay); i++) {
             String inDay = "";
             ServiceTimeBeans serviceTimeBean = new ServiceTimeBeans();
             DateBeans dateBean = new DateBeans();
-            if (i < weekDay) {
+            if (i < weekDay) {//明天不是周日 前面显示空
                 serviceTimeBean.setIsDay(false);
-                gridList.add(serviceTimeBean);
-
             } else if (i == weekDay) {
-                today = year + "-" + month + "-" + day;
-                LogUtils.i("-----today:" + today);
-                inDay = CalendarUtil.addDay(today, 1);
+                if (month < 10 && day < 10) {
+                    today = year + "-0" + month + "-0" + day;
+                } else if (month < 10 && day > 10) {
+                    today = year + "-0" + month + "-" + day;
+                } else if (month > 10 && day < 10) {
+                    today = year + "-" + month + "-0" + day;
+                } else {
+                    today = year + "-" + month + "-" + day;
+                }
+                inDay = CalendarUtil.addDay(today, 1);//明天
                 dateBean.setYear(CalendarUtil.getYear(inDay));
                 dateBean.setMonth(CalendarUtil.getMonth(inDay));
                 dateBean.setDate(CalendarUtil.getDay(inDay));
 
                 serviceTimeBean.setIsDay(true);
                 serviceTimeBean.setIsSelected(false);
-                serviceTimeBean.setDate(dateBean);
-            } else {
-
-                inDay = CalendarUtil.addDay(today, i - weekDay);
+            } else {//循环一次加一天 加到第30天
+                inDay = CalendarUtil.addDay(today, i - weekDay + 1);
                 dateBean.setYear(CalendarUtil.getYear(inDay));
                 dateBean.setMonth(CalendarUtil.getMonth(inDay));
                 dateBean.setDate(CalendarUtil.getDay(inDay));
 
                 serviceTimeBean.setIsDay(true);
                 serviceTimeBean.setIsSelected(false);
-                serviceTimeBean.setDate(dateBean);
+
             }
-
+            serviceTimeBean.setDate(dateBean);
             gridList.add(serviceTimeBean);
         }
-        LogUtils.i("----init--gridList:" + gridList.toString());
+
         adapter = new ServiceTimeGridAdapter(this, gridList);
         gridView.setAdapter(adapter);
 
@@ -325,31 +321,38 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
             }
         }
 
-        gridList.add(position, beans);
+        gridList.set(position, beans);
 
         adapter.update(gridList);
+    }
+
+    /**
+     * 筛选选中日期上传
+     * @return
+     */
+    private String getFreeTime() {
+        String service_time = "";
+        for (int i = 0; i < gridList.size(); i++) {
+            if (gridList.get(i).isDay()) {
+                if (gridList.get(i).isSelected()) {
+                    service_time += "," + gridList.get(i).getDate().getYear() + "-"
+                            + gridList.get(i).getDate().getMonth() + "-" + gridList.get(i).getDate().getDate();
+                }
+            }
+        }
+        if (service_time.contains(",")) {
+            service_time = service_time.replaceFirst(",", "");
+        }
+        return service_time;
     }
 
     /**
      * 设置服务时间
      */
     private void setServiceTime() {
-
-        String service_time = "";
-
-        for (int i = 0; i < gridList.size(); i++) {
-            if (!gridList.get(i).isSelected()) {
-                service_time += "," + gridList.get(i).getDate().getYear() + "-"
-                        + gridList.get(i).getDate().getMonth() + gridList.get(i).getDate().getDate();
-            }
-        }
         RequestParams params = new RequestParams();
         params.put("uid", uid);
-        if (service_time.contains(",")) {
-            service_time = service_time.replaceFirst(",", "");
-        }
-        LogUtils.i("----free_time:" + service_time);
-        params.put("free_time", service_time);//2016-04-05,2016-04-09
+        params.put("free_time", getFreeTime());//2016-04-05,2016-04-09
 
         switch (userType) {//1：导游；2：随游；3：土著
             case 1:
