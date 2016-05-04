@@ -28,6 +28,7 @@ import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.CircleImageView;
 import com.xbx.tourguide.view.FlowLayout;
+import com.xbx.tourguide.view.TitleBarView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,6 @@ import org.json.JSONObject;
  */
 public class MyOrderDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton returnIbtn;
     private String orderNum = "";
     private ImageLoader loader;
     private CircleImageView headPicCiv;
@@ -59,7 +59,16 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
+
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.order_detail));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         headPicCiv = (CircleImageView) findViewById(R.id.civ_headpic);
         nickNameTv = (TextView) findViewById(R.id.tv_username);
         addressTv = (TextView) findViewById(R.id.tv_useradd);
@@ -73,7 +82,6 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         payTypeTv = (TextView) findViewById(R.id.tv_pay_type);
         phoneIv = (ImageView) findViewById(R.id.iv_phone);
 
-        returnIbtn.setOnClickListener(this);
         refuseBtn.setOnClickListener(this);
         acceptBtn.setOnClickListener(this);
 
@@ -83,17 +91,11 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
             case R.id.btn_refuse:
                 confirmOrder(0 + "");
                 break;
             case R.id.btn_accept:
                 confirmOrder(1 + "");
-                break;
-
-            default:
                 break;
         }
     }

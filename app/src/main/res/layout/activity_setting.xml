@@ -1,42 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlyt_header"
+    <include layout="@layout/titlebar" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:background="@color/head_bg_color">
-
-        <ImageButton
-            android:id="@+id/ibtn_return"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingLeft="@dimen/dp16"
-            android:scaleType="center"
-            android:src="@drawable/ic_return" />
-
-        <TextView
-            android:id="@+id/tv_header"
-            style="@style/HeaderTextView"
-            android:text="@string/setting" />
-    </RelativeLayout>
-
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="@dimen/dp16"
-    android:background="@color/line_color"/>
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp16"
+        android:background="@color/line_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rlyt_user_guide"
@@ -51,9 +32,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
         </RelativeLayout>
@@ -61,9 +42,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_color"
             android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="@dimen/dp16"/>
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@color/line_color" />
 
         <RelativeLayout
             android:id="@+id/rlyt_server_call"
@@ -78,9 +59,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
         </RelativeLayout>
@@ -88,9 +69,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_color"
             android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="@dimen/dp16"/>
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@color/line_color" />
 
         <RelativeLayout
             android:id="@+id/rlyt_law_list"
@@ -105,9 +86,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
         </RelativeLayout>
@@ -115,9 +96,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_color"
             android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="@dimen/dp16"/>
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@color/line_color" />
 
         <RelativeLayout
             android:id="@+id/rlyt_about_us"
@@ -132,9 +113,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
         </RelativeLayout>
@@ -142,9 +123,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_color"
             android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="@dimen/dp16"/>
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@color/line_color" />
 
 
         <RelativeLayout
@@ -160,36 +141,38 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_right" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/line_color"/>
+        android:background="@color/line_color" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/dp16"
-        android:background="@color/line_color"/>
+        android:background="@color/line_color" />
 
     <TextView
         android:id="@+id/tv_login_out"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp48"
-        android:text="@string/login_out"
+        android:background="@android:color/white"
         android:gravity="center"
-        android:textSize="@dimen/sp15"
+        android:text="@string/login_out"
         android:textColor="@color/text_color"
-        android:background="@android:color/white"/>
+        android:textSize="@dimen/sp15" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/line_color"/>
+        android:background="@color/line_color" />
 </LinearLayout>

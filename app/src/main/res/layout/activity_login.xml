@@ -5,11 +5,11 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <include layout="@layout/titlebar"/>
+    <include layout="@layout/titlebar" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="99dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         android:background="@color/head_text_color"
         android:orientation="vertical">
@@ -19,7 +19,6 @@
             android:layout_height="1dp"
             android:background="@color/line_color" />
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp48">
@@ -28,7 +27,6 @@
                 android:id="@+id/tv_phone"
                 style="@style/TextViewStyle"
                 android:text="@string/phone" />
-
 
             <EditText
                 android:id="@+id/et_phone"
@@ -44,7 +42,6 @@
             android:layout_marginLeft="@dimen/dp16"
             android:layout_marginRight="@dimen/dp16"
             android:background="@color/line_color" />
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +78,6 @@
         android:text="@string/forgetpass"
         android:textColor="@color/forgetpass_color"
         android:textSize="@dimen/sp10" />
-
 
     <Button
         android:id="@+id/btn_login"

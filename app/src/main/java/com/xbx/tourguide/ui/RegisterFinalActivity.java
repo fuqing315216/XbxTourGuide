@@ -24,6 +24,7 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 import java.io.File;
 
@@ -35,15 +36,13 @@ import java.io.File;
 public class RegisterFinalActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout touristLlyt;
-    private ImageButton returnIbtn;
-    private TextView finishTv;
     private ImageView frontIv, otherIv, touristIv, personalIv;
     private int flag;
     private ImageLoader loader;
     private RegisterBeans beans;
 
     private LoginApi loginApi = null;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -74,8 +73,41 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-        finishTv = (TextView) findViewById(R.id.tv_finish);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.post_info));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        titleBarView.setTextRightTextView(getString(R.string.finish));
+        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (VerifyUtil.isNullOrEmpty(beans.getIdcard_front())) {
+                    Toast.makeText(RegisterFinalActivity.this, "请上传身份证正面照片", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (VerifyUtil.isNullOrEmpty(beans.getIdcard_back())) {
+                    Toast.makeText(RegisterFinalActivity.this, "请上传身份证背面照片", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (flag == 1) {
+
+                    if (VerifyUtil.isNullOrEmpty(beans.getGuide_card())) {
+                        Toast.makeText(RegisterFinalActivity.this, "请上传导游证照片", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (VerifyUtil.isNullOrEmpty(beans.getGuide_idcard())) {
+                        Toast.makeText(RegisterFinalActivity.this, "请上传本人手持身份证照片", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                register();
+            }
+        });
+
         touristLlyt = (LinearLayout) findViewById(R.id.llyt_tourist);
         frontIv = (ImageView) findViewById(R.id.iv_card_front);
         otherIv = (ImageView) findViewById(R.id.iv_card_other);
@@ -87,8 +119,6 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
             touristLlyt.setVisibility(View.GONE);
         }
 
-        returnIbtn.setOnClickListener(this);
-        finishTv.setOnClickListener(this);
         frontIv.setOnClickListener(this);
         otherIv.setOnClickListener(this);
         touristIv.setOnClickListener(this);
@@ -98,34 +128,6 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
-            case R.id.tv_finish:
-                if (VerifyUtil.isNullOrEmpty(beans.getIdcard_front())) {
-                    Toast.makeText(this, "请上传身份证正面照片", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (VerifyUtil.isNullOrEmpty(beans.getIdcard_back())) {
-                    Toast.makeText(this, "请上传身份证背面照片", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (flag == 1) {
-
-                    if (VerifyUtil.isNullOrEmpty(beans.getGuide_card())) {
-                        Toast.makeText(this, "请上传导游证照片", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (VerifyUtil.isNullOrEmpty(beans.getGuide_idcard())) {
-                        Toast.makeText(this, "请上传本人手持身份证照片", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-
-                register();
-
-                break;
-
             case R.id.iv_card_front:
                 Intent intentFront = new Intent(this, CameraDialogActivity.class);
                 intentFront.putExtra("isPic", true);
@@ -218,7 +220,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nserver_language=" + beans.getLanguage()
                 + "\nnow_address=" + beans.getCity().getName());
 
-        loginApi = new LoginApi(this,handler);
+        loginApi = new LoginApi(this, handler);
         loginApi.register(params);
     }
 }

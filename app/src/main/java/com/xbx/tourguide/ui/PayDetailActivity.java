@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * 支付明细
@@ -21,15 +22,19 @@ public class PayDetailActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initView(){
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.paydetail));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ibtn_return:
-                finish();
-                break;
             default:
                 break;
         }

@@ -51,6 +51,9 @@ public class ConfirmActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_confirm_cancel:
                 finish();
                 break;
+            default:
+                finish();
+                break;
         }
     }
 }

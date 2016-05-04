@@ -56,7 +56,7 @@ public class LoginApi {
         IRequest.get(context, url, "验证码發送中", new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("---getVerifyCode:"+json);
+                LogUtils.i("---getVerifyCode:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
@@ -70,7 +70,7 @@ public class LoginApi {
         IRequest.post(context, HttpUrl.UPDATE_PW, params, new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("---updatePw:"+json);
+                LogUtils.i("---updatePw:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });

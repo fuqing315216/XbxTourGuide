@@ -25,6 +25,7 @@ import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 
 /**
@@ -34,8 +35,7 @@ import com.xbx.tourguide.util.VerifyUtil;
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView zackTv, nextTv;
-    private ImageButton returnIbtn;
+    private TextView zackTv;
     private Button verificationBtn;
     private EditText phoneEt, verifyEt, pwEt, repwEt;
     private int time = 60;
@@ -90,72 +90,76 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView() {
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-        zackTv = (TextView) findViewById(R.id.tv_register_zack);
-        nextTv = (TextView) findViewById(R.id.tv_next);
-        verificationBtn = (Button) findViewById(R.id.btn_verification);
-        phoneEt = (EditText) findViewById(R.id.et_phone);
-        verifyEt = (EditText) findViewById(R.id.et_verification);
-        pwEt = (EditText) findViewById(R.id.et_pw);
-        repwEt = (EditText) findViewById(R.id.et_confirm_pw);
-
-        returnIbtn.setOnClickListener(this);
-        zackTv.setOnClickListener(this);
-        nextTv.setOnClickListener(this);
-        verificationBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ibtn_return:
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.register));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
-                break;
-            case R.id.tv_register_zack://注册协议
-
-                break;
-
-            case R.id.tv_next://下一步
-
+            }
+        });
+        titleBarView.setTextRightTextView(getString(R.string.next));
+        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
+            @Override
+            public void onClick(View v) {
                 beans.setMobile(phoneEt.getText().toString().trim());
                 String verify = verifyEt.getText().toString();
                 String pw = pwEt.getText().toString();
                 String repw = repwEt.getText().toString();
 
                 if (VerifyUtil.isNullOrEmpty(verify)) {
-                    Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (VerifyUtil.isNullOrEmpty(pw)) {
-                    Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (pw.length() < 6 || pw.length() > 20) {
-                    Toast.makeText(this, "密码长度为8-20位，请重新输入", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "密码长度为8-20位，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (!VerifyUtil.isPassWord(pw)) {
-                    Toast.makeText(this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (VerifyUtil.isNullOrEmpty(repw)) {
-                    Toast.makeText(this, "请输入确认密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入确认密码", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (!pw.equals(repw)) {
-                    Toast.makeText(this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (code.equals(verify)) {
                     beans.setVerify_code(verify);
                 } else {
-                    ToastUtils.showShort(this, "验证码错误");
+                    ToastUtils.showShort(RegisterActivity.this, "验证码错误");
                     return;
                 }
 
                 beans.setPassword(pw);
                 beans.setRepassword(repw);
 
-                Intent intent = new Intent(this, RegisterNextActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, RegisterNextActivity.class);
                 intent.putExtra("bean", beans);
                 startActivity(intent);
+            }
+        });
+
+        zackTv = (TextView) findViewById(R.id.tv_register_zack);
+        verificationBtn = (Button) findViewById(R.id.btn_verification);
+        phoneEt = (EditText) findViewById(R.id.et_phone);
+        verifyEt = (EditText) findViewById(R.id.et_verification);
+        pwEt = (EditText) findViewById(R.id.et_pw);
+        repwEt = (EditText) findViewById(R.id.et_confirm_pw);
+
+        zackTv.setOnClickListener(this);
+        verificationBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_register_zack://注册协议
+
                 break;
 
             case R.id.btn_verification://获取验证码

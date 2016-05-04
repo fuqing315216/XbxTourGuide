@@ -5,39 +5,7 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlyt_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:background="@color/head_bg_color">
-
-        <ImageButton
-            android:id="@+id/ibtn_return"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingLeft="@dimen/dp16"
-            android:scaleType="center"
-            android:src="@drawable/ic_return" />
-
-        <TextView
-            android:id="@+id/tv_header"
-            style="@style/HeaderTextView"
-            android:text="@string/post_info" />
-
-        <TextView
-            android:id="@+id/tv_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingRight="@dimen/dp16"
-            android:text="@string/finish"
-            android:textColor="@color/head_text_color"
-            android:textSize="@dimen/sp14" />
-
-    </RelativeLayout>
-
+    <include layout="@layout/titlebar" />
 
     <View
         android:layout_width="match_parent"
@@ -110,44 +78,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dp8"
-        android:background="@color/line_color" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/head_text_color">
-
-        <ImageView
-            android:id="@+id/iv_card_tourist"
-            android:layout_width="115dp"
-            android:layout_height="76dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dp8"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_marginTop="@dimen/dp8"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_info_pic" />
+            android:background="@color/line_color" />
 
-        <TextView
-            style="@style/TextViewStyle"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/tourist" />
-    </RelativeLayout>
+            android:background="@color/head_text_color">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
+            <ImageView
+                android:id="@+id/iv_card_tourist"
+                android:layout_width="115dp"
+                android:layout_height="76dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dp8"
+                android:layout_marginTop="@dimen/dp8"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_info_pic" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dp8"
-        android:background="@color/line_color" />
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/tourist" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dp8"
+            android:background="@color/line_color" />
     </LinearLayout>
 
     <RelativeLayout

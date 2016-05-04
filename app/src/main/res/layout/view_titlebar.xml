@@ -37,8 +37,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:visibility="gone"
         android:paddingLeft="@dimen/dp16"
         android:paddingRight="@dimen/dp16"
-        android:scaleType="center" />
+        android:scaleType="center"
+        android:visibility="gone" />
 </RelativeLayout>

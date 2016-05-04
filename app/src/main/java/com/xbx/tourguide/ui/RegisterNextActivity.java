@@ -21,6 +21,7 @@ import com.xbx.tourguide.fragment.GuideRegisterFragment;
 import com.xbx.tourguide.fragment.NativeRegisterFragment;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/3/30.
@@ -29,9 +30,8 @@ import com.xbx.tourguide.util.VerifyUtil;
  */
 public class RegisterNextActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton returnIbtn;
     private RelativeLayout guideRlyt, nativeRlyt, accompanyRlyt;
-    private TextView guideTv, nativeTv, accompanyTv, nextTv;
+    private TextView guideTv, nativeTv, accompanyTv;
     private View guideV, nativeV, accompanyV;
     public LinearLayout registerLlyt;
     private FragmentManager fm;
@@ -56,8 +56,23 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
 
 
     private void initView() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.fill_info));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        titleBarView.setTextRightTextView(getString(R.string.next));
+        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickNext();
+            }
+        });
+
         registerLlyt = (LinearLayout) findViewById(R.id.llyt_register);
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
 
         guideRlyt = (RelativeLayout) findViewById(R.id.rlyt_guide);
         nativeRlyt = (RelativeLayout) findViewById(R.id.rlyt_native);
@@ -71,13 +86,9 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
         nativeV = findViewById(R.id.line_native);
         accompanyV = findViewById(R.id.line_accompany);
 
-        nextTv = (TextView) findViewById(R.id.tv_next);
-
-        returnIbtn.setOnClickListener(this);
         guideRlyt.setOnClickListener(this);
         nativeRlyt.setOnClickListener(this);
         accompanyRlyt.setOnClickListener(this);
-        nextTv.setOnClickListener(this);
 
         guideRegisterFragment = new GuideRegisterFragment();
         transaction.add(R.id.fragment_register, guideRegisterFragment);
@@ -89,9 +100,6 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
         fm = getFragmentManager();
         transaction = fm.beginTransaction();
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
 
             case R.id.rlyt_guide:
                 guideRegisterFragment = new GuideRegisterFragment();
@@ -139,138 +147,136 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                 transaction.replace(R.id.fragment_register, accompanyRegisterFragment);
                 transaction.commit();
                 break;
-
-            case R.id.tv_next:
-
-                if (flag == 1) {//导游注册
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.beans.getHead_image())) {
-                        Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setHead_image(guideRegisterFragment.beans.getHead_image());
-                    }
-
-                    beans.setSex(guideRegisterFragment.beans.getSex());
-                    beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
-
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.nameEt.getText().toString())) {
-                        Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else if (!VerifyUtil.checkNameChese(guideRegisterFragment.nameEt.getText().toString())
-                            || guideRegisterFragment.nameEt.getText().toString().length() < 2) {
-                        Toast.makeText(this, "请输入正确的中文姓名", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setRealname(guideRegisterFragment.nameEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else if (!VerifyUtil.isCardID(guideRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setIdcard(guideRegisterFragment.idEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.typeEt.getText().toString())) {
-                        Toast.makeText(this, "请选择证件类型", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.locationTv.getText().toString())) {
-                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setCity(guideRegisterFragment.beans.getCity());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.guideIdEt.getText().toString())) {
-                        Toast.makeText(this, "请输入导游证号", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setGuide_number(guideRegisterFragment.guideIdEt.getText().toString());
-                    }
-
-                } else if (flag == 2) {//随游注册
-                    if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.beans.getHead_image())) {
-                        Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setHead_image(accompanyRegisterFragment.beans.getHead_image());
-                    }
-                    beans.setSex(accompanyRegisterFragment.beans.getSex());
-                    if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.nameEt.getText().toString())) {
-                        Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setRealname(accompanyRegisterFragment.nameEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else if (!VerifyUtil.isCardID(accompanyRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setIdcard(accompanyRegisterFragment.idEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.locationTv.getText().toString())) {
-                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setCity(accompanyRegisterFragment.beans.getCity());
-                    }
-
-                } else if (flag == 3) {//土著注册
-                    if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.beans.getHead_image())) {
-                        Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setHead_image(nativeRegisterFragment.beans.getHead_image());
-                    }
-                    beans.setSex(nativeRegisterFragment.beans.getSex());
-                    if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.nameEt.getText().toString())) {
-                        Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setRealname(nativeRegisterFragment.nameEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else if (!VerifyUtil.isCardID(nativeRegisterFragment.idEt.getText().toString())) {
-                        Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setIdcard(nativeRegisterFragment.idEt.getText().toString());
-                    }
-
-                    if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.locationTv.getText().toString())) {
-                        Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        beans.setCity(nativeRegisterFragment.beans.getCity());
-                    }
-
-                }
-
-                beans.setUser_type(flag);
-                Intent intent = new Intent(this, RegisterFinalActivity.class);
-                intent.putExtra("flag", flag);
-                intent.putExtra("bean", beans);
-                LogUtils.e(beans.toString());
-                startActivity(intent);
-
-                break;
             default:
                 break;
         }
+    }
+
+    private void clickNext() {
+        if (flag == 1) {//导游注册
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.beans.getHead_image())) {
+                Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setHead_image(guideRegisterFragment.beans.getHead_image());
+            }
+
+            beans.setSex(guideRegisterFragment.beans.getSex());
+            beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
+
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.nameEt.getText().toString())) {
+                Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!VerifyUtil.checkNameChese(guideRegisterFragment.nameEt.getText().toString())
+                    || guideRegisterFragment.nameEt.getText().toString().length() < 2) {
+                Toast.makeText(this, "请输入正确的中文姓名", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setRealname(guideRegisterFragment.nameEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!VerifyUtil.isCardID(guideRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setIdcard(guideRegisterFragment.idEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.typeEt.getText().toString())) {
+                Toast.makeText(this, "请选择证件类型", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setGuide_type(guideRegisterFragment.beans.getGuide_type());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.locationTv.getText().toString())) {
+                Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setCity(guideRegisterFragment.beans.getCity());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(guideRegisterFragment.guideIdEt.getText().toString())) {
+                Toast.makeText(this, "请输入导游证号", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setGuide_number(guideRegisterFragment.guideIdEt.getText().toString());
+            }
+
+        } else if (flag == 2) {//随游注册
+            if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.beans.getHead_image())) {
+                Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setHead_image(accompanyRegisterFragment.beans.getHead_image());
+            }
+            beans.setSex(accompanyRegisterFragment.beans.getSex());
+            if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.nameEt.getText().toString())) {
+                Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setRealname(accompanyRegisterFragment.nameEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!VerifyUtil.isCardID(accompanyRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setIdcard(accompanyRegisterFragment.idEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(accompanyRegisterFragment.locationTv.getText().toString())) {
+                Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setCity(accompanyRegisterFragment.beans.getCity());
+            }
+
+        } else if (flag == 3) {//土著注册
+            if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.beans.getHead_image())) {
+                Toast.makeText(this, "请上传头像", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setHead_image(nativeRegisterFragment.beans.getHead_image());
+            }
+            beans.setSex(nativeRegisterFragment.beans.getSex());
+            if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.nameEt.getText().toString())) {
+                Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setRealname(nativeRegisterFragment.nameEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!VerifyUtil.isCardID(nativeRegisterFragment.idEt.getText().toString())) {
+                Toast.makeText(this, "身份证号输入有误，请重新输入", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setIdcard(nativeRegisterFragment.idEt.getText().toString());
+            }
+
+            if (VerifyUtil.isNullOrEmpty(nativeRegisterFragment.locationTv.getText().toString())) {
+                Toast.makeText(this, "请选择所在地", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                beans.setCity(nativeRegisterFragment.beans.getCity());
+            }
+
+        }
+
+        beans.setUser_type(flag);
+        Intent intent = new Intent(this, RegisterFinalActivity.class);
+        intent.putExtra("flag", flag);
+        intent.putExtra("bean", beans);
+        LogUtils.e(beans.toString());
+        startActivity(intent);
     }
 }

@@ -72,6 +72,11 @@ public class Util {
         return relist;
     }
 
+    /**
+     * 是否在当前应用
+     * @param context
+     * @return
+     */
     public static boolean isAction(final Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);

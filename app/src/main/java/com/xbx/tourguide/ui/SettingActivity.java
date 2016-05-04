@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
 
 /**
@@ -21,7 +22,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initView() {
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
         findViewById(R.id.rlyt_about_us).setOnClickListener(this);
         findViewById(R.id.rlyt_feedback).setOnClickListener(this);
         findViewById(R.id.rlyt_user_guide).setOnClickListener(this);
@@ -31,10 +31,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
-
             case R.id.rlyt_about_us:
                 startIntent(AboutUsActivity.class, false);
                 break;
@@ -46,6 +42,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.rlyt_user_guide:
                 startIntent(UserGuideActivity.class, false);
                 break;
+
             case R.id.tv_login_out:
                 Cookie.putUserInfo(SettingActivity.this, "");
                 Cookie.putLoginOut(SettingActivity.this, true);

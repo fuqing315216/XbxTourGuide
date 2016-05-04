@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * 我的钱包
@@ -20,7 +21,15 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView() {
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.mywallet));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         findViewById(R.id.rlyt_balance).setOnClickListener(this);
         findViewById(R.id.rlyt_bank_card).setOnClickListener(this);
     }
@@ -28,9 +37,7 @@ public class MyWalletActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
+
             case R.id.rlyt_balance:
                 startIntent(BalanceActivity.class,false);
                 break;

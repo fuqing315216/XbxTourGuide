@@ -30,6 +30,7 @@ import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 import com.xbx.tourguide.view.UnScrollGridView;
 
 import java.util.ArrayList;
@@ -44,8 +45,6 @@ import java.util.List;
  */
 public class ServiceTimeActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private ImageButton returnIbtn;
-    private TextView updateTv;
     private UnScrollGridView gridView;
     private EditText hourPriceEt, dayPriceEt;
     private RadioButton totalRbtn, partRbtn, leaderRbtn;
@@ -145,10 +144,24 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.service_time));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        titleBarView.setTextRightTextView(getString(R.string.update_ok));
+        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
+            @Override
+            public void onClick(View v) {
+                setServiceTime();
+            }
+        });
+
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
 
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-        updateTv = (TextView) findViewById(R.id.tv_update);
         gridView = (UnScrollGridView) findViewById(R.id.gv_calendar);
         hourPriceEt = (EditText) findViewById(R.id.et_price_h);
         dayPriceEt = (EditText) findViewById(R.id.et_price_d);
@@ -157,8 +170,6 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         leaderRbtn = (RadioButton) findViewById(R.id.rb_leader);
 
         findViewById(R.id.rlyt_service_time_location).setOnClickListener(this);
-        returnIbtn.setOnClickListener(this);
-        updateTv.setOnClickListener(this);
         gridView.setOnItemClickListener(this);
         totalRbtn.setOnClickListener(this);
         partRbtn.setOnClickListener(this);
@@ -193,12 +204,6 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
-            case R.id.tv_update:
-                setServiceTime();
-                break;
             case R.id.rlyt_service_time_location:
                 Intent cityIntent = new Intent(ServiceTimeActivity.this, SelectProvinceActivity.class);
                 cityIntent.putExtra("isSingle", false);

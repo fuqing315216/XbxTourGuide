@@ -32,10 +32,10 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/dp16"
-            android:visibility="gone"
             android:text="@string/confirm_select"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ListView

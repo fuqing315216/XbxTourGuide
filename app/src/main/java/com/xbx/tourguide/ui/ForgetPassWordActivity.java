@@ -18,6 +18,7 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/3/31.
@@ -27,7 +28,7 @@ import com.xbx.tourguide.util.VerifyUtil;
 public class ForgetPassWordActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageButton returnIbtn;
-    private Button verificationBtn, loginBtn;
+    private Button verificationBtn;
     private EditText phoneEt, pwEt, codeEt;
     private int time = 60;
     private String code;
@@ -91,16 +92,23 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.forgetpw));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
         verificationBtn = (Button) findViewById(R.id.btn_verification);
         phoneEt = (EditText) findViewById(R.id.et_phone);
         pwEt = (EditText) findViewById(R.id.et_code);
-        loginBtn = (Button) findViewById(R.id.btn_login);
         codeEt = (EditText) findViewById(R.id.et_verification);
 
         returnIbtn.setOnClickListener(this);
         verificationBtn.setOnClickListener(this);
-        loginBtn.setOnClickListener(this);
     }
 
     @Override

@@ -6,32 +6,15 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlyt_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:background="@color/head_bg_color">
-
-        <ImageButton
-            android:id="@+id/ibtn_return"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingLeft="@dimen/dp16"
-            android:scaleType="center"
-            android:src="@drawable/ic_return" />
-
-        <TextView
-            android:id="@+id/tv_header"
-            style="@style/HeaderTextView"
-            android:text="@string/order_detail" />
-    </RelativeLayout>
+    <include
+        android:id="@+id/titlebar_order_detail"
+        layout="@layout/titlebar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llyt_myorder_detail_button"
-        android:layout_below="@id/rlyt_header"
+        android:layout_below="@id/titlebar_order_detail"
         android:fillViewport="true"
         android:scrollbars="none">
 

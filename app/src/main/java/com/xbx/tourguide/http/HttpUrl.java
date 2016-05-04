@@ -7,11 +7,12 @@ package com.xbx.tourguide.http;
 public class HttpUrl {
 
 //    public static String URL = "http://192.168.1.27/yueyou/Api/";
+//    public static String Url="http://192.168.1.24/yueyou/Api/";
 
     //网络服务器
-    public static String URL = "http://123.56.194.208/yueyou/Api/";
-
-    //public static String Url="http://192.168.1.24/yueyou/Api/";
+    public static String URL = "http://123.56.194.208/yueyou/index.php/Api/";
+    //測試
+//    public static String URL = "http://demo.xbx121.com/Api/";
 //    public static String IMAGE_URL = "http://192.168.1.24/yueyou";
 
     //注册
@@ -44,8 +45,6 @@ public class HttpUrl {
     public static String CONFIRM_ORDER = URL + "Order/guide_confirm_order.json";
     //选择省市
     public static String SELECT_PROVINCE_CITY = URL + "Index/city_list.json";
-    //
-    public static String SELF_MAIN = URL + "user/self_main.json";
     //确认修改
     public static String UPDATE_INFO = URL + "user/change_head_image.json";
     //意见反馈

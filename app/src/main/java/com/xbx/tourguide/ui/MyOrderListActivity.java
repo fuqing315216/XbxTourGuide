@@ -19,6 +19,7 @@ import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
+import com.xbx.tourguide.view.TitleBarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
  * <p/>
  * 我的订单列表
  */
-public class MyOrderListActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, PullToRefreshLayout.OnRefreshListener {
+public class MyOrderListActivity extends BaseActivity implements AdapterView.OnItemClickListener, PullToRefreshLayout.OnRefreshListener {
 
     private PullableListView myOrderLv;
     private MyOrderListAdapter adapter;
@@ -102,10 +103,18 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.myorder));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pulllayout_myorder);
         myOrderLv = (PullableListView) findViewById(R.id.pulllv_myorder);
 
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
         myOrderLv.setOnItemClickListener(this);
 
         pullToRefreshLayout.setOnRefreshListener(this);
@@ -119,18 +128,6 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
         nowPage = 1;
         serverApi = new ServerApi(this, handler);
         serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -148,9 +145,6 @@ public class MyOrderListActivity extends BaseActivity implements View.OnClickLis
                 intent.putExtra("isgoing", false);
                 intent.setClass(this, StartServiceActivity.class);
             } else {
-//                intent.putExtra("isgoing", false);
-//                intent.setClass(this, StartServiceActivity.class);
-//            } else {
                 intent.setClass(this, MyOrderDetailActivity.class);
             }
         } else if ("1".equals(server_type)) {//预约服务

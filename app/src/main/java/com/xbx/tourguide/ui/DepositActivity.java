@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * 提现
@@ -20,15 +22,19 @@ public class DepositActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initView(){
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.deposit_recharge));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ibtn_return:
-                finish();
-                break;
             default:
                 break;
         }

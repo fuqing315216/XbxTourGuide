@@ -16,9 +16,11 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * 意见反馈
@@ -45,22 +47,25 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-
         initView();
     }
 
     private void initView() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.feedback));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         feedbackEt = (EditText) findViewById(R.id.et_feedback);
-        findViewById(R.id.ibtn_return).setOnClickListener(this);
         findViewById(R.id.btn_feedback).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
             case R.id.btn_feedback:
                 if (VerifyUtil.isNullOrEmpty(feedbackEt.getText().toString())) {
                     ToastUtils.showShort(this, "反馈意见不能为空");

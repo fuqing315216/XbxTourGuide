@@ -3,27 +3,24 @@ package com.xbx.tourguide.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -39,7 +36,6 @@ import cn.jpush.android.api.JPushInterface;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static boolean isForeground = false;
-    private TitleBarView titleBarView;
     private TextView forgetPwTv;
     private Button loginBtn;
     private EditText phoneEt, pwEt;
@@ -52,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
                     String data = (String) msg.obj;
+                    LogUtils.i("-----login:" + data);
                     Cookie.putUserInfo(LoginActivity.this, data);
                     startIntent(HomeActivity.class, true);
                     break;
@@ -63,6 +60,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActivityManager.getInstance().pushOneActivity(this);
         initView();
 //        Cookie.putUserInfo(this, "");
         isFirstLogin();
@@ -84,6 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
                 public void requestSuccess(String json) {
+                    LogUtils.i("-----login:" + json);
                     if (UtilParse.getRequestCode(json) == 0) {
                         ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
                     } else if (UtilParse.getRequestCode(json) == 1) {
@@ -97,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
-        titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
         titleBarView.hideLeftImageButton();
         titleBarView.setTitle(getString(R.string.phone_login));
         titleBarView.setTextRightTextView(getString(R.string.register));
@@ -167,5 +166,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginApi.Login(phoneEt.getText().toString(), pwEt.getText().toString(), "1", JPushInterface.getRegistrationID(this));
     }
 
+    private long exitTime = 0;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                ToastUtils.showShort(this, "再按一次退出程序");
+                exitTime = System.currentTimeMillis();
+            } else {
+                ActivityManager.getInstance().finishAllActivity();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

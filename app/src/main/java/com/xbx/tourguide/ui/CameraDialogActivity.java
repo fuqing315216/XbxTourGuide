@@ -18,13 +18,14 @@ import android.widget.Toast;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.util.ActivityManager;
 
 import java.io.File;
 import java.util.Date;
 
 /**
  * Created by shuzhen on 2016/3/30.
- *
+ * <p/>
  * 弹框
  */
 public class CameraDialogActivity extends BaseActivity implements View.OnClickListener {
@@ -58,7 +59,7 @@ public class CameraDialogActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_dialog);
         isPic = getIntent().getBooleanExtra("isPic", true);
-        isCrop=getIntent().getBooleanExtra("isCrop",false);
+        isCrop = getIntent().getBooleanExtra("isCrop", false);
         Date date = new Date();
         mFile = getExternalFilesDir("");
         String name = date.getTime() + "";
@@ -291,9 +292,9 @@ public class CameraDialogActivity extends BaseActivity implements View.OnClickLi
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
 
-         // 裁切后图片的尺寸
-         intent.putExtra("outputX", 192);
-         intent.putExtra("outputY", 192);
+        // 裁切后图片的尺寸
+        intent.putExtra("outputX", 192);
+        intent.putExtra("outputY", 192);
 
         // 自动缩放
         intent.putExtra("scale", true);
