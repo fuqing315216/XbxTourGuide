@@ -66,11 +66,9 @@ public class SelectProvinceActivity extends BaseActivity implements AdapterView.
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 1) {
                     List<ProvinceBeans> list = JSON.parseArray(UtilParse.getRequestData(json), ProvinceBeans.class);
-
                     if (list != null && list.size() > 0) {
                         beansList.addAll(list);
                     }
-
                     adapter = new SelectProvinceAdapter(SelectProvinceActivity.this, beansList);
                     cityLv.setAdapter(adapter);
                 }

@@ -97,21 +97,21 @@ public class AccompanyRegisterFragment extends Fragment implements View.OnClickL
                 startActivityForResult(cityIntent,200);
                 break;
             case R.id.rb_chinese:
-                beans.setLanguage(0);
+                beans.setServer_language(0);
                 chRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
                 enRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 break;
 
             case R.id.rb_english:
-                beans.setLanguage(1);
+                beans.setServer_language(1);
                 chRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 enRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
                 allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 break;
 
             case R.id.rb_all:
-                beans.setLanguage(2);
+                beans.setServer_language(2);
                 chRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 enRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
                 allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);

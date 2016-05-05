@@ -14,7 +14,7 @@
     <string name="fill_info">信息填写</string>
     <string name="next">下一步</string>
     <string name="register_guide">导游注册</string>
-    <string name="register_native">土著注册</string>
+    <string name="register_native">向导注册</string>
     <string name="register_accompany">随游注册</string>
     <string name="female">女士</string>
     <string name="male">先生</string>
@@ -61,7 +61,7 @@
     <string name="going">进行中</string>
     <string name="ordered">已预约</string>
     <string name="closed">已关闭</string>
-    <string name="natival">土著</string>
+    <string name="natival">向导</string>
     <string name="accompany">随游</string>
     <string name="order_detail">订单详情</string>
     <string name="order_details">订单明细</string>
@@ -140,7 +140,7 @@
     <string name="et_feedback">感谢您的宝贵意见</string>
     <string name="submit">提交</string>
     <string name="about_guide">关于导游</string>
-    <string name="about_native">关于土著</string>
+    <string name="about_native">关于向导</string>
     <string name="about_accompany">关于随游</string>
     <string name="now_and_order">即时和预约</string>
     <string name="cancel_order">取消订单</string>

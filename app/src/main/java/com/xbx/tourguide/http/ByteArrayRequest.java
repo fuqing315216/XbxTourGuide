@@ -58,7 +58,7 @@ class ByteArrayRequest extends Request<byte[]> {
         if (null == headers || headers.equals(Collections.emptyMap())) {
             headers = new HashMap<>();
             String deviceId = Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext());
-            LogUtils.i(deviceId);
+            headers.put("client", "2");//1-用户端 2-导游端
             headers.put("deviceid", deviceId);
 //            headers.put("uuid", aesCrypt.encrypt(uid));
         }

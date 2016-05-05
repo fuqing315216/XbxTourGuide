@@ -14,11 +14,15 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by shuzhen on 2016/3/31.
@@ -27,7 +31,6 @@ import com.xbx.tourguide.view.TitleBarView;
  */
 public class ForgetPassWordActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton returnIbtn;
     private Button verificationBtn;
     private EditText phoneEt, pwEt, codeEt;
     private int time = 60;
@@ -41,8 +44,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    code = (String) msg.obj;
-                    LogUtils.i("---runde:"+code);
+                    code = UserInfoParse.getVerifyCode((String) msg.obj);
                     time = 60;
                     handler.postDelayed(runnable, 1000);
                     break;
@@ -101,30 +103,26 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
             }
         });
 
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
         verificationBtn = (Button) findViewById(R.id.btn_verification);
         phoneEt = (EditText) findViewById(R.id.et_phone);
         pwEt = (EditText) findViewById(R.id.et_code);
         codeEt = (EditText) findViewById(R.id.et_verification);
 
-        returnIbtn.setOnClickListener(this);
+        findViewById(R.id.btn_login).setOnClickListener(this);
         verificationBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
             case R.id.btn_verification:
                 String phone = phoneEt.getText().toString().trim();
                 if (VerifyUtil.isNullOrEmpty(phone)) {
-                    ToastUtils.showShort(this,"请输入手机号");
+                    ToastUtils.showShort(this, "请输入手机号");
                     return;
                 }
                 if (!VerifyUtil.isTelPhoneNumber(phone)) {
-                    ToastUtils.showShort(this,"您输入的手机号码有误，请重新输入");
+                    ToastUtils.showShort(this, "您输入的手机号码有误，请重新输入");
                     return;
                 }
 
@@ -145,27 +143,20 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
     private void updatePw() {
 
         if (VerifyUtil.isNullOrEmpty(phoneEt.getText().toString())) {
-            ToastUtils.showShort(this,"请输入手机号码");
+            ToastUtils.showShort(this, "请输入手机号码");
             return;
         }
 
         if (VerifyUtil.isNullOrEmpty(codeEt.getText().toString())) {
-            ToastUtils.showShort(this,"请输入验证码");
+            ToastUtils.showShort(this, "请输入验证码");
             return;
         }
-
-        LogUtils.i("---runde:"+code+"--"+codeEt.getText().toString());
-//        if (!code.equals(codeEt.getText().toString())) {
-//            ToastUtils.showShort(this,"验证码错误");
-//            return;
-//        }
 
         if (VerifyUtil.isNullOrEmpty(pwEt.getText().toString())) {
-            ToastUtils.showShort(this,"请输入密码");
+            ToastUtils.showShort(this, "请输入密码");
             return;
         }
-
-        loginApi.updatePw(phoneEt.getText().toString().trim(),code, pwEt.getText().toString());
+        loginApi.updatePw(phoneEt.getText().toString().trim(), code, pwEt.getText().toString());
 
     }
 

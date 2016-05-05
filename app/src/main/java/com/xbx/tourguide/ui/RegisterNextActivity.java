@@ -19,6 +19,7 @@ import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.fragment.AccompanyRegisterFragment;
 import com.xbx.tourguide.fragment.GuideRegisterFragment;
 import com.xbx.tourguide.fragment.NativeRegisterFragment;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
@@ -36,7 +37,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
     public LinearLayout registerLlyt;
     private FragmentManager fm;
     private FragmentTransaction transaction;
-    private int flag = 1;//1为导游，3为土著，2为随游
+    private int flag = 1;//1-导游；2-伴游；3-土著
     private RegisterBeans beans;
     private GuideRegisterFragment guideRegisterFragment;
     private AccompanyRegisterFragment accompanyRegisterFragment;
@@ -47,6 +48,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_next);
+        ActivityManager.getInstance().pushOneActivity(this);
         beans = (RegisterBeans) getIntent().getSerializableExtra("bean");
         fm = getFragmentManager();
         transaction = fm.beginTransaction();
@@ -203,7 +205,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                 Toast.makeText(this, "请输入导游证号", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-                beans.setGuide_number(guideRegisterFragment.guideIdEt.getText().toString());
+                beans.setGuide_card_number(guideRegisterFragment.guideIdEt.getText().toString());
             }
 
         } else if (flag == 2) {//随游注册
@@ -272,11 +274,10 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
 
         }
 
-        beans.setUser_type(flag);
+        beans.setGuide_type(flag);
         Intent intent = new Intent(this, RegisterFinalActivity.class);
         intent.putExtra("flag", flag);
         intent.putExtra("bean", beans);
-        LogUtils.e(beans.toString());
         startActivity(intent);
     }
 }

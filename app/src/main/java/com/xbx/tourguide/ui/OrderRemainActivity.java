@@ -72,6 +72,7 @@ public class OrderRemainActivity extends BaseActivity {
                     confirmOrder(1 + "");//接单
                 } else if ("1".equals(orderType)) {//预约服务
                     Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
+                    Cookie.putIsDialog(OrderRemainActivity.this, false);
                     startIntent(MyOrderListActivity.class, true);
                     finish();
                 }

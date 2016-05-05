@@ -100,6 +100,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder_list);
         initView();
+        initData();
     }
 
     private void initView() {
@@ -112,22 +113,29 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
             }
         });
 
+        exit = true;
+
         pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pulllayout_myorder);
         myOrderLv = (PullableListView) findViewById(R.id.pulllv_myorder);
-
         myOrderLv.setOnItemClickListener(this);
-
         pullToRefreshLayout.setOnRefreshListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void initData() {
         myOrderBeansList = new ArrayList<>();
         uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
         nowPage = 1;
         serverApi = new ServerApi(this, handler);
         serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
+    }
+
+    private boolean exit = false;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(exit){
+            initData();
+        }
     }
 
     @Override
@@ -136,7 +144,6 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         String order_status = bean.getOrder_status();
         String server_type = bean.getServer_type();
         Intent intent = new Intent();
-        LogUtils.i("---server_status:" + order_status + "---server_type：" + server_type);
         if ("0".equals(server_type)) {//即时服务
             if ("2".equals(order_status)) {//进行中
                 intent.putExtra("isgoing", true);

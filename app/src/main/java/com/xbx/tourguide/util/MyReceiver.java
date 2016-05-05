@@ -70,7 +70,6 @@ public class MyReceiver extends BroadcastReceiver {
 
                 switch (Integer.valueOf(serverType)) {//100-即时 101-预约 102-取消 103-用户已支付
                     case 100:
-                        ToastUtils.showShort(context, "新的及時服務");
                         //将新接受的及时订单添加到sqlite
                         ContentValues values = new ContentValues();
                         values.put("num", orderNum);
@@ -79,21 +78,26 @@ public class MyReceiver extends BroadcastReceiver {
                         break;
                     case 101:
                         if (VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
-                            ToastUtils.showShort(context, "新的預約服務");
                             Cookie.putAppointmentOrder(context, orderNum);
                         } else {
                             return;
                         }
                         break;
                     case 102:
-                        if (true) {
+                        if (Util.isAction(context)) {
                             context.startActivity(new Intent(context, MyOrderListActivity.class)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                            ToastUtils.showShort(context, "您有个订单已被用户取消！！！请注意查看");
+                            ToastUtils.showShort(context, "有订单被用户取消,请注意查看");
                             return;
                         }
                         break;
                     case 103://只有预约服务有推送
+                        if (Util.isAction(context)) {
+                            context.startActivity(new Intent(context, MyOrderListActivity.class)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            ToastUtils.showShort(context, "有预约订单用户支付定金，请注意查看");
+                            return;
+                        }
                         break;
                 }
 
@@ -137,13 +141,29 @@ public class MyReceiver extends BroadcastReceiver {
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Log.d(TAG, "---[MyReceiver] 用户点击打开了通知");
-                if (!Util.isAction(context)) {
-                    //打开自定义的Activity
-                    Intent i = new Intent(context, HomeActivity.class);
-                    i.putExtras(bundle);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(i);
+                String serverType = JsonUtils.object(bundle.getString(JPushInterface.EXTRA_EXTRA), OrderDetailBeans.class).getServer_type();
+                switch (Integer.valueOf(serverType)) {//100-即时 101-预约 102-取消 103-用户已支付
+                    case 100:
+                    case 101:
+                        if (!Util.isAction(context)) {
+                            //打开自定义的Activity
+                            Intent i = new Intent(context, HomeActivity.class);
+                            i.putExtras(bundle);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(i);
+                        }
+                        break;
+                    case 102:
+                    case 103://只有预约服务有推送
+                        if (!Util.isAction(context)) {
+                            Intent i = new Intent(context, MyOrderListActivity.class);
+                            i.putExtras(bundle);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(i);
+                        }
+                        break;
                 }
+
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

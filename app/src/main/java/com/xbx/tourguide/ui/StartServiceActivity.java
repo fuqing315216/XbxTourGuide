@@ -109,12 +109,13 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         String timeStr = XbxTGApplication.formatTime(serverTime);
                         timeTv.setText(timeStr);
                     }
-                    if (result.getLon() != null && result.getLat() != null) {
+                    if (result.getLon() != null && result.getLat() != null && !isGoing) {
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO://开始服务
                     stopBtn.setText(getResources().getString(R.string.end_service));
+                    userMarkers.remove();
                     startActivity(new Intent(StartServiceActivity.this, ConfirmActivity.class)
                             .putExtra("title", "服务开始")
                             .putExtra("content", "您的即时导游服务已经开始计时"));
@@ -163,7 +164,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
         returnIbtn.setOnClickListener(this);
 
-        Log.i("log", "isgoing============>>>>>>>>" + isGoing);
         if (isGoing) {//进行中
             stopBtn.setText(getResources().getString(R.string.end_service));
         } else {//未开始
@@ -215,6 +215,12 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     /**
      * 设置覆盖物
      *
@@ -261,7 +267,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 if (location == null) {
                     return;
                 }
-                LogUtils.i("---onReceiveLocation");
                 String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double lon = Double.parseDouble(lonAndlat.split(",")[0]);

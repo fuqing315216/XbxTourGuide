@@ -82,7 +82,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         englishRb = (RadioButton) findViewById(R.id.rb_english);
         allRb = (RadioButton) findViewById(R.id.rb_all);
 
-        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getUser_type())) {
+        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getGuide_type())) {
             findViewById(R.id.rlyt_personalinfo_guide).setVisibility(View.GONE);
         }
 
@@ -108,7 +108,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         birthdayTv.setText(beans.getBirthday());
         phoneTv.setText(beans.getMobile());
         idTv.setText(beans.getIdcard());
-        guideTv.setText(beans.getGuide_number());
+        guideTv.setText(beans.getGuide_card_number());
         locationTv.setText(beans.getNow_address_name());
         setRb(beans.getServer_language());
     }
@@ -131,7 +131,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
                     settingApi.updateInfo(UserInfoParse.getUid(userInfo), new File(beans.getHead_image())
-                            , beans.getNow_address(), beans.getServer_language());
+                            , beans.getNow_address_name(), beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);
                 }
@@ -201,7 +201,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         if (requestCode == 200 && resultCode == 200) {
             CityBeans city = (CityBeans) data.getSerializableExtra("bean");
             locationTv.setText(city.getName());
-            beans.setNow_address(city.getId());
             beans.setNow_address_name(city.getName());
             setUpdate();
         }

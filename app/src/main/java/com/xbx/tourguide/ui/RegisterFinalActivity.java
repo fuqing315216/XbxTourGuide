@@ -20,9 +20,11 @@ import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.beans.TourGuideBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
 
@@ -48,13 +50,13 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    TourGuideInfoBeans infoBeans = new TourGuideInfoBeans();
-                    TourGuideBeans bean = new TourGuideBeans();
-                    infoBeans.setMobile(beans.getMobile());
-                    bean.setUser_info(infoBeans);
-
-                    Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
-
+//                    TourGuideInfoBeans infoBeans = new TourGuideInfoBeans();
+//                    TourGuideBeans bean = new TourGuideBeans();
+//                    infoBeans.setMobile(beans.getMobile());
+//                    bean.setUser_info(infoBeans);
+//
+//                    Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
+                    ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
                     startIntent(LoginActivity.class, true);
                     break;
             }
@@ -65,6 +67,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_final);
+        ActivityManager.getInstance().pushOneActivity(this);
         loader = ImageLoader.getInstance();
         flag = getIntent().getIntExtra("flag", 0);
         beans = (RegisterBeans) getIntent().getSerializableExtra("bean");
@@ -191,17 +194,16 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("sex", beans.getSex() + "");
         params.put("idcard", beans.getIdcard());
         params.put("guide_type", beans.getGuide_type() + "");
-        params.put("guide_number", beans.getGuide_number());
-        params.put("user_type", beans.getUser_type() + "");
+        params.put("guide_card_number", beans.getGuide_card_number() + "");
         params.put("head_image", new File(beans.getHead_image()));
         params.put("idcard_front", new File(beans.getIdcard_front()));
         params.put("idcard_back", new File(beans.getIdcard_back()));
         params.put("guide_card", new File(beans.getGuide_card()));
         params.put("guide_idcard", new File(beans.getGuide_idcard()));
-        params.put("server_language", beans.getLanguage() + "");
+        params.put("server_language", beans.getServer_language() + "");
         params.put("now_address", beans.getCity().getId());
 
-        LogUtils.i("mobile=" + beans.getMobile() + "" +
+        LogUtils.i("--------mobile=" + beans.getMobile() + "" +
                 "\npassword=" + beans.getPassword()
                 + "\nrepassword=" + beans.getRepassword()
                 + "\nverify_code=" + beans.getVerify_code()
@@ -209,15 +211,15 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nsex=" + beans.getSex()
                 + "\nidcard=" + beans.getIdcard()
                 + "\nguide_type=" + beans.getGuide_type()
-                + "\nguide_number=" + beans.getGuide_number()
+                + "\nguide_number=" + beans.getGuide_card_number()
 
-                + "\nuser_type=" + beans.getUser_type()
+                + "\nuser_type=" + beans.getGuide_card_type()
                 + "\nhead_image=" + beans.getHead_image()
                 + "\nidcard_front=" + beans.getIdcard_front()
                 + "\nidcard_back=" + beans.getIdcard_back()
                 + "\nguide_card=" + beans.getGuide_card()
                 + "\nguide_idcard=" + beans.getGuide_idcard()
-                + "\nserver_language=" + beans.getLanguage()
+                + "\nserver_language=" + beans.getServer_language()
                 + "\nnow_address=" + beans.getCity().getName());
 
         loginApi = new LoginApi(this, handler);

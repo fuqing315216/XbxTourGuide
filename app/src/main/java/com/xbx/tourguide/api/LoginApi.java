@@ -28,14 +28,12 @@ public class LoginApi {
      *
      * @param mobile    手机号
      * @param password  密码
-     * @param user_type
      * @param push_id
      */
-    public void Login(String mobile, String password, String user_type, String push_id) {
+    public void Login(String mobile, String password,String push_id) {
         RequestParams params = new RequestParams();
         params.put("mobile", mobile);
         params.put("password", password);
-        params.put("user_type", user_type);
         params.put("push_id", push_id);
         IRequest.post(context, HttpUrl.LOGIN, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
@@ -105,7 +103,7 @@ public class LoginApi {
         IRequest.post(context, HttpUrl.REGISTER, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+                sendShowMessage.sendMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
     }

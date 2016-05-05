@@ -110,7 +110,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
             public void requestSuccess(String json) {
                 LogUtils.i("---getOrderDetail:" + json);
                 if (UtilParse.getRequestCode(json) == 1) {
-                    final OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json), OrderDetailBeans.class);
+                    final OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json),OrderDetailBeans.class);
                     loader.displayImage(result.getHead_image(), headPicCiv);
                     nickNameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());

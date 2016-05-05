@@ -179,7 +179,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         leaderRbtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
 
         TourGuideInfoBeans tourGuideInfoBean = UserInfoParse.getUserInfo(Cookie.getUserInfo(this));
-        userType = Integer.valueOf(tourGuideInfoBean.getUser_type());
+        userType = Integer.valueOf(tourGuideInfoBean.getGuide_type());
         switch (userType) {//1：导游；2：随游；3：土著
             case 1:
                 findViewById(R.id.rlyt_service_time_guide_type).setVisibility(View.VISIBLE);

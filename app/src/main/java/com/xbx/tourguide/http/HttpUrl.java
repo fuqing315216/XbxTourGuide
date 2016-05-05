@@ -6,11 +6,11 @@ package com.xbx.tourguide.http;
  */
 public class HttpUrl {
 
-//    public static String URL = "http://192.168.1.27/yueyou/Api/";
-//    public static String Url="http://192.168.1.24/yueyou/Api/";
+        public static String URL = "http://192.168.1.27/yueyou/Api/";
+//    public static String URL = "http://192.168.1.24/yueyou/Api/";
 
     //网络服务器
-    public static String URL = "http://123.56.194.208/yueyou/index.php/Api/";
+//    public static String URL = "http://123.56.194.208/yueyou/index.php/Api/";
     //測試
 //    public static String URL = "http://demo.xbx121.com/Api/";
 //    public static String IMAGE_URL = "http://192.168.1.24/yueyou";

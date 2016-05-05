@@ -64,7 +64,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
 
                     pricehTv.setText(result.getGuide_instant_price() + "/小时");
                     pricedTv.setText(result.getGuide_reserve_price() + "/天");
-                    int userType = Integer.valueOf(UserInfoParse.getUserInfo(Cookie.getUserInfo(SelfMainActivity.this)).getUser_type());
+                    int userType = Integer.valueOf(UserInfoParse.getUserInfo(Cookie.getUserInfo(SelfMainActivity.this)).getGuide_type());
                     switch (userType) {
                         case 1:
                             userTypeTv.setText("导游");
@@ -92,7 +92,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     break;
 
                 case TaskFlag.PAGEREQUESTWO://修改
-                    ToastUtils.showShort(SelfMainActivity.this, (String) msg.obj);
+                    ToastUtils.showShort(SelfMainActivity.this, "修改成功");
                     break;
             }
         }
@@ -120,7 +120,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
         introduceEt = (EditText) findViewById(R.id.et_self_main_introduce);
         serviceEt = (EditText) findViewById(R.id.et_self_main_service);
 
-        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getUser_type())) {
+        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getGuide_type())) {
             guideIdTv.setVisibility(View.GONE);
         }
 

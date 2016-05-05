@@ -197,14 +197,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             msgNumTv.setText(unreadMsg + "");
         }
         loader.displayImage(beans.getHead_image(), headPicCiv);
-        ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_number());//导游证号
-        nameTv.setText(beans.getNickname());
+        ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
+        nameTv.setText(beans.getRealname());
 
-        scoreTv.setText(Util.getStar(beans.getStar()) + "分");
-        if ("0.0".equals(Util.getStar(beans.getStar()))) {
+        scoreTv.setText(Util.getStar(beans.getStars()) + "分");
+        if ("0.0".equals(Util.getStar(beans.getStars()))) {
             starRab.setVisibility(View.GONE);
         } else {
-            starRab.setRating(Util.getStar(beans.getStar()) / 2);
+            starRab.setRating(Util.getStar(beans.getStars()) / 2);
         }
     }
 

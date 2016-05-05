@@ -76,15 +76,12 @@ public class UserInfoParse {
         return "";
     }
 
-    public static String getUserType(String responseResult) {
+    public static String getVerifyCode(String responseResult) {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(responseResult);
-            if (UtilParse.checkTag(jsonObject, "user_info")) {
-                JSONObject jsonObject2 = new JSONObject(jsonObject.getString("user_info"));
-                if (UtilParse.checkTag(jsonObject2, "user_type")) {
-                    return jsonObject2.getString("user_type");
-                }
+            if (UtilParse.checkTag(jsonObject, "vierfy_code")) {
+                return jsonObject.getString("vierfy_code");
             }
         } catch (JSONException e) {
             e.printStackTrace();

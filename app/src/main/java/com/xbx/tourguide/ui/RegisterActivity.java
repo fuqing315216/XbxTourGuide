@@ -22,6 +22,7 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -86,6 +87,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ActivityManager.getInstance().pushOneActivity(this);
         initView();
     }
 

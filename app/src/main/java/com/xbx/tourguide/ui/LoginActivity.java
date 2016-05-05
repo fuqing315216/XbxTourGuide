@@ -48,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
                     String data = (String) msg.obj;
+                    LogUtils.i("-------LoginActivity:" + data);
                     Cookie.putUserInfo(LoginActivity.this, data);
                     startIntent(HomeActivity.class, true);
                     break;
@@ -71,12 +72,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
         String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
-        String user_type = UserInfoParse.getUserType(Cookie.getUserInfo(this));
         if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
             RequestParams params = new RequestParams();
             params.put("mobile", mobile);
             params.put("password", token);
-            params.put("user_type", user_type);
             params.put("push_id", JPushInterface.getRegistrationID(this));
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
@@ -113,8 +112,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         forgetPwTv.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        phoneEt.setText("15802808105");
-        pwEt.setText("123456");
+        phoneEt.setText("13982932283");
+        pwEt.setText("XBX123456");
 
         String phone = Cookie.getPhone(this);
         if (!VerifyUtil.isNullOrEmpty(phone)) {
@@ -161,7 +160,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         loginApi = new LoginApi(this, handler);
-        loginApi.Login(phoneEt.getText().toString(), pwEt.getText().toString(), "1", JPushInterface.getRegistrationID(this));
+        loginApi.Login(phoneEt.getText().toString(), pwEt.getText().toString(), JPushInterface.getRegistrationID(this));
     }
 
     private long exitTime = 0;
