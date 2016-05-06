@@ -159,7 +159,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        uid = Cookie.getUid(this);
 
         gridView = (UnScrollGridView) findViewById(R.id.gv_calendar);
         hourPriceEt = (EditText) findViewById(R.id.et_price_h);

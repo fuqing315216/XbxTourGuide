@@ -2,12 +2,16 @@ package com.xbx.tourguide.api;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 
+import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.LogUtils;
 
 /**
@@ -24,26 +28,6 @@ public class LoginApi {
     }
 
     /**
-     * 登录
-     *
-     * @param mobile    手机号
-     * @param password  密码
-     * @param push_id
-     */
-    public void Login(String mobile, String password,String push_id) {
-        RequestParams params = new RequestParams();
-        params.put("mobile", mobile);
-        params.put("password", password);
-        params.put("push_id", push_id);
-        IRequest.post(context, HttpUrl.LOGIN, params, context.getString(R.string.loding), new RequestBackListener(context) {
-            @Override
-            public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
-            }
-        });
-    }
-
-    /**
      * 获取验证码
      *
      * @param mobile
@@ -55,7 +39,7 @@ public class LoginApi {
             @Override
             public void requestSuccess(String json) {
                 LogUtils.i("---getVerifyCode:" + json);
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+                sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });
     }
@@ -69,7 +53,7 @@ public class LoginApi {
             @Override
             public void requestSuccess(String json) {
                 LogUtils.i("---updatePw:" + json);
-                sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
+                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
     }
@@ -103,7 +87,22 @@ public class LoginApi {
         IRequest.post(context, HttpUrl.REGISTER, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                sendShowMessage.sendMsg(TaskFlag.REQUESTSUCCESS, json);
+                LogUtils.i("----register-json:" + json);
+                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+            }
+        });
+    }
+
+    /**
+     * 注册导游基本信息
+     *
+     * @param params
+     */
+    public void registerGuideInfo(RequestParams params) {
+        IRequest.post(context, HttpUrl.REGISTER_GUIDE_INFO, params, context.getString(R.string.loding), new RequestBackListener(context) {
+            @Override
+            public void requestSuccess(String json) {
+                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
     }

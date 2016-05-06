@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,16 +14,14 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.beans.RegisterBeans;
-import com.xbx.tourguide.beans.TourGuideBeans;
-import com.xbx.tourguide.beans.TourGuideInfoBeans;
+import com.xbx.tourguide.beans.RegisterInfoBeans;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.RegisterStepView;
 import com.xbx.tourguide.view.TitleBarView;
 
 import java.io.File;
@@ -37,11 +33,10 @@ import java.io.File;
  */
 public class RegisterFinalActivity extends BaseActivity implements View.OnClickListener {
 
-    private LinearLayout touristLlyt;
+    private int guide_type;
     private ImageView frontIv, otherIv, touristIv, personalIv;
-    private int flag;
     private ImageLoader loader;
-    private RegisterBeans beans;
+    private RegisterInfoBeans beans;
 
     private LoginApi loginApi = null;
     private Handler handler = new Handler() {
@@ -50,12 +45,6 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-//                    TourGuideInfoBeans infoBeans = new TourGuideInfoBeans();
-//                    TourGuideBeans bean = new TourGuideBeans();
-//                    infoBeans.setMobile(beans.getMobile());
-//                    bean.setUser_info(infoBeans);
-//
-//                    Cookie.putUserInfo(RegisterFinalActivity.this, JsonUtils.toJson(bean));
                     ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
                     startIntent(LoginActivity.class, true);
                     break;
@@ -69,9 +58,8 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_register_final);
         ActivityManager.getInstance().pushOneActivity(this);
         loader = ImageLoader.getInstance();
-        flag = getIntent().getIntExtra("flag", 0);
-        beans = (RegisterBeans) getIntent().getSerializableExtra("bean");
-        LogUtils.e(beans.toString());
+        guide_type = getIntent().getIntExtra("guide_type", 1);
+        beans = (RegisterInfoBeans) getIntent().getSerializableExtra("bean");
         initView();
     }
 
@@ -84,10 +72,54 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 finish();
             }
         });
-        titleBarView.setTextRightTextView(getString(R.string.finish));
-        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        RegisterStepView stepView = (RegisterStepView) findViewById(R.id.step_view);
+        stepView.setStep(4);
+
+        frontIv = (ImageView) findViewById(R.id.iv_card_front);
+        otherIv = (ImageView) findViewById(R.id.iv_card_other);
+        touristIv = (ImageView) findViewById(R.id.iv_card_tourist);
+        personalIv = (ImageView) findViewById(R.id.iv_card_personal);
+
+        if (guide_type != 1) {
+            findViewById(R.id.rlyt_upload_tourist).setVisibility(View.VISIBLE);
+        }
+
+        findViewById(R.id.btn_upload_card_front).setOnClickListener(this);
+        findViewById(R.id.btn_upload_card_other).setOnClickListener(this);
+        findViewById(R.id.btn_upload_tourist).setOnClickListener(this);
+        findViewById(R.id.btn_upload_card_personal).setOnClickListener(this);
+        findViewById(R.id.btn_register_finish).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_upload_card_front:
+                Intent intentFront = new Intent(this, CameraDialogActivity.class);
+                intentFront.putExtra("isPic", true);
+                intentFront.putExtra("isCrop", false);
+                startActivityForResult(intentFront, 102);
+                break;
+            case R.id.btn_upload_card_other:
+                Intent intentOther = new Intent(this, CameraDialogActivity.class);
+                intentOther.putExtra("isPic", true);
+                intentOther.putExtra("isCrop", false);
+                startActivityForResult(intentOther, 103);
+                break;
+            case R.id.btn_upload_tourist:
+                Intent intentTourist = new Intent(this, CameraDialogActivity.class);
+                intentTourist.putExtra("isPic", true);
+                intentTourist.putExtra("isCrop", false);
+                startActivityForResult(intentTourist, 104);
+                break;
+            case R.id.btn_upload_card_personal:
+                Intent intentPersonal = new Intent(this, CameraDialogActivity.class);
+                intentPersonal.putExtra("isPic", true);
+                intentPersonal.putExtra("isCrop", false);
+                startActivityForResult(intentPersonal, 105);
+                break;
+            case R.id.btn_register_finish:
                 if (VerifyUtil.isNullOrEmpty(beans.getIdcard_front())) {
                     Toast.makeText(RegisterFinalActivity.this, "请上传身份证正面照片", Toast.LENGTH_SHORT).show();
                     return;
@@ -96,64 +128,20 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                     Toast.makeText(RegisterFinalActivity.this, "请上传身份证背面照片", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (flag == 1) {
 
+                if (guide_type == 1) {
                     if (VerifyUtil.isNullOrEmpty(beans.getGuide_card())) {
                         Toast.makeText(RegisterFinalActivity.this, "请上传导游证照片", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (VerifyUtil.isNullOrEmpty(beans.getGuide_idcard())) {
-                        Toast.makeText(RegisterFinalActivity.this, "请上传本人手持身份证照片", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                 }
-                register();
-            }
-        });
 
-        touristLlyt = (LinearLayout) findViewById(R.id.llyt_tourist);
-        frontIv = (ImageView) findViewById(R.id.iv_card_front);
-        otherIv = (ImageView) findViewById(R.id.iv_card_other);
-        touristIv = (ImageView) findViewById(R.id.iv_card_tourist);
-        personalIv = (ImageView) findViewById(R.id.iv_card_personal);
-        if (flag == 1) {
-            touristLlyt.setVisibility(View.VISIBLE);
-        } else {
-            touristLlyt.setVisibility(View.GONE);
-        }
+                if (VerifyUtil.isNullOrEmpty(beans.getGuide_idcard())) {
+                    Toast.makeText(RegisterFinalActivity.this, "请上传本人手持身份证照片", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-        frontIv.setOnClickListener(this);
-        otherIv.setOnClickListener(this);
-        touristIv.setOnClickListener(this);
-        personalIv.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_card_front:
-                Intent intentFront = new Intent(this, CameraDialogActivity.class);
-                intentFront.putExtra("isPic", true);
-                intentFront.putExtra("isCrop", false);
-                startActivityForResult(intentFront, 102);
-                break;
-            case R.id.iv_card_other:
-                Intent intentOther = new Intent(this, CameraDialogActivity.class);
-                intentOther.putExtra("isPic", true);
-                intentOther.putExtra("isCrop", false);
-                startActivityForResult(intentOther, 103);
-                break;
-            case R.id.iv_card_tourist:
-                Intent intentTourist = new Intent(this, CameraDialogActivity.class);
-                intentTourist.putExtra("isPic", true);
-                intentTourist.putExtra("isCrop", false);
-                startActivityForResult(intentTourist, 104);
-                break;
-            case R.id.iv_card_personal:
-                Intent intentPersonal = new Intent(this, CameraDialogActivity.class);
-                intentPersonal.putExtra("isPic", true);
-                intentPersonal.putExtra("isCrop", false);
-                startActivityForResult(intentPersonal, 105);
+                registerGuideInfo();
                 break;
             default:
                 break;
@@ -184,12 +172,9 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     /**
      * 注册
      */
-    private void register() {
+    private void registerGuideInfo() {
         RequestParams params = new RequestParams();
-        params.put("mobile", beans.getMobile());
-        params.put("password", beans.getPassword());
-        params.put("repassword", beans.getRepassword());
-        params.put("verify_code", beans.getVerify_code());
+        params.put("uid", Cookie.getUid(this));
         params.put("realname", beans.getRealname());
         params.put("sex", beans.getSex() + "");
         params.put("idcard", beans.getIdcard());
@@ -203,10 +188,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("server_language", beans.getServer_language() + "");
         params.put("now_address", beans.getCity().getId());
 
-        LogUtils.i("--------mobile=" + beans.getMobile() + "" +
-                "\npassword=" + beans.getPassword()
-                + "\nrepassword=" + beans.getRepassword()
-                + "\nverify_code=" + beans.getVerify_code()
+        LogUtils.i("--------uid=" + Cookie.getUid(this)
                 + "\nrealname=" + beans.getRealname()
                 + "\nsex=" + beans.getSex()
                 + "\nidcard=" + beans.getIdcard()
@@ -223,6 +205,6 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nnow_address=" + beans.getCity().getName());
 
         loginApi = new LoginApi(this, handler);
-        loginApi.register(params);
+        loginApi.registerGuideInfo(params);
     }
 }

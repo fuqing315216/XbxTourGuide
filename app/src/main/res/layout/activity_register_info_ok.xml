@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/title_register_ok"
+        layout="@layout/titlebar" />
+
+    <ImageView
+        android:id="@+id/iv_register_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_register_ok"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_register_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_register_ok"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="您的信息已成功提交！"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/sp17" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_register_ok"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/register_ok_notification"
+        android:textColor="@color/gray_color"
+        android:textSize="@dimen/sp12" />
+
+    <Button
+        android:id="@+id/btn_register_info_ok_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp12"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp12"
+        android:background="@drawable/bg_roundbtn_style"
+        android:text="@string/finish"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
+</RelativeLayout>

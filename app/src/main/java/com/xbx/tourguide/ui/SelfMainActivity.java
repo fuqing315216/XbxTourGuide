@@ -127,7 +127,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.btn_self_main_back).setOnClickListener(this);
         findViewById(R.id.btn_self_main_confirm).setOnClickListener(this);
 
-        settingApi.getGuideDetail(UserInfoParse.getUid(Cookie.getUserInfo(this)));
+        settingApi.getGuideDetail(Cookie.getUid(this));
     }
 
 
@@ -148,7 +148,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
 
-                settingApi.updateGuideDetail(UserInfoParse.getUid(Cookie.getUserInfo(this)), introduceEt.getText().toString(), serviceEt.getText().toString());
+                settingApi.updateGuideDetail(Cookie.getUid(this), introduceEt.getText().toString(), serviceEt.getText().toString());
                 break;
         }
     }

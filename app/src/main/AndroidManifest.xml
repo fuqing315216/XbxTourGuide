@@ -61,7 +61,7 @@
             android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.RegisterNextActivity"
+            android:name=".ui.RegisterGuideInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.RegisterFinalActivity"

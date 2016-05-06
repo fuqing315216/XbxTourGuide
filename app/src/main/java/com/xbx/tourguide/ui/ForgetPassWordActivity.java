@@ -43,12 +43,12 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case TaskFlag.REQUESTSUCCESS:
+                case TaskFlag.PAGEREQUESTWO:
                     code = UserInfoParse.getVerifyCode((String) msg.obj);
                     time = 60;
                     handler.postDelayed(runnable, 1000);
                     break;
-                case TaskFlag.PAGEREQUESTWO:
+                case TaskFlag.REQUESTSUCCESS:
                     loginApi.forgetPwLogin(phoneEt.getText().toString(), pwEt.getText().toString(), "1");
                     break;
                 case TaskFlag.PAGEREQUESTHREE:
@@ -157,7 +157,6 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
             return;
         }
         loginApi.updatePw(phoneEt.getText().toString().trim(), code, pwEt.getText().toString());
-
     }
 
 }

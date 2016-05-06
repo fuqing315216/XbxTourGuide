@@ -130,7 +130,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.tv_confirm_update:
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
-                    settingApi.updateInfo(UserInfoParse.getUid(userInfo), new File(beans.getHead_image())
+                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image())
                             , beans.getNow_address_name(), beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);

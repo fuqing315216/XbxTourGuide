@@ -24,6 +24,7 @@ import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
 import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
+import com.xbx.tourguide.beans.Version;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
@@ -38,6 +39,7 @@ import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.util.updateversion.UpdateUtil;
 import com.xbx.tourguide.view.CircleImageView;
 
 import java.util.Timer;
@@ -87,6 +89,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 //                    bean.setUser_info(beans);
 //                    Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
                     break;
+                case TaskFlag.PAGEREQUESTWO:
+                    Version version = JsonUtils.object((String) msg.obj, Version.class);
+                    if (version == null)
+                        return;
+                    if (VerifyUtil.isNullOrEmpty(version.getVersion_code()))
+                        return;
+                    checkUpdate(version);
+                    break;
+
                 case 0x123:
                     SQLiteOrderBean sqlBean = new OrderNumberDao(HomeActivity.this).selectFirst();
                     LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
@@ -130,9 +141,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_home);
         ActivityManager.getInstance().pushOneActivity(this);
 
-        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        uid = Cookie.getUid(this);
         loader = ImageLoader.getInstance();
+
         serverApi = new ServerApi(this, handler);
+//        serverApi.checkUpdate();
+
         Cookie.putIsJPush(this, true);//可以接受推送
         Cookie.putIsDialog(this, false);
         Cookie.putLoginOut(this, false);
@@ -326,7 +340,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void setLonLat(final BDLocation location) {
 
         RequestParams params = new RequestParams();
-        params.put("uid", UserInfoParse.getUid(userInfo));
+        params.put("uid", Cookie.getUid(this));
         params.put("lon", location.getLongitude() + "");
         params.put("lat", location.getLatitude() + "");
         Cookie.putLonAndLat(HomeActivity.this, location.getLongitude() + "," + location.getLatitude());
@@ -366,5 +380,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 更新版本
+     *
+     * @param version
+     */
+    private void checkUpdate(Version version) {
+        new UpdateUtil(HomeActivity.this, version);
     }
 }

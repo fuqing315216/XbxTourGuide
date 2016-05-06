@@ -17,19 +17,6 @@ import org.json.JSONObject;
  */
 public class UserInfoParse {
 
-    public static String getUid(String responseResult) {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(responseResult);
-            if (UtilParse.checkTag(jsonObject, "uid")) {
-                return jsonObject.getString("uid");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
     public static TourGuideInfoBeans getUserInfo(String responseResult) {
         TourGuideInfoBeans tourGuideInfoBeans = null;
 

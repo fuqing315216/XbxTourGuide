@@ -8,7 +8,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,16 +15,14 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.beans.RegisterBeans;
 import com.xbx.tourguide.beans.VerifyBeans;
-import com.xbx.tourguide.http.HttpUrl;
-import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestBackListener;
-import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.view.RegisterStepView;
 import com.xbx.tourguide.view.TitleBarView;
 
 
@@ -38,9 +35,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private TextView zackTv;
     private Button verificationBtn;
-    private EditText phoneEt, verifyEt, pwEt, repwEt;
+    private EditText phoneEt, verifyEt, pwEt, repwEt, inviteEt;
     private int time = 60;
-    private RegisterBeans beans = new RegisterBeans();
     private String code = "";
 
     private LoginApi loginApi = null;
@@ -51,6 +47,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
+                    Cookie.putUid(RegisterActivity.this, (String) msg.obj);
+                    startActivity(new Intent(RegisterActivity.this, RegisterGuideInfoActivity.class));
+                    break;
+
+                case TaskFlag.PAGEREQUESTWO:
                     VerifyBeans result = JsonUtils.object((String) msg.obj, VerifyBeans.class);
                     code = result.getVierfy_code();
                     time = 60;
@@ -100,51 +101,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 finish();
             }
         });
-        titleBarView.setTextRightTextView(getString(R.string.next));
-        titleBarView.setRightTextViewOnClickListener(new TitleBarView.OnRightTextViewClickListener() {
-            @Override
-            public void onClick(View v) {
-                beans.setMobile(phoneEt.getText().toString().trim());
-                String verify = verifyEt.getText().toString();
-                String pw = pwEt.getText().toString();
-                String repw = repwEt.getText().toString();
 
-                if (VerifyUtil.isNullOrEmpty(verify)) {
-                    Toast.makeText(RegisterActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (VerifyUtil.isNullOrEmpty(pw)) {
-                    Toast.makeText(RegisterActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (pw.length() < 6 || pw.length() > 20) {
-                    Toast.makeText(RegisterActivity.this, "密码长度为8-20位，请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!VerifyUtil.isPassWord(pw)) {
-                    Toast.makeText(RegisterActivity.this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (VerifyUtil.isNullOrEmpty(repw)) {
-                    Toast.makeText(RegisterActivity.this, "请输入确认密码", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!pw.equals(repw)) {
-                    Toast.makeText(RegisterActivity.this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (code.equals(verify)) {
-                    beans.setVerify_code(verify);
-                } else {
-                    ToastUtils.showShort(RegisterActivity.this, "验证码错误");
-                    return;
-                }
-
-                beans.setPassword(pw);
-                beans.setRepassword(repw);
-
-                Intent intent = new Intent(RegisterActivity.this, RegisterNextActivity.class);
-                intent.putExtra("bean", beans);
-                startActivity(intent);
-            }
-        });
+        RegisterStepView stepView = (RegisterStepView) findViewById(R.id.step_view);
+        stepView.setStep(1);
 
         zackTv = (TextView) findViewById(R.id.tv_register_zack);
         verificationBtn = (Button) findViewById(R.id.btn_verification);
@@ -152,7 +111,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         verifyEt = (EditText) findViewById(R.id.et_verification);
         pwEt = (EditText) findViewById(R.id.et_pw);
         repwEt = (EditText) findViewById(R.id.et_confirm_pw);
+        inviteEt = (EditText) findViewById(R.id.et_invite_code);
 
+        findViewById(R.id.btn_register_next).setOnClickListener(this);
         zackTv.setOnClickListener(this);
         verificationBtn.setOnClickListener(this);
     }
@@ -178,28 +139,61 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 loginApi.getVerifyCode(phone, "0");
 //                getVerifyCode(phone);
                 break;
+            case R.id.btn_register_next:
+                String mobile = phoneEt.getText().toString().trim();
+                String verify = verifyEt.getText().toString();
+                String pw = pwEt.getText().toString();
+                String repw = repwEt.getText().toString();
+
+                if (VerifyUtil.isNullOrEmpty(verify)) {
+                    Toast.makeText(RegisterActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (VerifyUtil.isNullOrEmpty(mobile)) {
+                    Toast.makeText(RegisterActivity.this, "请输入手机号码", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!VerifyUtil.isTelPhoneNumber(mobile)) {
+                    Toast.makeText(RegisterActivity.this, "手机号码格式有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (VerifyUtil.isNullOrEmpty(pw)) {
+                    Toast.makeText(RegisterActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (pw.length() < 6 || pw.length() > 20) {
+                    Toast.makeText(RegisterActivity.this, "密码长度为8-20位，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!VerifyUtil.isPassWord(pw)) {
+                    Toast.makeText(RegisterActivity.this, "密码输入格式有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (VerifyUtil.isNullOrEmpty(repw)) {
+                    Toast.makeText(RegisterActivity.this, "请输入确认密码", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!pw.equals(repw)) {
+                    Toast.makeText(RegisterActivity.this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!code.equals(verify)) {
+                    ToastUtils.showShort(RegisterActivity.this, "验证码错误");
+                    return;
+                }
+
+                RequestParams params = new RequestParams();
+                params.put("mobile", mobile);
+                params.put("password", pw);
+                params.put("repassword", repw);
+                params.put("verify_code", verify);
+                params.put("invite_code", inviteEt.getText().toString());
+
+                loginApi.register(params);
+                break;
             default:
                 break;
 
         }
-    }
-
-    /**
-     * 获取验证码
-     */
-    private void getVerifyCode(String phone) {
-
-        String url = HttpUrl.GET_VERIFYCODE + "?mobile=" + phone + "&check_regester=" + 0;
-        IRequest.get(this, url, "验证码发送中", new RequestBackListener(this) {
-            @Override
-            public void requestSuccess(String json) {
-                if (UtilParse.getRequestCode(json) == 1) {
-                    VerifyBeans result = JsonUtils.object(UtilParse.getRequestData(json), VerifyBeans.class);
-                    code = result.getVierfy_code();
-                    time = 60;
-                    handler.postDelayed(runnable, 1000);
-                }
-            }
-        });
     }
 }

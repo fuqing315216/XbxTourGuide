@@ -39,22 +39,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView forgetPwTv;
     private Button loginBtn;
     private EditText phoneEt, pwEt;
-    private LoginApi loginApi = null;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case TaskFlag.REQUESTSUCCESS:
-                    String data = (String) msg.obj;
-                    LogUtils.i("-------LoginActivity:" + data);
-                    Cookie.putUserInfo(LoginActivity.this, data);
-                    startIntent(HomeActivity.class, true);
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,12 +98,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         phoneEt.setText("13982932283");
         pwEt.setText("XBX123456");
-
-        String phone = Cookie.getPhone(this);
-        if (!VerifyUtil.isNullOrEmpty(phone)) {
-            phoneEt.setText(phone);
-            phoneEt.setSelection(phone.length());
-        }
     }
 
     @Override
@@ -159,8 +137,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ToastUtils.showShort(this, "登录失败，请稍候重试");
         }
 
-        loginApi = new LoginApi(this, handler);
-        loginApi.Login(phoneEt.getText().toString(), pwEt.getText().toString(), JPushInterface.getRegistrationID(this));
+        RequestParams params = new RequestParams();
+        params.put("mobile", phoneEt.getText().toString());
+        params.put("password", pwEt.getText().toString());
+        params.put("push_id", JPushInterface.getRegistrationID(this));
+        IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
+            @Override
+            public void requestSuccess(String json) {
+                LogUtils.i("------login-json:" + json);
+                if (UtilParse.getRequestCode(json) == 2) {
+                    startIntent(RegisterGuideTypeActivity.class, true);
+                } else if (UtilParse.getRequestCode(json) == 1) {
+                    Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
+                    startIntent(HomeActivity.class, true);
+                } else {
+                    ToastUtils.showShort(LoginActivity.this, UtilParse.getRequestMsg(json));
+                }
+            }
+        });
     }
 
     private long exitTime = 0;

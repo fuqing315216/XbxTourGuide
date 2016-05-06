@@ -123,7 +123,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
 
     private void initData() {
         myOrderBeansList = new ArrayList<>();
-        uid = UserInfoParse.getUid(Cookie.getUserInfo(this));
+        uid = Cookie.getUid(this);
         nowPage = 1;
         serverApi = new ServerApi(this, handler);
         serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);

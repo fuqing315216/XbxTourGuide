@@ -72,7 +72,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
                 settingApi = new SettingApi(FeedBackActivity.this,handler);
-                settingApi.feedBack(UserInfoParse.getUid(Cookie.getUserInfo(this)),feedbackEt.getText().toString());
+                settingApi.feedBack(Cookie.getUid(this),feedbackEt.getText().toString());
                 break;
         }
     }

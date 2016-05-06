@@ -40,20 +40,22 @@ public class ServerApi {
         });
     }
 
-//    /**
-//     * 获取即时服务详情
-//     *
-//     * @param order_number
-//     */
-//    public void getDetail(String order_number) {
-//        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + order_number;
-//        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
-//            @Override
-//            public void requestSuccess(String json) {
-//                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
-//            }
-//        });
-//    }
+
+    /**
+     * 检查是否有版本更新
+     */
+    public void checkUpdate() {
+        if (context == null)
+            return;
+        String url = HttpUrl.VERSION_UPDATE;
+        IRequest.get(context, url, new RequestBackListener(context) {
+            @Override
+            public void requestSuccess(String json) {
+                LogUtils.i("----版本更新:" + json);
+                sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
+            }
+        });
+    }
 
     /**
      * 获取订单详情

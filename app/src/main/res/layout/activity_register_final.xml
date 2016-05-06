@@ -7,6 +7,8 @@
 
     <include layout="@layout/titlebar" />
 
+    <include layout="@layout/view_step" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -28,11 +30,37 @@
             android:scaleType="fitXY"
             android:src="@drawable/img_info_pic" />
 
-        <TextView
-            style="@style/TextViewStyle"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/card_front" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_height="wrap_content"
+                android:text="@string/card_front" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginTop="3dp"
+                android:text="@string/follow_img"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_upload_card_front"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@drawable/bg_roundbtn_style"
+            android:text="@string/uploade"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp15" />
     </RelativeLayout>
 
     <View
@@ -61,11 +89,37 @@
             android:scaleType="fitXY"
             android:src="@drawable/img_info_pic" />
 
-        <TextView
-            style="@style/TextViewStyle"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/card_other" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_height="wrap_content"
+                android:text="@string/card_other" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginTop="3dp"
+                android:text="@string/follow_img"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_upload_card_other"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@drawable/bg_roundbtn_style"
+            android:text="@string/uploade"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp15" />
     </RelativeLayout>
 
     <View
@@ -74,7 +128,6 @@
         android:background="@color/line_color" />
 
     <LinearLayout
-        android:id="@+id/llyt_tourist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -86,6 +139,7 @@
             android:background="@color/line_color" />
 
         <RelativeLayout
+            android:id="@+id/rlyt_upload_tourist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/head_text_color">
@@ -100,11 +154,37 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/img_info_pic" />
 
-            <TextView
-                style="@style/TextViewStyle"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/tourist" />
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tourist" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/follow_img"
+                    android:textSize="@dimen/sp12" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_upload_tourist"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp16"
+                android:background="@drawable/bg_roundbtn_style"
+                android:text="@string/uploade"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp15" />
         </RelativeLayout>
 
         <View
@@ -134,15 +214,54 @@
             android:scaleType="fitXY"
             android:src="@drawable/img_info_pic" />
 
-        <TextView
-            style="@style/TextViewStyle"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/personal" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_height="wrap_content"
+                android:text="@string/personal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginTop="3dp"
+                android:text="@string/follow_img"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_upload_card_personal"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@drawable/bg_roundbtn_style"
+            android:text="@string/uploade"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp15" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/line_color" />
+
+    <Button
+        android:id="@+id/btn_register_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_marginBottom="@dimen/dp12"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp12"
+        android:background="@drawable/bg_roundbtn_style"
+        android:text="@string/finish"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
 </LinearLayout>

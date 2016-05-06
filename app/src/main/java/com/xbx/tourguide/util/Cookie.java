@@ -45,12 +45,12 @@ public class Cookie {
         editor.clear();
     }
 
-    public static void putPhone(Context context, String phone) {
+    public static void putUid(Context context, String uid) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = share.edit();
-        if (phone != null) {
-            editor.putString("phone", phone);
+        if (uid != null) {
+            editor.putString("uid", uid);
         }
 
         editor.commit();
@@ -58,10 +58,10 @@ public class Cookie {
 
     }
 
-    public static String getPhone(Context context) {
+    public static String getUid(Context context) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_READABLE);
-        String info = share.getString("phone", "");
+        String info = share.getString("uid", "");
         if (info.length() > 0) {
             return info;
         } else {
@@ -115,30 +115,6 @@ public class Cookie {
             return null;
         }
     }
-
-//    public static void putUid(Context context, String uid) {
-//        SharedPreferences share = context.getSharedPreferences(filename,
-//                Context.MODE_WORLD_WRITEABLE);
-//        SharedPreferences.Editor editor = share.edit();
-//        if (uid != null) {
-//            editor.putString("uid", uid);
-//        }
-//
-//        editor.commit();
-//        editor.clear();
-//
-//    }
-//
-//    public static String getUid(Context context) {
-//        SharedPreferences share = context.getSharedPreferences(filename,
-//                Context.MODE_WORLD_READABLE);
-//        String info = share.getString("uid", "");
-//        if (info.length() > 0) {
-//            return info;
-//        } else {
-//            return null;
-//        }
-//    }
 
     /**
      * 预约订单num
@@ -230,5 +206,25 @@ public class Cookie {
                 Context.MODE_WORLD_READABLE);
         boolean info = share.getBoolean("loginOut", false);
         return info;
+    }
+
+    /**
+     * 更新清除信息
+     *
+     * @param con
+     */
+    public static void clear(Context con) {
+        SharedPreferences sp = con.getSharedPreferences("UpdateState",
+                Context.MODE_PRIVATE);
+        sp.edit().clear().commit();
+    }
+
+    /***
+     * 版本更新状态
+     ***/
+    public static void saveState(Context con, boolean state) {
+        SharedPreferences sp = con.getSharedPreferences("UpdateState",
+                Context.MODE_PRIVATE);
+        sp.edit().putBoolean("state", state).commit();
     }
 }

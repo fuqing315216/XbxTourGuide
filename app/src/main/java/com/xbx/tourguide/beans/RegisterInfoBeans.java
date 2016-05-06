@@ -3,14 +3,10 @@ package com.xbx.tourguide.beans;
 import java.io.Serializable;
 
 /**
- * Created by shuzhen on 2016/4/5.
+ * Created by xbx on 2016/5/6.
  */
-public class RegisterBeans implements Serializable {
-
-    private String mobile;
-    private String password;
-    private String repassword;
-    private String verify_code;
+public class RegisterInfoBeans implements Serializable {
+    private String uid;
     private String realname;
     private int sex;//0：男；1：女
     private String idcard;
@@ -25,20 +21,12 @@ public class RegisterBeans implements Serializable {
     private int server_language;//0-中文，1-英文，2-双语
     private CityBeans city;
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public String getUid() {
+        return uid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRepassword(String repassword) {
-        this.repassword = repassword;
-    }
-
-    public void setVerify_code(String verify_code) {
-        this.verify_code = verify_code;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setRealname(String realname) {
@@ -91,22 +79,6 @@ public class RegisterBeans implements Serializable {
 
     public void setCity(CityBeans city) {
         this.city = city;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRepassword() {
-        return repassword;
-    }
-
-    public String getVerify_code() {
-        return verify_code;
     }
 
     public String getRealname() {
@@ -163,11 +135,8 @@ public class RegisterBeans implements Serializable {
 
     @Override
     public String toString() {
-        return "RegisterBeans{" +
-                "mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
-                ", repassword='" + repassword + '\'' +
-                ", verify_code='" + verify_code + '\'' +
+        return "RegisterInfoBeans{" +
+                "uid='" + uid + '\'' +
                 ", realname='" + realname + '\'' +
                 ", sex=" + sex +
                 ", idcard='" + idcard + '\'' +

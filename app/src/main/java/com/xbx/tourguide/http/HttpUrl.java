@@ -6,7 +6,7 @@ package com.xbx.tourguide.http;
  */
 public class HttpUrl {
 
-        public static String URL = "http://192.168.1.27/yueyou/Api/";
+    public static String URL = "http://192.168.1.27/yueyou/Api/";
 //    public static String URL = "http://192.168.1.24/yueyou/Api/";
 
     //网络服务器
@@ -17,6 +17,8 @@ public class HttpUrl {
 
     //注册
     public static String REGISTER = URL + "user/register.json";
+    //注册导游基本信息
+    public static String REGISTER_GUIDE_INFO = URL + "user/register_guide_info.josn";
     //获取验证码
     public static String GET_VERIFYCODE = URL + "Index/send_verifyCode.json";
     //登录
@@ -53,4 +55,6 @@ public class HttpUrl {
     public static String GUIDE_DETAIL = URL + "user/guide_main.json";
     //个人主页修改
     public static String GUIDE_MAIN = URL + "user/guide_main.json";
+    //版本更新
+    public static String VERSION_UPDATE = URL + "Index/version_update.json";
 }

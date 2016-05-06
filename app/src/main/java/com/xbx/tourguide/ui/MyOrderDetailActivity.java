@@ -110,7 +110,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
             public void requestSuccess(String json) {
                 LogUtils.i("---getOrderDetail:" + json);
                 if (UtilParse.getRequestCode(json) == 1) {
-                    final OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json),OrderDetailBeans.class);
+                    final OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json), OrderDetailBeans.class);
                     loader.displayImage(result.getHead_image(), headPicCiv);
                     nickNameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());
@@ -343,7 +343,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     private void confirmOrder(final String tag) {
 
         RequestParams params = new RequestParams();
-        params.put("uid", UserInfoParse.getUid(Cookie.getUserInfo(this)));
+        params.put("uid", Cookie.getUid(this));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, "", new RequestBackListener(this) {

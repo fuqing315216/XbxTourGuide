@@ -311,7 +311,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private void setLonLat(final BDLocation location) {
 
         RequestParams params = new RequestParams();
-        params.put("uid", UserInfoParse.getUid(Cookie.getUserInfo(this)));
+        params.put("uid", Cookie.getUid(this));
         params.put("lon", location.getLongitude() + "");
         params.put("lat", location.getLatitude() + "");
         Cookie.putLonAndLat(this, location.getLongitude() + "," + location.getLatitude());

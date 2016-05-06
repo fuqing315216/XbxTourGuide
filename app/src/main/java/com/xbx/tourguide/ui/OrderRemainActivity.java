@@ -145,7 +145,7 @@ public class OrderRemainActivity extends BaseActivity {
      */
     private void confirmOrder(final String tag) {
         RequestParams params = new RequestParams();
-        params.put("uid", UserInfoParse.getUid(Cookie.getUserInfo(this)));
+        params.put("uid", Cookie.getUid(this));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.loding), new RequestBackListener(this) {
