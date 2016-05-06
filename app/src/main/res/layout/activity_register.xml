@@ -66,11 +66,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp16"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             android:background="@drawable/bg_roundbtn_verification_style"
             android:gravity="center"
             android:text="@string/get_verification"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
     </RelativeLayout>
 

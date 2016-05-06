@@ -52,6 +52,16 @@
     <string name="register_explain">注册即代表</string>
     <string name="register_zack"><u>阅读并同意Zack协议</u></string>
     <string name="register_ok_notification">我们会在一个工作日内完成审核\n\t审核结果将在第一时间通知您</string>
+    <string name="guide_type1">导游</string>
+    <string name="need_data">需要提供资料：</string>
+    <string name="guide_type1_data">本人身份证正面照片、导游证照片、手持省份证照片</string>
+    <string name="guide_type2">向导</string>
+    <string name="guide_other_data">本人身份证正面照片、手持省份证照片</string>
+    <string name="guide_type3">随游</string>
+    <string name="step1">手机验证</string>
+    <string name="step2">选择类型</string>
+    <string name="step3">填写信息</string>
+    <string name="step4">资料上传</string>
     <!-- home -->
     <string name="myorder">我的订单</string>
     <string name="mytravel">我的旅博</string>
@@ -167,4 +177,5 @@
     <string name="load_fail">加载失败</string>
     <string name="load_succeed">加载成功</string>
     <string name="now_loading">正在加載...</string>
+
 </resources>

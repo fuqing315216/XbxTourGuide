@@ -1,293 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:CircleImageView="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/llyt_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:orientation="vertical">
+    android:background="@color/bg_color">
 
-    <include layout="@layout/titlebar" />
-    <include layout="@layout/view_step" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
+    <include
+        android:id="@+id/title_guide_info"
+        layout="@layout/titlebar" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/line_color" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/head_text_color">
-
-            <com.xbx.tourguide.view.CircleImageView
-                android:id="@+id/civ_register_headimg"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dp8"
-                android:background="@color/head_text_color"
-                android:src="@drawable/img_headpic"
-                CircleImageView:border_color="@color/head_with_color"
-                CircleImageView:border_width="2dp" />
-
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/civ_register_headimg"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/dp8"
-                android:paddingTop="@dimen/dp8">
-
-                <RadioButton
-                    android:id="@+id/rb_register_famale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:button="@null"
-                    android:drawableLeft="@drawable/ic_gender_selected"
-                    android:drawablePadding="@dimen/dp8"
-                    android:text="@string/female"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_register_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:background="@null"
-                    android:button="@null"
-                    android:checked="false"
-                    android:drawableLeft="@drawable/ic_gender_normal"
-                    android:drawablePadding="@dimen/dp8"
-                    android:text="@string/male"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
-            </RadioGroup>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color" />
+        android:layout_above="@+id/btn_register_guide_info_next"
+        android:layout_below="@+id/title_guide_info">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@color/head_text_color"
             android:orientation="vertical">
 
+            <include layout="@layout/view_step" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_color" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:text="@string/name" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/line_color" />
 
-                <EditText
-                    android:id="@+id/et_register_realname"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/et_name"
-                    android:maxLength="6" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@color/line_color" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
-
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:text="@string/card" />
-
-                <EditText
-                    android:id="@+id/et_register_card"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/et_card" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@color/line_color" />
-
-            <RelativeLayout
-                android:id="@+id/rlyt_tourist_type"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
-
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:text="@string/card_type" />
-
-                <TextView
-                    android:id="@+id/et_toursit_type"
-                    style="@style/EditTextStyle"
-                    android:text="@string/et_card_type"
-                    android:textColor="@color/gray_color" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@color/line_color" />
-
-            <RelativeLayout
-                android:id="@+id/rlyt_tourist_num"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
-
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:text="@string/tourist_no" />
-
-                <EditText
-                    android:id="@+id/et_tourist_num"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/et_tourist" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@color/line_color" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
-
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:text="@string/location" />
-
-                <TextView
-                    android:id="@+id/et_register_location"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/et_location" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@color/line_color" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48">
-
-                <TextView
-                    android:id="@+id/tv_language"
-                    style="@style/TextViewStyle"
-                    android:text="@string/language" />
-
-                <!--<EditText-->
-                <!--android:id="@+id/et_language"-->
-                <!--style="@style/EditTextStyle"-->
-                <!--android:hint="@string/et_location" />-->
-
-                <RadioGroup
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="90dp"
-                    android:orientation="horizontal">
+                    android:background="@color/head_text_color">
 
-                    <RadioButton
-                        android:id="@+id/rb_register_chinese"
+                    <com.xbx.tourguide.view.CircleImageView
+                        android:id="@+id/civ_register_headimg"
+                        android:layout_width="76dp"
+                        android:layout_height="76dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:background="@color/head_text_color"
+                        android:src="@drawable/img_headpic"
+                        CircleImageView:border_color="@color/head_with_color"
+                        CircleImageView:border_width="2dp" />
+
+                    <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:button="@null"
-                        android:drawableLeft="@drawable/ic_gender_selected"
-                        android:drawablePadding="@dimen/dp8"
-                        android:text="@string/chinese"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/sp15" />
+                        android:layout_below="@id/civ_register_headimg"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp8"
+                        android:paddingTop="@dimen/dp8">
 
-                    <RadioButton
-                        android:id="@+id/rb_register_english"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:checked="false"
-                        android:drawableLeft="@drawable/ic_gender_normal"
-                        android:drawablePadding="@dimen/dp8"
-                        android:text="@string/english"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/sp15" />
+                        <RadioButton
+                            android:id="@+id/rb_register_famale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/ic_gender_selected"
+                            android:drawablePadding="@dimen/dp8"
+                            android:text="@string/female"
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
 
-                    <RadioButton
-                        android:id="@+id/rb_register_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:checked="false"
-                        android:drawableLeft="@drawable/ic_gender_normal"
-                        android:drawablePadding="@dimen/dp8"
-                        android:text="@string/all"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/sp15" />
-                </RadioGroup>
-            </RelativeLayout>
+                        <RadioButton
+                            android:id="@+id/rb_register_male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:background="@null"
+                            android:button="@null"
+                            android:checked="false"
+                            android:drawableLeft="@drawable/ic_gender_normal"
+                            android:drawablePadding="@dimen/dp8"
+                            android:text="@string/male"
+                            android:textColor="@color/text_color"
+                            android:textSize="14sp" />
+                    </RadioGroup>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:background="@color/head_text_color"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:text="@string/name" />
+
+                        <EditText
+                            android:id="@+id/et_register_realname"
+                            style="@style/EditTextStyle"
+                            android:hint="@string/et_name"
+                            android:maxLength="6" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:text="@string/card" />
+
+                        <EditText
+                            android:id="@+id/et_register_card"
+                            style="@style/EditTextStyle"
+                            android:hint="@string/et_card" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlyt_tourist_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:text="@string/card_type" />
+
+                        <TextView
+                            android:id="@+id/et_toursit_type"
+                            style="@style/EditTextStyle"
+                            android:text="@string/et_card_type"
+                            android:textColor="@color/gray_color" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlyt_tourist_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:text="@string/tourist_no" />
+
+                        <EditText
+                            android:id="@+id/et_tourist_num"
+                            style="@style/EditTextStyle"
+                            android:hint="@string/et_tourist" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:text="@string/location" />
+
+                        <TextView
+                            android:id="@+id/et_register_location"
+                            style="@style/EditTextStyle"
+                            android:hint="@string/et_location" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@color/line_color" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp48">
+
+                        <TextView
+                            android:id="@+id/tv_language"
+                            style="@style/TextViewStyle"
+                            android:text="@string/language" />
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="90dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_register_chinese"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/ic_gender_selected"
+                                android:drawablePadding="@dimen/dp8"
+                                android:text="@string/chinese"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/sp15" />
+
+                            <RadioButton
+                                android:id="@+id/rb_register_english"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableLeft="@drawable/ic_gender_normal"
+                                android:drawablePadding="@dimen/dp8"
+                                android:text="@string/english"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/sp15" />
+
+                            <RadioButton
+                                android:id="@+id/rb_register_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableLeft="@drawable/ic_gender_normal"
+                                android:drawablePadding="@dimen/dp8"
+                                android:text="@string/all"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/sp15" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_color" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_register_guide_info_next"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp48"
-            android:layout_marginBottom="@dimen/dp12"
-            android:layout_marginLeft="@dimen/dp16"
-            android:layout_marginRight="@dimen/dp16"
-            android:layout_marginTop="@dimen/dp12"
-            android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/next"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/sp15" />
-    </LinearLayout>
+    </ScrollView>
 
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btn_register_guide_info_next"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp12"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp12"
+        android:background="@drawable/bg_roundbtn_style"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
+
+</RelativeLayout>

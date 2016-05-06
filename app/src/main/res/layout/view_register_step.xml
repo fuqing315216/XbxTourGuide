@@ -14,7 +14,8 @@
             android:id="@+id/iv_step_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp" />
+            android:layout_marginTop="28dp"
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_step_register"
@@ -23,7 +24,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dp24"
             android:layout_marginTop="7dp"
-            android:text="手机验证" />
+            android:text="@string/step1"
+            android:textColor="@color/head_bg_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +47,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dp24"
             android:layout_marginTop="7dp"
-            android:text="选择类型" />
+            android:text="@string/step2" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +69,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dp24"
             android:layout_marginTop="7dp"
-            android:text="填写信息" />
+            android:text="@string/step3" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,6 +91,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dp24"
             android:layout_marginTop="7dp"
-            android:text="资料上传" />
+            android:text="@string/step4" />
     </LinearLayout>
 </LinearLayout>

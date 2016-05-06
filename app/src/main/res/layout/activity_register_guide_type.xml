@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical">
 
     <include layout="@layout/titlebar" />
@@ -14,16 +15,18 @@
         android:layout_height="80dp"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
+        android:background="@drawable/bg_comment_style"
         android:orientation="horizontal"
         android:padding="@dimen/dp8">
 
         <TextView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="#442680"
+            android:background="@drawable/bg_guide_type1_style"
             android:gravity="center"
-            android:text="导游"
-            android:textColor="@android:color/white" />
+            android:text="@string/guide_type1"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp16" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,13 +38,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="需要提供资料：" />
+                android:text="@string/need_data"
+                android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="本人身份证正面照片、导游证照片、手持省份证照片" />
+                android:text="@string/guide_type1_data"
+                android:textSize="@dimen/sp12" />
         </LinearLayout>
     </LinearLayout>
 
@@ -50,16 +55,18 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_margin="@dimen/dp16"
+        android:background="@drawable/bg_comment_style"
         android:orientation="horizontal"
         android:padding="@dimen/dp8">
 
         <TextView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="#e7b021"
+            android:background="@drawable/bg_guide_type2_style"
             android:gravity="center"
-            android:text="向导"
-            android:textColor="@android:color/white" />
+            android:text="@string/guide_type2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp16" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,13 +78,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="需要提供资料：" />
+                android:text="@string/need_data"
+                android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="本人身份证正面照片、手持省份证照片" />
+                android:text="@string/guide_other_data"
+                android:textSize="@dimen/sp12" />
         </LinearLayout>
     </LinearLayout>
 
@@ -87,16 +96,18 @@
         android:layout_height="80dp"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
+        android:background="@drawable/bg_comment_style"
         android:orientation="horizontal"
         android:padding="@dimen/dp8">
 
         <TextView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="#abc828"
+            android:background="@drawable/bg_guide_type3_style"
             android:gravity="center"
-            android:text="随游"
-            android:textColor="@android:color/white" />
+            android:text="@string/guide_type3"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp16" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,13 +119,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="需要提供资料：" />
+                android:text="@string/need_data"
+                android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="本人身份证正面照片、手持省份证照片" />
+                android:text="@string/guide_other_data"
+                android:textSize="@dimen/sp12" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

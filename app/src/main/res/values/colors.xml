@@ -19,4 +19,6 @@
     <color name="head_with_color">#8f7db3</color>
     <color name="colorTag">#eee5ff</color>
     <color name="serverTime">#ffd400</color>
+    <color name="guide_type2">#e7b021</color>
+    <color name="guide_type3">#abc828</color>
 </resources>

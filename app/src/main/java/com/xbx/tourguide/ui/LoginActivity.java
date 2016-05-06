@@ -70,6 +70,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         ToastUtils.showShort(LoginActivity.this, "自动登录成功");
                         Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                         startIntent(HomeActivity.class, true);
+                    } else if (UtilParse.getRequestCode(json) == 2) {
+                        startIntent(RegisterGuideTypeActivity.class, false);
                     }
                 }
             });
@@ -146,7 +148,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void requestSuccess(String json) {
                 LogUtils.i("------login-json:" + json);
                 if (UtilParse.getRequestCode(json) == 2) {
-                    startIntent(RegisterGuideTypeActivity.class, true);
+                    startIntent(RegisterGuideTypeActivity.class, false);
                 } else if (UtilParse.getRequestCode(json) == 1) {
                     Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                     startIntent(HomeActivity.class, true);

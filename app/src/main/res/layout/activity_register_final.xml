@@ -1,261 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <include layout="@layout/titlebar" />
+    <include
+        android:id="@+id/title_register_final"
+        layout="@layout/titlebar" />
 
-    <include layout="@layout/view_step" />
-
-    <View
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dp8"
-        android:background="@color/line_color" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/head_text_color">
-
-        <ImageView
-            android:id="@+id/iv_card_front"
-            android:layout_width="115dp"
-            android:layout_height="76dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp8"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_info_pic" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_register_finish"
+        android:layout_below="@+id/title_register_final">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:layout_height="wrap_content"
-                android:text="@string/card_front" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginTop="3dp"
-                android:text="@string/follow_img"
-                android:textSize="@dimen/sp12" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_upload_card_front"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp16"
-            android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/uploade"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/sp15" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dp8"
-        android:background="@color/line_color" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/head_text_color">
-
-        <ImageView
-            android:id="@+id/iv_card_other"
-            android:layout_width="115dp"
-            android:layout_height="76dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp8"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_info_pic" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:layout_height="wrap_content"
-                android:text="@string/card_other" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginTop="3dp"
-                android:text="@string/follow_img"
-                android:textSize="@dimen/sp12" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_upload_card_other"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp16"
-            android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/uploade"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/sp15" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@color/line_color" />
-
-        <RelativeLayout
-            android:id="@+id/rlyt_upload_tourist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/head_text_color">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_card_tourist"
-                android:layout_width="115dp"
-                android:layout_height="76dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/dp8"
+            <include layout="@layout/view_step" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginTop="@dimen/dp8"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_info_pic" />
+                android:background="@color/line_color" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
+                android:background="@color/head_text_color">
 
-                <TextView
-                    style="@style/TextViewStyle"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tourist" />
+                <ImageView
+                    android:id="@+id/iv_card_front"
+                    android:layout_width="115dp"
+                    android:layout_height="76dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_info_pic" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp16"
-                    android:layout_marginTop="3dp"
-                    android:text="@string/follow_img"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_height="wrap_content"
+                        android:text="@string/card_front" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/follow_img"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_upload_card_front"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:background="@drawable/bg_roundbtn_style"
+                    android:text="@string/uploade"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/sp12" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dp8"
+                android:background="@color/line_color" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/head_text_color">
+
+                <ImageView
+                    android:id="@+id/iv_card_other"
+                    android:layout_width="115dp"
+                    android:layout_height="76dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_info_pic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_height="wrap_content"
+                        android:text="@string/card_other" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/follow_img"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_upload_card_other"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:background="@drawable/bg_roundbtn_style"
+                    android:text="@string/uploade"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/sp12" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:background="@color/line_color" />
+
+                <RelativeLayout
+                    android:id="@+id/rlyt_upload_tourist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/head_text_color">
+
+                    <ImageView
+                        android:id="@+id/iv_card_tourist"
+                        android:layout_width="115dp"
+                        android:layout_height="76dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/dp8"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/img_info_pic" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tourist" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp16"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/follow_img"
+                            android:textSize="@dimen/sp12" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_upload_tourist"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:background="@drawable/bg_roundbtn_style"
+                        android:text="@string/uploade"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/sp12" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:background="@color/line_color" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_upload_tourist"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp16"
-                android:background="@drawable/bg_roundbtn_style"
-                android:text="@string/uploade"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/sp15" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dp8"
-            android:background="@color/line_color" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/head_text_color">
-
-        <ImageView
-            android:id="@+id/iv_card_personal"
-            android:layout_width="115dp"
-            android:layout_height="76dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp8"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_info_pic" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/personal" />
+                android:background="@color/head_text_color">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp16"
-                android:layout_marginTop="3dp"
-                android:text="@string/follow_img"
-                android:textSize="@dimen/sp12" />
+                <ImageView
+                    android:id="@+id/iv_card_personal"
+                    android:layout_width="115dp"
+                    android:layout_height="76dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_info_pic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_height="wrap_content"
+                        android:text="@string/personal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/follow_img"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_upload_card_personal"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:background="@drawable/bg_roundbtn_style"
+                    android:text="@string/uploade"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/sp12" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color" />
         </LinearLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/btn_upload_card_personal"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp16"
-            android:background="@drawable/bg_roundbtn_style"
-            android:text="@string/uploade"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/sp15" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
 
     <Button
         android:id="@+id/btn_register_finish"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp48"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp12"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
@@ -264,4 +281,4 @@
         android:text="@string/finish"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp15" />
-</LinearLayout>
+</RelativeLayout>

@@ -7,5 +7,7 @@
     <com.xbx.tourguide.view.RegisterStepView
         android:id="@+id/step_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16" />
 </LinearLayout>

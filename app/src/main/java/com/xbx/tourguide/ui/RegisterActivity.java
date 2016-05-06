@@ -145,16 +145,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 String pw = pwEt.getText().toString();
                 String repw = repwEt.getText().toString();
 
-                if (VerifyUtil.isNullOrEmpty(verify)) {
-                    Toast.makeText(RegisterActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 if (VerifyUtil.isNullOrEmpty(mobile)) {
                     Toast.makeText(RegisterActivity.this, "请输入手机号码", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (!VerifyUtil.isTelPhoneNumber(mobile)) {
                     Toast.makeText(RegisterActivity.this, "手机号码格式有误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (VerifyUtil.isNullOrEmpty(verify)) {
+                    Toast.makeText(RegisterActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
