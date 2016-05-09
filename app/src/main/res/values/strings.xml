@@ -142,6 +142,7 @@
     <string name="et_put_money">本次可转出：0.00元</string>
     <!-- use guide -->
     <string name="sure">确定</string>
+    <string name="setting_user_info">个人资料</string>
     <string name="user_guide">用户指南</string>
     <string name="server_call">客服电话</string>
     <string name="law_list">法律条款</string>

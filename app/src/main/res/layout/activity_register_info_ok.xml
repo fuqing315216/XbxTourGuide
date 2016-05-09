@@ -15,7 +15,7 @@
         android:layout_below="@+id/title_register_ok"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/register_ok_icon" />
 
     <TextView
         android:id="@+id/tv_register_ok"

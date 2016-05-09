@@ -17,6 +17,7 @@ import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.VerifyBeans;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
@@ -47,8 +48,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    Cookie.putUid(RegisterActivity.this, (String) msg.obj);
-                    startActivity(new Intent(RegisterActivity.this, RegisterGuideInfoActivity.class));
+                    Cookie.putUid(RegisterActivity.this, UserInfoParse.getUid((String) msg.obj));
+                    startActivity(new Intent(RegisterActivity.this, RegisterGuideTypeActivity.class));
                     break;
 
                 case TaskFlag.PAGEREQUESTWO:
@@ -89,6 +90,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ActivityManager.getInstance().pushOneActivity(this);
+        loginApi = new LoginApi(this, handler);
         initView();
     }
 
@@ -135,9 +137,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(this, "您输入的手机号码有误，请重新输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                loginApi = new LoginApi(this, handler);
                 loginApi.getVerifyCode(phone, "0");
-//                getVerifyCode(phone);
                 break;
             case R.id.btn_register_next:
                 String mobile = phoneEt.getText().toString().trim();

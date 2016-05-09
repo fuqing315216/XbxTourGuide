@@ -92,18 +92,4 @@ public class LoginApi {
             }
         });
     }
-
-    /**
-     * 注册导游基本信息
-     *
-     * @param params
-     */
-    public void registerGuideInfo(RequestParams params) {
-        IRequest.post(context, HttpUrl.REGISTER_GUIDE_INFO, params, context.getString(R.string.loding), new RequestBackListener(context) {
-            @Override
-            public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
-            }
-        });
-    }
 }

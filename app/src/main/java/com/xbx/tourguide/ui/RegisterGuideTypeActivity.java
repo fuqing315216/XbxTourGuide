@@ -2,11 +2,13 @@ package com.xbx.tourguide.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.view.RegisterStepView;
 import com.xbx.tourguide.view.TitleBarView;
 

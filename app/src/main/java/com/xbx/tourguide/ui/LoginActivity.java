@@ -65,13 +65,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void requestSuccess(String json) {
                     if (UtilParse.getRequestCode(json) == 0) {
-                        ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
+                        ToastUtils.showShort(LoginActivity.this, UtilParse.getRequestMsg(json));
+//                        ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
                     } else if (UtilParse.getRequestCode(json) == 1) {
                         ToastUtils.showShort(LoginActivity.this, "自动登录成功");
                         Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                         startIntent(HomeActivity.class, true);
                     } else if (UtilParse.getRequestCode(json) == 2) {
                         startIntent(RegisterGuideTypeActivity.class, false);
+                        Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                     }
                 }
             });
@@ -146,9 +148,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("------login-json:" + json);
+                LogUtils.i("------login_json:" + json);
                 if (UtilParse.getRequestCode(json) == 2) {
                     startIntent(RegisterGuideTypeActivity.class, false);
+                    Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                 } else if (UtilParse.getRequestCode(json) == 1) {
                     Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
                     startIntent(HomeActivity.class, true);
@@ -160,7 +163,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private long exitTime = 0;
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {

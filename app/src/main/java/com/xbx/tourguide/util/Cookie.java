@@ -2,6 +2,7 @@ package com.xbx.tourguide.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 
 /**
  * Created by shuzhen on 2016/4/6.
@@ -41,6 +42,7 @@ public class Cookie {
         if (info != null) {
             editor.putString("userbean", info);
         }
+        Cookie.putUid(context, UserInfoParse.getUid(info));
         editor.commit();
         editor.clear();
     }

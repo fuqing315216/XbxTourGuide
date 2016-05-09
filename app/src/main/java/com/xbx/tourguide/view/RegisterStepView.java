@@ -5,14 +5,13 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xbx.tourguide.R;
 
 public class RegisterStepView extends FrameLayout {
 
-    private ImageView registerIv, typeIv, infoIv, loadIv;
+    private StepView stepView1, stepView2, stepView3, stepView4;
     private TextView registerTv, typeTv, infoTv, loadTv;
     private Context mContext;
 
@@ -38,10 +37,10 @@ public class RegisterStepView extends FrameLayout {
     private void initWidgets() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.view_register_step, this, true);
-        registerIv = (ImageView) findViewById(R.id.iv_step_register);
-        typeIv = (ImageView) findViewById(R.id.iv_step_guide_type);
-        infoIv = (ImageView) findViewById(R.id.iv_step_info);
-        loadIv = (ImageView) findViewById(R.id.iv_step_upload);
+        stepView1 = (StepView) findViewById(R.id.step_view1);
+        stepView2 = (StepView) findViewById(R.id.step_view2);
+        stepView3 = (StepView) findViewById(R.id.step_view3);
+        stepView4 = (StepView) findViewById(R.id.step_view4);
 
         registerTv = (TextView) findViewById(R.id.tv_step_register);
         typeTv = (TextView) findViewById(R.id.tv_step_guide_type);
@@ -52,12 +51,22 @@ public class RegisterStepView extends FrameLayout {
     public void setStep(int step) {
         switch (step) {
             case 1:
+                stepView1.setSelected(true);
+                stepView2.setSelected(false);
+                stepView3.setSelected(false);
+                stepView4.setSelected(false);
+
+                setSelectedColor(registerTv, true);
+                setSelectedColor(typeTv, false);
+                setSelectedColor(infoTv, false);
+                setSelectedColor(loadTv, false);
+
                 break;
             case 2:
-                registerIv.setImageResource(R.drawable.ic_launcher);
-                typeIv.setImageResource(R.drawable.ic_launcher);
-                infoIv.setImageResource(R.drawable.ic_launcher);
-                loadIv.setImageResource(R.drawable.ic_launcher);
+                stepView1.setSelected(false);
+                stepView2.setSelected(true);
+                stepView3.setSelected(false);
+                stepView4.setSelected(false);
 
                 setSelectedColor(registerTv, false);
                 setSelectedColor(typeTv, true);
@@ -65,10 +74,11 @@ public class RegisterStepView extends FrameLayout {
                 setSelectedColor(loadTv, false);
                 break;
             case 3:
-                registerIv.setImageResource(R.drawable.ic_launcher);
-                typeIv.setImageResource(R.drawable.ic_launcher);
-                infoIv.setImageResource(R.drawable.ic_launcher);
-                loadIv.setImageResource(R.drawable.ic_launcher);
+                stepView1.setSelected(false);
+                stepView2.setSelected(false);
+                stepView3.setSelected(true);
+                stepView4.setSelected(false);
+
 
                 setSelectedColor(registerTv, false);
                 setSelectedColor(typeTv, false);
@@ -76,10 +86,10 @@ public class RegisterStepView extends FrameLayout {
                 setSelectedColor(loadTv, false);
                 break;
             case 4:
-                registerIv.setImageResource(R.drawable.ic_launcher);
-                typeIv.setImageResource(R.drawable.ic_launcher);
-                infoIv.setImageResource(R.drawable.ic_launcher);
-                loadIv.setImageResource(R.drawable.ic_launcher);
+                stepView1.setSelected(false);
+                stepView2.setSelected(false);
+                stepView3.setSelected(false);
+                stepView4.setSelected(true);
 
                 setSelectedColor(registerTv, false);
                 setSelectedColor(typeTv, false);

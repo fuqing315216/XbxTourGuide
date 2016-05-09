@@ -2,20 +2,19 @@ package com.xbx.tourguide.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.api.LoginApi;
-import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.RegisterInfoBeans;
+import com.xbx.tourguide.http.HttpUrl;
+import com.xbx.tourguide.http.IRequest;
+import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
@@ -37,20 +36,6 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     private ImageView frontIv, otherIv, touristIv, personalIv;
     private ImageLoader loader;
     private RegisterInfoBeans beans;
-
-    private LoginApi loginApi = null;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case TaskFlag.REQUESTSUCCESS:
-                    ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
-                    startIntent(LoginActivity.class, true);
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +140,8 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
             String url = data.getStringExtra("url");
             if (requestCode == 102) {
                 loader.displayImage("file://" + url, frontIv);
+//                ImageSize imageSize = new ImageSize(ScreenUtils.px2dip(this, 115), ScreenUtils.px2dip(this, 76), 0);
+//                frontIv.setImageBitmap(loader.loadImageSync("file://" + url, imageSize));
                 beans.setIdcard_front(url);
             } else if (requestCode == 103) {
                 loader.displayImage("file://" + url, otherIv);
@@ -180,6 +167,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("idcard", beans.getIdcard());
         params.put("guide_type", beans.getGuide_type() + "");
         params.put("guide_card_number", beans.getGuide_card_number() + "");
+        params.put("guide_card_type", beans.getGuide_card_type() + "");
         params.put("head_image", new File(beans.getHead_image()));
         params.put("idcard_front", new File(beans.getIdcard_front()));
         params.put("idcard_back", new File(beans.getIdcard_back()));
@@ -193,18 +181,27 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nsex=" + beans.getSex()
                 + "\nidcard=" + beans.getIdcard()
                 + "\nguide_type=" + beans.getGuide_type()
-                + "\nguide_number=" + beans.getGuide_card_number()
-
-                + "\nuser_type=" + beans.getGuide_card_type()
+                + "\nguide_card_number=" + beans.getGuide_card_number()
+                + "\nguide_card_type=" + beans.getGuide_card_type()
                 + "\nhead_image=" + beans.getHead_image()
                 + "\nidcard_front=" + beans.getIdcard_front()
                 + "\nidcard_back=" + beans.getIdcard_back()
                 + "\nguide_card=" + beans.getGuide_card()
                 + "\nguide_idcard=" + beans.getGuide_idcard()
                 + "\nserver_language=" + beans.getServer_language()
-                + "\nnow_address=" + beans.getCity().getName());
+                + "\nnow_address=" + beans.getCity().getId());
 
-        loginApi = new LoginApi(this, handler);
-        loginApi.registerGuideInfo(params);
+        IRequest.post(this, HttpUrl.REGISTER_GUIDE_INFO, params, getString(R.string.loding), new RequestBackListener(this) {
+            @Override
+            public void requestSuccess(String json) {
+                LogUtils.i("-----registerGuideInfo:" + json);
+                if (UtilParse.getRequestCode(json) != 0) {
+                    ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
+                    startIntent(LoginActivity.class, true);
+                } else {
+                    ToastUtils.showShort(RegisterFinalActivity.this, UtilParse.getRequestMsg(json));
+                }
+            }
+        });
     }
 }

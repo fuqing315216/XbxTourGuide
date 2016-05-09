@@ -12,7 +12,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_register_finish"
         android:layout_below="@+id/title_register_final">
 
         <LinearLayout
@@ -25,7 +24,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
             <RelativeLayout
@@ -264,21 +262,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_color" />
+
+            <Button
+                android:id="@+id/btn_register_finish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginBottom="@dimen/dp12"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_marginRight="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp16"
+                android:background="@drawable/bg_roundbtn_style"
+                android:text="@string/finish"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp15" />
         </LinearLayout>
     </ScrollView>
-
-
-    <Button
-        android:id="@+id/btn_register_finish"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dp12"
-        android:layout_marginLeft="@dimen/dp16"
-        android:layout_marginRight="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp12"
-        android:background="@drawable/bg_roundbtn_style"
-        android:text="@string/finish"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/sp15" />
 </RelativeLayout>

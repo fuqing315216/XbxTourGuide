@@ -61,6 +61,12 @@
             android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.RegisterGuideTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.RegisterInfoOkActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.RegisterGuideInfoActivity"
             android:screenOrientation="portrait" />
         <activity

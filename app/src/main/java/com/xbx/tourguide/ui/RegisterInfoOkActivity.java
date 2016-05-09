@@ -19,7 +19,7 @@ public class RegisterInfoOkActivity extends BaseActivity {
         titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startIntent(LoginActivity.class, true);
             }
         });
 

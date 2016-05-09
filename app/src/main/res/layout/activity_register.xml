@@ -12,7 +12,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
         android:background="@color/line_color" />
 
 
@@ -66,8 +65,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp16"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
             android:background="@drawable/bg_roundbtn_verification_style"
             android:gravity="center"
             android:text="@string/get_verification"
@@ -192,7 +189,7 @@
         android:layout_marginBottom="@dimen/dp12"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp12"
+        android:layout_marginTop="@dimen/dp16"
         android:background="@drawable/bg_roundbtn_style"
         android:text="@string/next"
         android:textColor="@android:color/white"

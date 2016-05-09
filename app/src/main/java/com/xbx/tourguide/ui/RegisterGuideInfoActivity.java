@@ -71,6 +71,8 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         headPicCiv = (CircleImageView) findViewById(R.id.civ_register_headimg);
         nameEt = (EditText) findViewById(R.id.et_register_realname);
         idEt = (EditText) findViewById(R.id.et_register_card);
+        typeEt = (TextView) findViewById(R.id.et_toursit_type);
+        guideIdEt = (EditText) findViewById(R.id.et_tourist_num);
         chRb = (RadioButton) findViewById(R.id.rb_register_chinese);
         enRb = (RadioButton) findViewById(R.id.rb_register_english);
         allRb = (RadioButton) findViewById(R.id.rb_register_all);
@@ -89,6 +91,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         chRb.setOnClickListener(this);
         enRb.setOnClickListener(this);
         allRb.setOnClickListener(this);
+        touristTypeRlyt.setOnClickListener(this);
         findViewById(R.id.btn_register_guide_info_next).setOnClickListener(this);
 
         femaleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
@@ -120,6 +123,10 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
                 intent.putExtra("isPic", true);
                 intent.putExtra("isCrop", true);
                 startActivityForResult(intent, 100);
+                break;
+            case R.id.rlyt_tourist_type:
+                startActivityForResult(new Intent(RegisterGuideInfoActivity.this, CameraDialogActivity.class)
+                        .putExtra("isPic", false), 101);
                 break;
             case R.id.et_register_location:
                 Intent cityIntent = new Intent(RegisterGuideInfoActivity.this, SelectProvinceActivity.class);
