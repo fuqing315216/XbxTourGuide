@@ -52,7 +52,6 @@ public class LoginApi {
         IRequest.post(context, HttpUrl.UPDATE_PW, params, new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("---updatePw:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
@@ -87,7 +86,6 @@ public class LoginApi {
         IRequest.post(context, HttpUrl.REGISTER, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("----register-json:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
