@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -191,12 +192,12 @@ public class RequestManager {
                     Toast.makeText(con, result.getMsg(), Toast.LENGTH_SHORT).show();
                 } else if (result.getCode() == 1) {//成功
                     String jsonData = JsonUtils.toJson(result.getData());
-                    if (jsonData.contains("[")){
-                        Log.i("log","collection====================");
-                        l.requestSuccess(JSON.parseArray(jsonData,classOfT));
+                    if (jsonData.contains("[")) {
+                        Log.i("log", "collection====================");
+                        l.requestSuccess(JSON.parseArray(jsonData, classOfT));
                         //JSON.parseObject(Person.getUtil(2), new  TypeReference>(){});
-                    }else{
-                        Log.i("log","object====================");
+                    } else {
+                        Log.i("log", "object====================");
                         l.requestSuccess(JsonUtils.object(jsonData, classOfT));
                     }
 
@@ -293,7 +294,15 @@ public class RequestManager {
         if (tag != null) {
             request.setTag(tag);
         }
+        request.setRetryPolicy(
+                new DefaultRetryPolicy(
+                        20 * 1000,//默认超时时间，应设置一个稍微大点儿的
+                        0,//默认最大尝试次数
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+        );
         mRequestQueue.add(request);
+
     }
 
     /**

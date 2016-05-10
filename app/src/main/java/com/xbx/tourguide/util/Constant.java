@@ -33,4 +33,7 @@ public class Constant {
      * 更新apk的存放位置
      */
     public static String APK_PATH = ROOT_PATH + "/tutu/apk/xbx.apk";
+
+
+    public static String BROADCAST="order_broadcast";
 }

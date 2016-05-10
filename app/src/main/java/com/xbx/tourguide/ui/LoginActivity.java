@@ -64,6 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
                 @Override
                 public void requestSuccess(String json) {
+                    LogUtils.i("-------isFirstLogin:" + json);
                     if (UtilParse.getRequestCode(json) == 0) {
                         ToastUtils.showShort(LoginActivity.this, UtilParse.getRequestMsg(json));
 //                        ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
@@ -100,8 +101,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         forgetPwTv.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        phoneEt.setText("13982932283");
-        pwEt.setText("XBX123456");
+//        phoneEt.setText("13982932283");
+//        pwEt.setText("XBX123456");
     }
 
     @Override
@@ -145,6 +146,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         params.put("mobile", phoneEt.getText().toString());
         params.put("password", pwEt.getText().toString());
         params.put("push_id", JPushInterface.getRegistrationID(this));
+        LogUtils.i("------mobile" + phoneEt.getText().toString() + "-" + pwEt.getText().toString() + "-" + JPushInterface.getRegistrationID(this));
         IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
@@ -163,6 +165,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private long exitTime = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {

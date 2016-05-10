@@ -1,6 +1,7 @@
 package com.xbx.tourguide.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +33,7 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JPushUtils;
 import com.xbx.tourguide.util.JsonUtils;
@@ -74,20 +76,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS://设置是否开始接单
                     OnLineBeans onLineBean = JsonUtils.object((String) msg.obj, OnLineBeans.class);
-//                    TourGuideBeans bean = new TourGuideBeans();
-//                    TourGuideBeans bean = Cookie.getUserInfo(HomeActivity.this);
                     startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     if (onLineBean.getIs_online() == 0) {//不在线
                         startTv.setText(getResources().getString(R.string.start_order));
-//                        beans.setIs_online("0");
                         startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
                     } else if (onLineBean.getIs_online() == 1) {
                         startTv.setText(getResources().getString(R.string.stop_order));
-//                        beans.setIs_online("1");
                         startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
                     }
-//                    bean.setUser_info(beans);
-//                    Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
                     break;
                 case TaskFlag.PAGEREQUESTWO:
                     Version version = JsonUtils.object((String) msg.obj, Version.class);
@@ -153,6 +149,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        getLocation();
+        if (Cookie.getLoginOut(this)) {
+            initData();
+        }
+
+        new Handler().postDelayed(run, 6000);
+        setTimerTask();
+
+        locationClient = new LocationClient(this);
+        locationClient.start();
+        locationClient.requestLocation();
+    }
+
     private void initView() {
         myOrderRlyt = (RelativeLayout) findViewById(R.id.rlyt_myorder);
         starRab = (RatingBar) findViewById(R.id.rab_home);
@@ -179,10 +191,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
-
+        LogUtils.i("-----initData:" + beans.toString());
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
             GoingBeans goingBeans = UserInfoParse.getGoing(userInfo);
-            startActivity(new Intent(HomeActivity.this, StartServiceActivity.class).putExtra("isgoing", true)
+            startActivity(new Intent(HomeActivity.this, StartServiceActivity.class)
                     .putExtra("orderId", goingBeans.getOrder_number()));
         }
 
@@ -196,22 +208,26 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
         }
 
-        unreadNum = Integer.parseInt(beans.getUnread_order());
-        unreadMsg = Integer.parseInt(beans.getUnread_message());
-        if (unreadNum == 0) {
-            orderNumTv.setVisibility(View.GONE);
-        } else {
-            orderNumTv.setText(unreadNum + "");
-        }
-
-        if (unreadMsg == 0) {
-            msgNumTv.setVisibility(View.GONE);
-        } else {
-
-            msgNumTv.setText(unreadMsg + "");
-        }
+//        unreadNum = Integer.parseInt(beans.getUnread_order());
+//        unreadMsg = Integer.parseInt(beans.getUnread_message());
+//        if (unreadNum == 0) {
+//            orderNumTv.setVisibility(View.GONE);
+//        } else {
+//            orderNumTv.setText(unreadNum + "");
+//        }
+//
+//        if (unreadMsg == 0) {
+//            msgNumTv.setVisibility(View.GONE);
+//        } else {
+//            msgNumTv.setText(unreadMsg + "");
+//        }
         loader.displayImage(beans.getHead_image(), headPicCiv);
-        ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
+        if (!VerifyUtil.isNullOrEmpty(beans.getGuide_card_number())) {
+            ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
+        } else {
+            findViewById(R.id.tv_userno).setVisibility(View.GONE);
+        }
+
         nameTv.setText(beans.getRealname());
 
         scoreTv.setText(Util.getStar(beans.getStars()) + "分");
@@ -220,22 +236,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         } else {
             starRab.setRating(Util.getStar(beans.getStars()) / 2);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        getLocation();
-        if (Cookie.getLoginOut(this)) {
-            initData();
-        }
-
-        new Handler().postDelayed(run, 6000);
-        setTimerTask();
-
-        locationClient = new LocationClient(this);
-        locationClient.start();
-        locationClient.requestLocation();
     }
 
     @Override
@@ -293,7 +293,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 上传经纬度
      */
     private void getLonAndLat() {
-
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
@@ -324,8 +323,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     setLonLat(location);
                 }
-
-
             }
 
             public void onReceivePoi(BDLocation location) {
@@ -333,8 +330,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             }
 
         });
-
-
     }
 
     private void setLonLat(final BDLocation location) {

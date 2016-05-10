@@ -70,7 +70,6 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
                     if (isLoadMore) {
                         isLoadMore = false;
                         cashMyOrderBeansList = JSON.parseArray((String) msg.obj, MyOrderBeans.class);
-                        LogUtils.i("===cashMyOrderBeansList" + cashMyOrderBeansList.toString());
                         if (cashMyOrderBeansList.size() == 0 || cashMyOrderBeansList == null) {
                             nowPage--;
                             pullToRefreshLayout.loadmoreFinish(pullToRefreshLayout.NOMORE);
@@ -113,8 +112,6 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
             }
         });
 
-        exit = true;
-
         pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pulllayout_myorder);
         myOrderLv = (PullableListView) findViewById(R.id.pulllv_myorder);
         myOrderLv.setOnItemClickListener(this);
@@ -129,14 +126,12 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
-    private boolean exit = false;
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(exit){
-            initData();
-        }
-    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        initData();
+//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,11 +140,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         String server_type = bean.getServer_type();
         Intent intent = new Intent();
         if ("0".equals(server_type)) {//即时服务
-            if ("2".equals(order_status)) {//进行中
-                intent.putExtra("isgoing", true);
-                intent.setClass(this, StartServiceActivity.class);
-            } else if ("1".equals(order_status)) {//进行中
-                intent.putExtra("isgoing", false);
+            if ("2".equals(order_status) || "1".equals(order_status)) {//进行中
                 intent.setClass(this, StartServiceActivity.class);
             } else {
                 intent.setClass(this, MyOrderDetailActivity.class);

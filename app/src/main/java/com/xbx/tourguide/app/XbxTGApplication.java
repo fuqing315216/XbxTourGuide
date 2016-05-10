@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.ui.HomeActivity;
 import com.xbx.tourguide.util.Cookie;
 
@@ -30,9 +31,6 @@ public class XbxTGApplication extends Application {
     private static final double EARTH_RADIUS = 6378137.0;
     private static XbxTGApplication instance;
     private static Context mContext;
-    public static String BROADCAST="order_broadcast";
-
-
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
@@ -54,7 +52,6 @@ public class XbxTGApplication extends Application {
     public static XbxTGApplication getInstance() {
         return instance;
     }
-
 
     /**
      * 初始化ImageLoader

@@ -127,7 +127,8 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO:
-                    ToastUtils.showShort(ServiceTimeActivity.this, "设置服务时间和地区成功");
+                    ToastUtils.showShort(ServiceTimeActivity.this, "设置成功");
+                    finish();
                     break;
             }
         }

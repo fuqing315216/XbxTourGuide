@@ -122,7 +122,8 @@ public class ServerApi {
 
             @Override
             public void requestError(VolleyError e) {
-                sendShowMessage.sendMsg(TaskFlag.REQUESTERROR, "");
+//                sendShowMessage.sendMsg(TaskFlag.REQUESTERROR, "");
+                sendShowMessage.getmHandler().sendMessage(sendShowMessage.getmHandler().obtainMessage(TaskFlag.REQUESTERROR));
             }
         });
     }

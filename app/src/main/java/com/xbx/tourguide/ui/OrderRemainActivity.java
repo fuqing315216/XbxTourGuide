@@ -52,7 +52,6 @@ public class OrderRemainActivity extends BaseActivity {
         setContentView(R.layout.activity_order_remain);
         orderNum = getIntent().getStringExtra("orderNumber");
         orderType = getIntent().getStringExtra("serverType");
-        LogUtils.i("---orderType+orderNum" + orderType);
         orderNumberDao = new OrderNumberDao(this);
         initView();
     }
@@ -69,6 +68,7 @@ public class OrderRemainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if ("0".equals(orderType)) {//及时服务
+                    OKTv.setEnabled(false);
                     confirmOrder(1 + "");//接单
                 } else if ("1".equals(orderType)) {//预约服务
                     Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
@@ -76,7 +76,6 @@ public class OrderRemainActivity extends BaseActivity {
                     startIntent(MyOrderListActivity.class, true);
                     finish();
                 }
-                OKTv.setEnabled(false);
             }
         });
 
@@ -122,7 +121,7 @@ public class OrderRemainActivity extends BaseActivity {
                         public void run() {
                             finish();
                         }
-                    }, 2000);
+                    }, 1500);
 
                 } else if (UtilParse.getRequestCode(json) == 1) {
                     OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json), OrderDetailBeans.class);
@@ -148,6 +147,7 @@ public class OrderRemainActivity extends BaseActivity {
         params.put("uid", Cookie.getUid(this));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
+        LogUtils.i("------confirmOrder:" + Cookie.getUid(this) + "-" + orderNum + "-" + tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.loding), new RequestBackListener(this) {
                     @Override
                     public void requestSuccess(String json) {
@@ -197,13 +197,13 @@ public class OrderRemainActivity extends BaseActivity {
                 remainRlyt.setVisibility(View.VISIBLE);
             } else {
                 Cookie.putIsDialog(this, false);
-                OrderRemainActivity.this.finish();
+                finish();
             }
         } else {
             if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
                 orderNumberDao.clear();
                 Cookie.putIsDialog(this, false);
-                OrderRemainActivity.this.finish();
+                finish();
             } else {
                 orderNum = sqLiteOrderBean.getNum();
                 _id = sqLiteOrderBean.get_id();

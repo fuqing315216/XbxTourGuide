@@ -98,7 +98,8 @@
         android:layout_marginRight="@dimen/dp16"
         android:background="@drawable/bg_comment_style"
         android:orientation="horizontal"
-        android:padding="@dimen/dp8">
+        android:padding="@dimen/dp8"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="64dp"

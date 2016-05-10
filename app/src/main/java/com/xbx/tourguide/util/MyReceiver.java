@@ -1,5 +1,6 @@
 package com.xbx.tourguide.util;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,14 +61,15 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.i("log", orderNumber.getOrder_number() + "************************");
                 Log.i("log", "----JPushInterface==================" + orderNumber.toString());
 
-//                Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
-                //
+                context.sendBroadcast(new Intent().setAction(Constant.BROADCAST)
+                        .putExtra("serverType", orderNumber.getServer_type()).putExtra("orderNum", orderNumber.getOrder_number()));
+                Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
+
                 orderNumberDao = new OrderNumberDao(context);
 //                String action = intent.getAction();
                 Intent orderIntent = new Intent(context, OrderRemainActivity.class);
                 String orderNum = orderNumber.getOrder_number();
                 String serverType = orderNumber.getServer_type();
-
                 switch (Integer.valueOf(serverType)) {//100-即时 101-预约 102-取消 103-用户已支付
                     case 100:
                         //将新接受的及时订单添加到sqlite
@@ -116,7 +118,7 @@ public class MyReceiver extends BroadcastReceiver {
                             orderNum = sqLiteOrderBean.getNum();
                             orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
                         } else {
-                            if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
+                            if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {//预约
                                 Cookie.putIsDialog(context, true);
                                 orderIntent.putExtra("serverType", "1");
                                 orderIntent.putExtra("orderNumber", Cookie.getAppointmentOrder(context));
@@ -124,7 +126,7 @@ public class MyReceiver extends BroadcastReceiver {
                                 context.startActivity(orderIntent);
                             }
                         }
-
+                        //
                         Cookie.putIsDialog(context, true);
                         orderIntent.putExtra("serverType", "0");
                         orderIntent.putExtra("orderNumber", orderNum);

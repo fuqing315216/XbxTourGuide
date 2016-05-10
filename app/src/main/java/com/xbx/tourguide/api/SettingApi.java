@@ -54,15 +54,17 @@ public class SettingApi {
      * @param now_address     服务地区
      * @param server_language 服务语言
      */
-    public void updateInfo(String uid, File head_image, String now_address, String server_language) {
+    public void updateInfo(String uid, File head_image, String birthday, String now_address, String server_language) {
         RequestParams params = new RequestParams();
         params.put("uid", uid);
         params.put("head_image", head_image);
+        params.put("birthday", birthday);
         params.put("now_address", now_address);
         params.put("server_language", server_language);
         IRequest.post(context, HttpUrl.UPDATE_INFO, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
+                LogUtils.i("-----updateInfo:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
@@ -113,7 +115,6 @@ public class SettingApi {
         IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("-----getServiceTime:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
@@ -126,8 +127,6 @@ public class SettingApi {
         IRequest.post(context, HttpUrl.SETTING_SERVICETIME, params, context.getString(R.string.loding), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("-----setServiceTime:" + json);
-                LogUtils.i("-----setServiceTime--json:" + UtilParse.getRequestMsg(json));
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });

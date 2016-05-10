@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,7 +29,8 @@ import com.xbx.tourguide.view.TitleBarView;
  */
 public class RegisterGuideInfoActivity extends BaseActivity implements View.OnClickListener {
 
-    private RelativeLayout touristTypeRlyt, touristNumRlyt;
+    private LinearLayout touristLlyt;
+    private RelativeLayout touristTypeRlyt;
     private RadioButton femaleRb, maleRb, chRb, enRb, allRb;
     private CircleImageView headPicCiv;
     public TextView typeEt, locationTv;
@@ -64,7 +66,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         stepView.setStep(3);
 
         touristTypeRlyt = (RelativeLayout) findViewById(R.id.rlyt_tourist_type);
-        touristNumRlyt = (RelativeLayout) findViewById(R.id.rlyt_tourist_num);
+        touristLlyt = (LinearLayout) findViewById(R.id.llyt_tourist);
 
         femaleRb = (RadioButton) findViewById(R.id.rb_register_famale);
         maleRb = (RadioButton) findViewById(R.id.rb_register_male);
@@ -79,9 +81,9 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         locationTv = (TextView) findViewById(R.id.et_register_location);
 
         if (guide_type != 1) {
-            touristTypeRlyt.setVisibility(View.GONE);
-            touristNumRlyt.setVisibility(View.GONE);
+            touristLlyt.setVisibility(View.GONE);
         }
+
         beans.setSex(1);//设置性别
 
         femaleRb.setOnClickListener(this);
@@ -92,6 +94,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         enRb.setOnClickListener(this);
         allRb.setOnClickListener(this);
         touristTypeRlyt.setOnClickListener(this);
+
         findViewById(R.id.btn_register_guide_info_next).setOnClickListener(this);
 
         femaleRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);

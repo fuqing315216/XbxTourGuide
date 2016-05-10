@@ -57,7 +57,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static String getUid(Context context) {
@@ -81,7 +80,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static String getDeviceID(Context context) {
@@ -159,7 +157,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getIsDialog(Context context) {
@@ -180,7 +177,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getIsJPush(Context context) {
@@ -200,7 +196,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getLoginOut(Context context) {

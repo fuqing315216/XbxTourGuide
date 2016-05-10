@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -67,7 +68,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         personalIv = (ImageView) findViewById(R.id.iv_card_personal);
 
         if (guide_type != 1) {
-            findViewById(R.id.rlyt_upload_tourist).setVisibility(View.VISIBLE);
+            findViewById(R.id.rlyt_upload_tourist).setVisibility(View.GONE);
         }
 
         findViewById(R.id.btn_upload_card_front).setOnClickListener(this);

@@ -38,6 +38,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private ImageLoader loader;
     private TourGuideInfoBeans beans = null;
     private String userInfo = "";
+    private String cityId = "";
     private int rightType = 1;//1-主页 2-确认修改
 
     private SettingApi settingApi = null;
@@ -47,11 +48,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    rightType = 1;
-                    titleRightTv.setText(getString(R.string.personal_main));
-//                    beans.setHead_image(JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class).getHead_image());
-//                    Cookie.putUserInfo(PersonalInfoActivity.this, JsonUtils.toJson(tourGuideBean));
+//                    rightType = 1;
+//                    titleRightTv.setText(getString(R.string.personal_main));
                     UserInfoParse.putUserInfo(PersonalInfoActivity.this, userInfo, JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class));
+                    finish();
                     break;
             }
         }
@@ -130,8 +130,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.tv_confirm_update:
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
-                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image())
-                            , beans.getNow_address_name(), beans.getServer_language());
+                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image()),
+                            beans.getBirthday(), cityId, beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);
                 }
@@ -202,6 +202,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             CityBeans city = (CityBeans) data.getSerializableExtra("bean");
             locationTv.setText(city.getName());
             beans.setNow_address_name(city.getName());
+            cityId = city.getId();
             setUpdate();
         }
     }

@@ -67,7 +67,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private MapView mapView;
     private BaiduMap baiduMap;
     private LocationClient locationClient;
-    private boolean isGoing;
     private boolean isFirst = true;
     private LocationMode mCurrentMode;
     private BitmapDescriptor bdMyself = null;
@@ -103,13 +102,23 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                     startTime = result.getServer_start_time();
                     if ("0".equals(startTime)) {
                         timeTv.setText("未开始");
+
+                        if (!stopBtn.getText().toString().equals(getString(R.string.start_service))) {
+                            stopBtn.setText(getResources().getString(R.string.start_service));
+                        }
                     } else {
                         long time = Long.parseLong(result.getNow_time());
                         long serverTime = time - Long.parseLong(startTime);
                         String timeStr = XbxTGApplication.formatTime(serverTime);
                         timeTv.setText(timeStr);
+
+                        if (!stopBtn.getText().toString().equals(getString(R.string.end_service))) {
+                            stopBtn.setText(getResources().getString(R.string.end_service));
+                        }
                     }
-                    if (result.getLon() != null && result.getLat() != null && !isGoing) {
+
+                    if (result.getLon() != null && result.getLat() != null
+                            && timeTv.getText().toString().equals("未开始")) {
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
                     }
                     break;
@@ -121,7 +130,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                             .putExtra("content", "您的即时导游服务已经开始计时"));
                     break;
                 case TaskFlag.PAGEREQUESTHREE://结束服务
-                    StartServiceActivity.this.finish();
+                    finish();
                     break;
             }
         }
@@ -141,7 +150,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_startservice);
         orderId = getIntent().getStringExtra("orderId");
         loader = ImageLoader.getInstance();
-        isGoing = getIntent().getBooleanExtra("isgoing", true);
         bdMyself = BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
         serverApi = new ServerApi(this, handler);
         initView();
@@ -164,11 +172,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
         returnIbtn.setOnClickListener(this);
 
-        if (isGoing) {//进行中
-            stopBtn.setText(getResources().getString(R.string.end_service));
-        } else {//未开始
-            stopBtn.setText(getResources().getString(R.string.start_service));
-        }
         stopBtn.setOnClickListener(this);
 
         locationClient = new LocationClient(this);

@@ -147,6 +147,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/llyt_tourist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -182,7 +183,6 @@
                             android:background="@color/line_color" />
 
                         <RelativeLayout
-                            android:id="@+id/rlyt_tourist_num"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp48">
 
