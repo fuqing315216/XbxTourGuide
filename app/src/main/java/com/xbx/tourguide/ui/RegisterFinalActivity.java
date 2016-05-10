@@ -172,7 +172,12 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("head_image", new File(beans.getHead_image()));
         params.put("idcard_front", new File(beans.getIdcard_front()));
         params.put("idcard_back", new File(beans.getIdcard_back()));
-        params.put("guide_card", new File(beans.getGuide_card()));
+
+        if (guide_type != 1) {
+            params.put("guide_card", "");
+        } else {
+            params.put("guide_card", new File(beans.getGuide_card()));
+        }
         params.put("guide_idcard", new File(beans.getGuide_idcard()));
         params.put("server_language", beans.getServer_language() + "");
         params.put("now_address", beans.getCity().getId());
@@ -198,7 +203,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 LogUtils.i("-----registerGuideInfo:" + json);
                 if (UtilParse.getRequestCode(json) != 0) {
                     ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
-                    startIntent(LoginActivity.class, true);
+                    startIntent(RegisterInfoOkActivity.class, true);
                 } else {
                     ToastUtils.showShort(RegisterFinalActivity.this, UtilParse.getRequestMsg(json));
                 }

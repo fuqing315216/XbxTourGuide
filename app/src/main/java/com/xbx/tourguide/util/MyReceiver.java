@@ -61,8 +61,8 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.i("log", orderNumber.getOrder_number() + "************************");
                 Log.i("log", "----JPushInterface==================" + orderNumber.toString());
 
-                context.sendBroadcast(new Intent().setAction(Constant.BROADCAST)
-                        .putExtra("serverType", orderNumber.getServer_type()).putExtra("orderNum", orderNumber.getOrder_number()));
+//                context.sendBroadcast(new Intent().setAction(Constant.BROADCAST)
+//                        .putExtra("serverType", orderNumber.getServer_type()).putExtra("orderNum", orderNumber.getOrder_number()));
                 Cookie.putUid(context, UserInfoParse.getUid(Cookie.getUserInfo(context)));
 
                 orderNumberDao = new OrderNumberDao(context);

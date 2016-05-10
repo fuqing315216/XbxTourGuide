@@ -146,7 +146,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         params.put("mobile", phoneEt.getText().toString());
         params.put("password", pwEt.getText().toString());
         params.put("push_id", JPushInterface.getRegistrationID(this));
-        LogUtils.i("------mobile" + phoneEt.getText().toString() + "-" + pwEt.getText().toString() + "-" + JPushInterface.getRegistrationID(this));
         IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
