@@ -79,6 +79,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 case TaskFlag.REQUESTSUCCESS://设置是否开始接单
                     OnLineBeans onLineBean = JsonUtils.object((String) msg.obj, OnLineBeans.class);
                     startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                    Cookie.putOnline(HomeActivity.this, onLineBean.getIs_online() + "");
+                    LogUtils.i("-----initData:" + onLineBean.getIs_online());
+
                     if (onLineBean.getIs_online() == 0) {//不在线
                         startTv.setText(getResources().getString(R.string.start_order));
                         startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
@@ -170,7 +174,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
+
         LogUtils.i("-----initData:" + beans.toString());
+
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
             GoingBeans goingBeans = UserInfoParse.getGoing(userInfo);
             startActivity(new Intent(HomeActivity.this, StartServiceActivity.class)
@@ -179,6 +185,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         online = beans.getIs_online();
         startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+        Cookie.putOnline(this, online);
+
         if ("0".equals(online)) {//不在线
             startTv.setText(getResources().getString(R.string.start_order));
             startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);

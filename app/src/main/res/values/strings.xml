@@ -11,6 +11,7 @@
     <string name="forgetpass">忘记密码？</string>
     <string name="forgetpw">忘记密码</string>
     <string name="login">登录</string>
+    <string name="long_cancel">长按取消</string>
     <!-- register -->
     <string name="fill_info">信息填写</string>
     <string name="next">下一步</string>

@@ -2,6 +2,7 @@ package com.xbx.tourguide.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 
 /**
@@ -63,6 +64,29 @@ public class Cookie {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_READABLE);
         String info = share.getString("uid", "");
+        if (info.length() > 0) {
+            return info;
+        } else {
+            return null;
+        }
+    }
+
+    public static void putOnline(Context context, String online) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor editor = share.edit();
+        if (online != null) {
+            editor.putString("online", online);
+        }
+
+        editor.commit();
+        editor.clear();
+    }
+
+    public static String getOnline(Context context) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_READABLE);
+        String info = share.getString("online", "");
         if (info.length() > 0) {
             return info;
         } else {

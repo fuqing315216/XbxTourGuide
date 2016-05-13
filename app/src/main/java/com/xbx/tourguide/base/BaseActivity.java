@@ -68,8 +68,7 @@ public class BaseActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         if (Cookie.getUserInfo(this) != null) {
-            if ("1".equals(UserInfoParse.getIsOnline(Cookie.getUserInfo(this)))
-                    && Cookie.getIsJPush(this)) {
+            if ("1".equals(Cookie.getOnline(this)) && Cookie.getIsJPush(this)) {
                 setTimerTask();
             }
         }
