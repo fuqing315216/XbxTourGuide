@@ -11,14 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.CityBeans;
 import com.xbx.tourguide.beans.RegisterInfoBeans;
-import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.VerifyUtil;
-import com.xbx.tourguide.view.CircleImageView;
 import com.xbx.tourguide.view.RegisterStepView;
 import com.xbx.tourguide.view.TitleBarView;
 
@@ -32,7 +31,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
     private LinearLayout touristLlyt;
     private RelativeLayout touristTypeRlyt;
     private RadioButton femaleRb, maleRb, chRb, enRb, allRb;
-    private CircleImageView headPicCiv;
+    private RoundedImageView headPicRiv;
     public TextView typeEt, locationTv;
     public EditText nameEt, idEt, guideIdEt;
     private ImageLoader loader;
@@ -43,7 +42,6 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_guide_info);
-        ActivityManager.getInstance().pushOneActivity(this);
         loader = ImageLoader.getInstance();
         beans = new RegisterInfoBeans();
         guide_type = getIntent().getIntExtra("guide_type", 1);
@@ -70,7 +68,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
 
         femaleRb = (RadioButton) findViewById(R.id.rb_register_famale);
         maleRb = (RadioButton) findViewById(R.id.rb_register_male);
-        headPicCiv = (CircleImageView) findViewById(R.id.civ_register_headimg);
+        headPicRiv = (RoundedImageView) findViewById(R.id.riv_register_headimg);
         nameEt = (EditText) findViewById(R.id.et_register_realname);
         idEt = (EditText) findViewById(R.id.et_register_card);
         typeEt = (TextView) findViewById(R.id.et_toursit_type);
@@ -88,7 +86,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
 
         femaleRb.setOnClickListener(this);
         maleRb.setOnClickListener(this);
-        headPicCiv.setOnClickListener(this);
+        headPicRiv.setOnClickListener(this);
         locationTv.setOnClickListener(this);
         chRb.setOnClickListener(this);
         enRb.setOnClickListener(this);
@@ -121,7 +119,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
 
                 break;
 
-            case R.id.civ_register_headimg:
+            case R.id.riv_register_headimg:
                 Intent intent = new Intent(RegisterGuideInfoActivity.this, CameraDialogActivity.class);
                 intent.putExtra("isPic", true);
                 intent.putExtra("isCrop", true);
@@ -168,7 +166,7 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
         if (resultCode == 100) {
 
             String url = data.getStringExtra("url");
-            loader.displayImage("file://" + url, headPicCiv);
+            loader.displayImage("file://" + url, headPicRiv);
             beans.setHead_image(url);
 
         } else if (resultCode == 101) {

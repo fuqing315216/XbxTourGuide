@@ -6,7 +6,8 @@
     <string name="phone">手机号</string>
     <string name="et_phone">+86</string>
     <string name="password">密码</string>
-    <string name="et_password">请输入带大写字母的8-20位密码</string>
+    <string name="login_password">请输入密码</string>
+    <string name="register_password">请输入带大写字母的8-20位密码</string>
     <string name="forgetpass">忘记密码？</string>
     <string name="forgetpw">忘记密码</string>
     <string name="login">登录</string>
@@ -97,6 +98,7 @@
     <string name="pay_money">支付定金：</string>
     <string name="alipay">支付宝支付</string>
     <string name="weixin">微信支付</string>
+    <string name="confirm">确认</string>
     <!-- setting -->
     <string name="price_per_h">价格/小时</string>
     <string name="price_per_d">价格/天</string>
@@ -135,6 +137,10 @@
     <string name="recharge">充值</string>
     <string name="deposit">提现</string>
     <string name="paydetail">收支明细</string>
+    <string name="balance_more">点击查看更多</string>
+    <string name="balance_total">总金额(元)</string>
+    <string name="balance_deposit">可提现金额</string>
+    <string name="balance_other">结算中的金额</string>
     <string name="deposit_recharge">余额转出</string>
     <string name="bank_card_no">银行卡号</string>
     <string name="get_time">到账时间</string>
@@ -163,7 +169,7 @@
     <string name="btn_back">返回</string>
     <string name="self_service">服务标准:</string>
     <string name="self_introduce">自我介绍:</string>
-    <string name="loding">请稍候...</string>
+    <string name="waitting">请稍候...</string>
     <!-- pull ListView -->
     <string name="head">这里是HeadView</string>
     <string name="pull_to_refresh">下拉刷新</string>

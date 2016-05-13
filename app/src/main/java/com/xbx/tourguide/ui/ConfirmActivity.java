@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.VerifyUtil;
 
 /**
@@ -24,31 +25,26 @@ public class ConfirmActivity extends BaseActivity implements View.OnClickListene
 
     private void initView() {
         if ("服务开始".equals(title)) {
-            findViewById(R.id.tv_confirm_cancel).setVisibility(View.GONE);
-        }
-
-        if (VerifyUtil.isNullOrEmpty(title)) {
-            findViewById(R.id.tv_confirm_cancel).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.tv_confirm_ok)).setText("我知道了");
+            findViewById(R.id.llyt_confirm).setVisibility(View.GONE);
+            findViewById(R.id.btn_confirm_ok2).setVisibility(View.VISIBLE);
         }
 
         ((TextView) findViewById(R.id.tv_confirm_title)).setText(title);
         ((TextView) findViewById(R.id.tv_confirm_content)).setText(getIntent().getStringExtra("content"));
-        findViewById(R.id.tv_confirm_ok).setOnClickListener(this);
-        findViewById(R.id.tv_confirm_cancel).setOnClickListener(this);
-
+        findViewById(R.id.btn_confirm_ok).setOnClickListener(this);
+        findViewById(R.id.btn_confirm_ok2).setOnClickListener(this);
+        findViewById(R.id.btn_confirm_cancel).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_confirm_ok:
-                if (!VerifyUtil.isNullOrEmpty(title)) {
-                    setResult(RESULT_OK, null);
-                }
+            case R.id.btn_confirm_ok:
+            case R.id.btn_confirm_ok2:
+                setResult(RESULT_OK, null);
                 finish();
                 break;
-            case R.id.tv_confirm_cancel:
+            case R.id.btn_confirm_cancel:
                 finish();
                 break;
             default:

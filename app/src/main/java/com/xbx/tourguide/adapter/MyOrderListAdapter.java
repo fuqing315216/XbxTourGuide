@@ -104,7 +104,7 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
             switch (order_status) {
                 case 0:
                     holder.statusTv.setText("待支付");
-                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
+                    holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     break;
                 case 1:
                     holder.statusTv.setText("待处理");

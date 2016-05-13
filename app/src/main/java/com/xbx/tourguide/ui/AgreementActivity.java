@@ -9,34 +9,30 @@ import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
- * Created by shuzhen on 2016/4/15.
- *
- * 关于
+ * Created by xbx on 2016/5/11.
  */
-public class AboutUsActivity extends BaseActivity implements View.OnClickListener {
+public class AgreementActivity extends BaseActivity {
+
+    private String title;
+    private int type = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_agreement);
+        title = getIntent().getStringExtra("title");
+        type = getIntent().getIntExtra("type", 1);
         initView();
     }
 
     private void initView() {
         TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
-        titleBarView.setTitle(getString(R.string.about));
+        titleBarView.setTitle(title);
         titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
     }
 }

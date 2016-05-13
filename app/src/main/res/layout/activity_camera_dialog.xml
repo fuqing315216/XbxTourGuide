@@ -20,10 +20,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp18" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color" />
+        <include layout="@layout/view_line" />
 
         <TextView
             android:id="@+id/tv_photo"

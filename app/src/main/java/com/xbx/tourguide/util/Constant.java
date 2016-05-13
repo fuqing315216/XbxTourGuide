@@ -5,7 +5,7 @@ import android.os.Environment;
 import java.io.File;
 
 /**
- * Created by EricYuan on 2016/3/30.
+ * Created by xbx on 2016/5/10.
  * 常量定义
  */
 public class Constant {
@@ -34,6 +34,12 @@ public class Constant {
      */
     public static String APK_PATH = ROOT_PATH + "/tutu/apk/xbx.apk";
 
-
-    public static String BROADCAST="order_broadcast";
+    /**
+     * Jpush处理广播action
+     */
+    public static String BROADCAST = "order_broadcast";
+    /**
+     * 分段加载number
+     */
+    public final static int PAGE_NUMBER = 10;
 }

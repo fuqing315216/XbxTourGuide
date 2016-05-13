@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CircleImageView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
@@ -29,14 +29,12 @@
                 android:layout_marginLeft="@dimen/dp16"
                 android:layout_marginTop="@dimen/dp16">
 
-                <com.xbx.tourguide.view.CircleImageView
-                    android:id="@+id/civ_headpic"
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/riv_order_detail_headpic"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:background="@color/bg_color"
                     android:src="@drawable/ic_headpic"
-                    CircleImageView:border_color="@color/head_with_color"
-                    CircleImageView:border_width="2dp" />
+                    app:riv_oval="true" />
 
                 <ImageView
                     android:id="@+id/iv_phone"
@@ -55,7 +53,7 @@
                     android:layout_marginLeft="@dimen/dp12"
                     android:layout_marginRight="@dimen/dp12"
                     android:layout_toLeftOf="@id/iv_phone"
-                    android:layout_toRightOf="@id/civ_headpic"
+                    android:layout_toRightOf="@id/riv_order_detail_headpic"
                     android:orientation="vertical">
 
                     <TextView

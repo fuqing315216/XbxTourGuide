@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CircleImageView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_home"
@@ -12,20 +12,21 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <com.xbx.tourguide.view.CircleImageView
-            android:id="@+id/civ_headpic"
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/riv_home_headpic"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp16"
             android:layout_marginTop="@dimen/dp8"
-            CircleImageView:border_color="@color/head_with_color"
-            CircleImageView:border_width="2dp" />
+            android:src="@drawable/ic_headpic"
+            app:riv_oval="true" />
 
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/civ_headpic"
+            android:layout_below="@id/riv_home_headpic"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp8"
             android:textColor="@color/head_text_color"
@@ -120,7 +121,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_service_time"
+                android:id="@+id/tv_home_service_time"
                 style="@style/HomeTextView"
                 android:drawableTop="@drawable/ic_service_time"
                 android:text="@string/service_time" />

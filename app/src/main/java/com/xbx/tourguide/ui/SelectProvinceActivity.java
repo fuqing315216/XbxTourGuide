@@ -61,7 +61,7 @@ public class SelectProvinceActivity extends BaseActivity implements AdapterView.
 
 
     private void selectCity() {
-        IRequest.get(this, HttpUrl.SELECT_PROVINCE_CITY, getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.get(this, HttpUrl.SELECT_PROVINCE_CITY, getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 1) {

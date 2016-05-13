@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CircleImageView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
@@ -22,10 +22,7 @@
 
             <include layout="@layout/view_step" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include layout="@layout/view_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,7 +31,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="1px"
                     android:layout_marginTop="12dp"
                     android:background="@color/line_color" />
 
@@ -43,21 +40,19 @@
                     android:layout_height="wrap_content"
                     android:background="@color/head_text_color">
 
-                    <com.xbx.tourguide.view.CircleImageView
-                        android:id="@+id/civ_register_headimg"
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/riv_register_headimg"
                         android:layout_width="76dp"
                         android:layout_height="76dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp8"
-                        android:background="@color/head_text_color"
                         android:src="@drawable/img_headpic"
-                        CircleImageView:border_color="@color/head_with_color"
-                        CircleImageView:border_width="2dp" />
+                        app:riv_oval="true" />
 
                     <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/civ_register_headimg"
+                        android:layout_below="@id/riv_register_headimg"
                         android:layout_centerHorizontal="true"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/dp8"
@@ -92,10 +87,7 @@
 
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line_color" />
+                <include layout="@layout/view_line" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -104,10 +96,7 @@
                     android:background="@color/head_text_color"
                     android:orientation="vertical">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/line_color" />
+                    <include layout="@layout/view_line" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -126,7 +115,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="1px"
                         android:layout_marginLeft="@dimen/dp16"
                         android:layout_marginRight="@dimen/dp16"
                         android:background="@color/line_color" />
@@ -154,7 +143,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_height="1px"
                             android:layout_marginLeft="@dimen/dp16"
                             android:layout_marginRight="@dimen/dp16"
                             android:background="@color/line_color" />
@@ -177,7 +166,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_height="1px"
                             android:layout_marginLeft="@dimen/dp16"
                             android:layout_marginRight="@dimen/dp16"
                             android:background="@color/line_color" />
@@ -200,7 +189,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="1px"
                         android:layout_marginLeft="@dimen/dp16"
                         android:layout_marginRight="@dimen/dp16"
                         android:background="@color/line_color" />
@@ -221,7 +210,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="1px"
                         android:layout_marginLeft="@dimen/dp16"
                         android:layout_marginRight="@dimen/dp16"
                         android:background="@color/line_color" />
@@ -284,10 +273,7 @@
                         </RadioGroup>
                     </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/line_color" />
+                    <include layout="@layout/view_line" />
                 </LinearLayout>
             </LinearLayout>
 

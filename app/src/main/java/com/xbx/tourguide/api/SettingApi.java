@@ -38,7 +38,7 @@ public class SettingApi {
         RequestParams params = new RequestParams();
         params.put("uid", uid);
         params.put("content", content);
-        IRequest.post(context, HttpUrl.FEED_BACK, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.FEED_BACK, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
@@ -61,7 +61,7 @@ public class SettingApi {
         params.put("birthday", birthday);
         params.put("now_address", now_address);
         params.put("server_language", server_language);
-        IRequest.post(context, HttpUrl.UPDATE_INFO, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.UPDATE_INFO, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 LogUtils.i("-----updateInfo:" + json);
@@ -77,7 +77,7 @@ public class SettingApi {
      */
     public void getGuideDetail(String uid) {
         String url = HttpUrl.GUIDE_DETAIL + "?uid=" + uid;
-        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
@@ -97,7 +97,7 @@ public class SettingApi {
         params.put("uid", uid);
         params.put("self_introduce", self_introduce);
         params.put("server_introduce", server_introduce);
-        IRequest.post(context, HttpUrl.GUIDE_MAIN, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.GUIDE_MAIN, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendMsg(TaskFlag.PAGEREQUESTWO, json);
@@ -112,7 +112,7 @@ public class SettingApi {
      */
     public void getServiceTime(String uid) {
         String url = HttpUrl.GET_SERVICETIME + "?uid=" + uid;
-        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
@@ -124,7 +124,7 @@ public class SettingApi {
      * 设置服务时间
      */
     public void setServiceTime(RequestParams params) {
-        IRequest.post(context, HttpUrl.SETTING_SERVICETIME, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.SETTING_SERVICETIME, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);

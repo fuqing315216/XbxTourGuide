@@ -21,13 +21,12 @@ public class RegisterGuideTypeActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_guide_type);
-        ActivityManager.getInstance().pushOneActivity(this);
         TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
         titleBarView.setTitle(getString(R.string.register));
         titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startIntent(LoginActivity.class, true);
             }
         });
         RegisterStepView stepView = (RegisterStepView) findViewById(R.id.step_view);
@@ -51,4 +50,14 @@ public class RegisterGuideTypeActivity extends BaseActivity implements View.OnCl
                 break;
         }
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            startIntent(LoginActivity.class, true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

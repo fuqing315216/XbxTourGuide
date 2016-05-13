@@ -5,9 +5,16 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorAccent</item>
         <!-- toolbar（actionbar）颜色 -->
-        <item name="colorPrimary">#673AB7</item>
+        <item name="colorPrimary">@color/head_bg_color</item>
         <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">#512DA8</item>
+        <item name="colorPrimaryDark">@color/head_bg_color</item>
+    </style>
+
+    <style name="HomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">#1F1533</item>
     </style>
 
     <style name="loading_small" parent="@android:style/Widget.ProgressBar.Small">
@@ -18,7 +25,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <!-- Dialog对话框 -->
+    <!-- Dialog对话框 parent="@android:style/Theme.Dialog"-->
     <style name="MyLoadDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
@@ -29,10 +36,12 @@
         <item name="android:background">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:gravity">bottom</item>
+
+        <item name="colorPrimaryDark">@color/head_bg_color</item>
     </style>
 
     <!--Dialog Acitivity-->
-    <style name="DialogStyle" parent="android:Theme.Dialog">
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowFrame">@null</item>
         <!-- 边框 -->
         <item name="android:windowIsFloating">false</item>
@@ -45,6 +54,8 @@
         <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">false</item>
         <!-- 模糊 -->
+
+        <item name="colorPrimaryDark">@color/head_bg_color</item>
     </style>
 
     <!--头部textview-->

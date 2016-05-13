@@ -14,8 +14,12 @@ import com.xbx.tourguide.api.ServerApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.MyOrderBeans;
+import com.xbx.tourguide.beans.OrderDetailBeans;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
@@ -38,7 +42,6 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
     private PullToRefreshLayout pullToRefreshLayout;
     private String uid = "";
     private int nowPage = 1;
-    private final static int PAGE_NUMBER = 10;
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
 
@@ -90,6 +93,24 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
                         pullToRefreshLayout.loadmoreFinish(pullToRefreshLayout.FAIL);
                     }
                     break;
+                case TaskFlag.PAGEREQUESTWO:
+                    final OrderDetailBeans result = JsonUtils.object((String) msg.obj, OrderDetailBeans.class);
+                    String order_status = result.getOrder_status();
+                    String server_type = result.getServer_type();
+                    Intent intent = new Intent();
+                    if ("0".equals(server_type)) {//即时服务
+                        if ("2".equals(order_status) || "1".equals(order_status)) {//进行中
+                            intent.setClass(MyOrderListActivity.this, StartServiceActivity.class);
+                        } else {
+                            intent.putExtra("orderDetailBeans", result);
+                            intent.setClass(MyOrderListActivity.this, MyOrderDetailActivity.class);
+                        }
+                    } else if ("1".equals(server_type)) {//预约服务
+                        intent.putExtra("orderDetailBeans", result);
+                        intent.setClass(MyOrderListActivity.this, MyOrderDetailActivity.class);
+                    }
+                    startActivity(intent);
+                    break;
             }
         }
     };
@@ -98,6 +119,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder_list);
+
         initView();
         initData();
     }
@@ -123,33 +145,13 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         uid = Cookie.getUid(this);
         nowPage = 1;
         serverApi = new ServerApi(this, handler);
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
+        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
-
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        initData();
-//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MyOrderBeans bean = (MyOrderBeans) parent.getItemAtPosition(position);
-        String order_status = bean.getOrder_status();
-        String server_type = bean.getServer_type();
-        Intent intent = new Intent();
-        if ("0".equals(server_type)) {//即时服务
-            if ("2".equals(order_status) || "1".equals(order_status)) {//进行中
-                intent.setClass(this, StartServiceActivity.class);
-            } else {
-                intent.setClass(this, MyOrderDetailActivity.class);
-            }
-        } else if ("1".equals(server_type)) {//预约服务
-            intent.setClass(this, MyOrderDetailActivity.class);
-        }
-        intent.putExtra("orderId", bean.getOrder_number());
-        startActivity(intent);
+        serverApi.getOrderStatusDetail(bean.getOrder_number());
     }
 
     @Override
@@ -157,7 +159,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         // 下拉刷新操作
         nowPage = 1;
         isRefresh = true;
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
+        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
     @Override
@@ -167,6 +169,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
             nowPage++;
         }
         isLoadMore = true;
-        serverApi.getMyOrderData(uid, nowPage, PAGE_NUMBER, TaskFlag.REQUESTLOADMORE);
+        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTLOADMORE);
     }
+
 }

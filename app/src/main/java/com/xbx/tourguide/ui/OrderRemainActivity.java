@@ -109,7 +109,7 @@ public class OrderRemainActivity extends BaseActivity {
 
     private void getDetail() {
         String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + orderNum;
-        IRequest.get(this, url, getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.get(this, url, getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 0) {
@@ -147,8 +147,7 @@ public class OrderRemainActivity extends BaseActivity {
         params.put("uid", Cookie.getUid(this));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
-        LogUtils.i("------confirmOrder:" + Cookie.getUid(this) + "-" + orderNum + "-" + tag);
-        IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.waitting), new RequestBackListener(this) {
                     @Override
                     public void requestSuccess(String json) {
                         OKTv.setEnabled(true);

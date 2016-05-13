@@ -4,23 +4,25 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rlyt_confirm_remain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/dp16"
-        android:layout_marginRight="@dimen/dp16"
-        android:background="@android:color/white"
-        android:paddingBottom="29dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:paddingTop="29dp">
+        android:layout_marginLeft="@dimen/dp32"
+        android:layout_marginRight="@dimen/dp32"
+        android:background="@drawable/bg_comment_style"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/tv_confirm_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp18" />
 
@@ -28,34 +30,70 @@
             android:id="@+id/tv_confirm_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_confirm_title"
-            android:layout_marginTop="@dimen/dp24"
+            android:layout_marginTop="@dimen/dp16"
             android:textColor="@color/text_gray_color"
             android:textSize="@dimen/sp15" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/dp16"
+            android:background="@color/line_color" />
 
-        <TextView
-            android:id="@+id/tv_confirm_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/tv_confirm_content"
-            android:layout_marginTop="25dp"
-            android:text="@string/sure"
-            android:textColor="@color/bg_verification_color"
-            android:textSize="@dimen/sp18" />
+        <Button
+            android:id="@+id/btn_confirm_ok2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:background="@drawable/bg_confirm_ok_style"
+            android:text="@string/confirm"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tv_confirm_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_confirm_content"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_toLeftOf="@id/tv_confirm_ok"
-            android:text="@string/cancel"
-            android:textColor="@color/bg_verification_color"
-            android:textSize="@dimen/sp18" />
-    </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/llyt_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/dp16"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/btn_confirm_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:background="@drawable/bg_confirm_cancel_style"
+                    android:text="@string/cancel"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/sp18" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/btn_confirm_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:background="@drawable/bg_confirm_ok_style"
+                    android:text="@string/confirm"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/sp18" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

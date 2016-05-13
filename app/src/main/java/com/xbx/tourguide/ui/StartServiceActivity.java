@@ -5,11 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +27,7 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
@@ -41,13 +39,9 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
-import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.view.CircleImageView;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/8.
@@ -56,9 +50,8 @@ import com.xbx.tourguide.view.CircleImageView;
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton returnIbtn;
     private String orderId = "";
-    private CircleImageView headImgCiv;
+    private RoundedImageView headImgRiv;
     private TextView nameTv, addressTv, timeTv;
     private ImageView phoneIv;
     private ImageLoader loader;
@@ -97,7 +90,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
                     nameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());
-                    loader.displayImage(result.getHead_image(), headImgCiv);
+                    loader.displayImage(result.getHead_image(), headImgRiv);
 
                     startTime = result.getServer_start_time();
                     if ("0".equals(startTime)) {
@@ -156,8 +149,16 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-        headImgCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.app_name));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        headImgRiv = (RoundedImageView) findViewById(R.id.riv_start_service);
         nameTv = (TextView) findViewById(R.id.tv_name);
         addressTv = (TextView) findViewById(R.id.tv_add);
         timeTv = (TextView) findViewById(R.id.tv_service_time);
@@ -169,8 +170,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(14.0f);
         baiduMap.setMapStatus(msu);
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-
-        returnIbtn.setOnClickListener(this);
 
         stopBtn.setOnClickListener(this);
 
@@ -185,9 +184,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
 
             case R.id.btn_service:
                 if (stopBtn.getText().toString().equals(getString(R.string.end_service))) {//进行中，点击按钮结束服务

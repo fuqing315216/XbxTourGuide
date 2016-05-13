@@ -15,6 +15,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
@@ -42,7 +43,6 @@ import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.util.updateversion.UpdateUtil;
-import com.xbx.tourguide.view.CircleImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -62,12 +62,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private String online = "";
     private String uid = "";
     private int unreadNum = 0, unreadMsg = 0;
-    private CircleImageView headPicCiv;
+    private RoundedImageView headPicRiv;
     private ImageLoader loader;
     private TourGuideInfoBeans beans;
     private ServerApi serverApi = null;
     private String userInfo = "";
     private Timer timer = null;
+
+    private OrderReceiver orderReceiver = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -135,14 +137,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ActivityManager.getInstance().pushOneActivity(this);
+
+        if (orderReceiver == null) {
+            orderReceiver = new OrderReceiver();
+            IntentFilter intentFilter = new IntentFilter(Constant.BROADCAST);
+            registerReceiver(orderReceiver, intentFilter);
+        }
 
         uid = Cookie.getUid(this);
         loader = ImageLoader.getInstance();
 
         serverApi = new ServerApi(this, handler);
 //        serverApi.checkUpdate();
-
         Cookie.putIsJPush(this, true);//可以接受推送
         Cookie.putIsDialog(this, false);
         Cookie.putLoginOut(this, false);
@@ -170,11 +176,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         starRab = (RatingBar) findViewById(R.id.rab_home);
         scoreTv = (TextView) findViewById(R.id.tv_score);
         startTv = (TextView) findViewById(R.id.tv_start_order);
-        serviceTimeTv = (TextView) findViewById(R.id.tv_service_time);
+        serviceTimeTv = (TextView) findViewById(R.id.tv_home_service_time);
         travelTv = (TextView) findViewById(R.id.tv_my_travel);
         orderNumTv = (TextView) findViewById(R.id.tv_order_sum);
         msgNumTv = (TextView) findViewById(R.id.tv_information_sum);
-        headPicCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        headPicRiv = (RoundedImageView) findViewById(R.id.riv_home_headpic);
         nameTv = (TextView) findViewById(R.id.tv_username);
 
         myOrderRlyt.setOnClickListener(this);
@@ -221,7 +227,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 //        } else {
 //            msgNumTv.setText(unreadMsg + "");
 //        }
-        loader.displayImage(beans.getHead_image(), headPicCiv);
+
+        loader.displayImage(beans.getHead_image(), headPicRiv);
         if (!VerifyUtil.isNullOrEmpty(beans.getGuide_card_number())) {
             ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
         } else {
@@ -247,21 +254,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.tv_start_order:
 //               XbxTGApplication.getInstance().showNotification();
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    serverApi.setIsOnline(uid);
-                }
+                serverApi.setIsOnline(uid);
                 break;
 
-            case R.id.tv_service_time:
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    startIntent(ServiceTimeActivity.class, false);
-                }
+            case R.id.tv_home_service_time:
+                startIntent(ServiceTimeActivity.class, false);
                 break;
 
             case R.id.tv_my_travel:
@@ -271,12 +268,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.rlyt_head:
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
-                }
+                startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
                 break;
             case R.id.tv_my_wallet:
                 startIntent(MyWalletActivity.class, false);
@@ -352,13 +344,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 102) {//修改个人信息
-            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicCiv);
+            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicRiv);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (orderReceiver != null) {
+            unregisterReceiver(orderReceiver);
+        }
     }
 
     private long exitTime = 0;

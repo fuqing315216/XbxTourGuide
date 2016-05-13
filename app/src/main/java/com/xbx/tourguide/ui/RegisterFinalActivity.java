@@ -42,7 +42,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_final);
-        ActivityManager.getInstance().pushOneActivity(this);
+
         loader = ImageLoader.getInstance();
         guide_type = getIntent().getIntExtra("guide_type", 1);
         beans = (RegisterInfoBeans) getIntent().getSerializableExtra("bean");
@@ -197,7 +197,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nserver_language=" + beans.getServer_language()
                 + "\nnow_address=" + beans.getCity().getId());
 
-        IRequest.post(this, HttpUrl.REGISTER_GUIDE_INFO, params, getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.post(this, HttpUrl.REGISTER_GUIDE_INFO, params, getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
                 LogUtils.i("-----registerGuideInfo:" + json);
