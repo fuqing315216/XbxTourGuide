@@ -1,6 +1,7 @@
 package com.xbx.tourguide.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,9 +17,9 @@ import java.util.List;
  * <p/>
  * 我的订单adapter
  */
-public class PayDetailListAdapter extends BaseMyAdapter<MyOrderBeans> {
+public class PayDetailListAdapter extends BaseMyAdapter<String> {
 
-    public PayDetailListAdapter(Context con, List<MyOrderBeans> list) {
+    public PayDetailListAdapter(Context con, List<String> list) {
         super(con, list);
     }
 

@@ -49,8 +49,6 @@ public class BaseActivity extends FragmentActivity {
             switch (msg.what) {
                 case 0x123:
                     SQLiteOrderBean sqlBean = new OrderNumberDao(BaseActivity.this).selectFirst();
-                    LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
-                    LogUtils.i("----sqlBean.getIsDialog():" + Cookie.getIsDialog(BaseActivity.this));
                     if (sqlBean.getNum() == null || VerifyUtil.isNullOrEmpty(sqlBean.getNum())
                             || Cookie.getIsDialog(BaseActivity.this)) {
                         timer.cancel();

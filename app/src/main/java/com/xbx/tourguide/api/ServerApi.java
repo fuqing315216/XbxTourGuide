@@ -67,7 +67,7 @@ public class ServerApi {
         IRequest.get(context, url, new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+                sendShowMessage.sendMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
     }

@@ -101,6 +101,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
                     if ("0".equals(server_type)) {//即时服务
                         if ("2".equals(order_status) || "1".equals(order_status)) {//进行中
                             intent.setClass(MyOrderListActivity.this, StartServiceActivity.class);
+                            intent.putExtra("orderId", result.getOrder_number());
                         } else {
                             intent.putExtra("orderDetailBeans", result);
                             intent.setClass(MyOrderListActivity.this, MyOrderDetailActivity.class);
