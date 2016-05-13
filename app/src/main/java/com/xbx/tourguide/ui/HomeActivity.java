@@ -164,7 +164,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
 
         new Handler().postDelayed(run, 6000);
-        setTimerTask();
+//        setTimerTask();
 
         locationClient = new LocationClient(this);
         locationClient.start();

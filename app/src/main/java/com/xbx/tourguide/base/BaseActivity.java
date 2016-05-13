@@ -10,8 +10,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 
+import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.TaskFlag;
+import com.xbx.tourguide.beans.OnLineBeans;
 import com.xbx.tourguide.beans.SQLiteOrderBean;
+import com.xbx.tourguide.beans.Version;
 import com.xbx.tourguide.db.OrderNumberDao;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.ui.LoginActivity;
 import com.xbx.tourguide.ui.MyOrderListActivity;
 import com.xbx.tourguide.ui.OrderRemainActivity;
@@ -19,6 +24,7 @@ import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JPushUtils;
+import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
@@ -35,17 +41,41 @@ public class BaseActivity extends FragmentActivity {
     protected Intent intent = new Intent();
     private OrderNumberDao orderNumberDao;
 
+    private Timer timer = null;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0x123:
+                    SQLiteOrderBean sqlBean = new OrderNumberDao(BaseActivity.this).selectFirst();
+                    LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
+                    LogUtils.i("----sqlBean.getIsDialog():" + Cookie.getIsDialog(BaseActivity.this));
+                    if (sqlBean.getNum() == null || VerifyUtil.isNullOrEmpty(sqlBean.getNum())
+                            || Cookie.getIsDialog(BaseActivity.this)) {
+                        timer.cancel();
+                    }
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManager.getInstance().pushOneActivity(this);
     }
 
-//    @Override
-//    protected void onResume() {
-//        // TODO Auto-generated method stub
-//        super.onResume();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Cookie.getUserInfo(this) != null) {
+            if ("1".equals(UserInfoParse.getIsOnline(Cookie.getUserInfo(this)))
+                    && Cookie.getIsJPush(this)) {
+                setTimerTask();
+            }
+        }
+    }
 
 //    @Override
 //    protected void onPause() {
@@ -53,6 +83,21 @@ public class BaseActivity extends FragmentActivity {
 //        super.onPause();
 //        JPushInterface.onPause(this);
 //    }
+
+    private void setTimerTask() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                JPushUtils.isShowDialog(BaseActivity.this);
+
+                Message message = new Message();
+                message.what = 0x123;
+                handler.sendMessage(message);
+            }
+        }, 1000, 1000);
+    }
 
     @Override
     protected void onDestroy() {
@@ -98,7 +143,7 @@ public class BaseActivity extends FragmentActivity {
                 case 102:
                     if (Util.isAction(context)) {
                         ToastUtils.showShort(context, "有订单被用户取消,请注意查看");
-                        if(!Cookie.getIsDialog(context)){
+                        if (!Cookie.getIsDialog(context)) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
                         }
                         return;
@@ -107,7 +152,7 @@ public class BaseActivity extends FragmentActivity {
                 case 103://只有预约服务有推送
                     if (Util.isAction(context)) {
                         ToastUtils.showShort(context, "有预约订单用户支付定金，请注意查看");
-                        if(!Cookie.getIsDialog(context)){
+                        if (!Cookie.getIsDialog(context)) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
                         }
                         return;

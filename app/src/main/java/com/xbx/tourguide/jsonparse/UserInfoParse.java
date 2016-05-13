@@ -16,7 +16,12 @@ import org.json.JSONObject;
  * Created by xbx on 2016/4/26.
  */
 public class UserInfoParse {
-
+    /**
+     * 解析loign返回数据中的uid
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getUid(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -30,6 +35,12 @@ public class UserInfoParse {
         return "";
     }
 
+    /**
+     * 解析login返回的user_info
+     *
+     * @param responseResult
+     * @return
+     */
     public static TourGuideInfoBeans getUserInfo(String responseResult) {
         TourGuideInfoBeans tourGuideInfoBeans = null;
 
@@ -47,6 +58,12 @@ public class UserInfoParse {
         return tourGuideInfoBeans;
     }
 
+    /**
+     * 解析loign返回数据中的token
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getLogToken(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -60,6 +77,12 @@ public class UserInfoParse {
         return "";
     }
 
+    /**
+     * 解析loign返回数据中的mobile
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getMobile(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -68,6 +91,28 @@ public class UserInfoParse {
                 JSONObject jsonObject2 = new JSONObject(jsonObject.getString("user_info"));
                 if (UtilParse.checkTag(jsonObject2, "mobile")) {
                     return jsonObject2.getString("mobile");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 解析loign返回数据中的is_online
+     *
+     * @param responseResult
+     * @return
+     */
+    public static String getIsOnline(String responseResult) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(responseResult);
+            if (UtilParse.checkTag(jsonObject, "user_info")) {
+                JSONObject jsonObject2 = new JSONObject(jsonObject.getString("user_info"));
+                if (UtilParse.checkTag(jsonObject2, "is_online")) {
+                    return jsonObject2.getString("is_online");
                 }
             }
         } catch (JSONException e) {
