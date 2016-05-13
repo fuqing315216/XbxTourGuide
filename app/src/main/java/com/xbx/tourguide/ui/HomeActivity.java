@@ -95,15 +95,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                         return;
                     checkUpdate(version);
                     break;
-
-                case 0x123:
-                    SQLiteOrderBean sqlBean = new OrderNumberDao(HomeActivity.this).selectFirst();
-                    LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
-                    LogUtils.i("----sqlBean.getIsDialog():" + Cookie.getIsDialog(HomeActivity.this));
-                    if (sqlBean.getNum() == null || Cookie.getIsDialog(HomeActivity.this)) {
-                        timer.cancel();
-                    }
-                    break;
             }
         }
     };
@@ -115,23 +106,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             new Handler().postDelayed(this, 6000);
         }
     };
-
-    private void setTimerTask() {
-        if ("1".equals(online)) {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-
-                    JPushUtils.isShowDialog(HomeActivity.this);
-
-                    Message message = new Message();
-                    message.what = 0x123;
-                    handler.sendMessage(message);
-                }
-            }, 1000, 1000);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +138,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
 
         new Handler().postDelayed(run, 6000);
-//        setTimerTask();
 
         locationClient = new LocationClient(this);
         locationClient.start();

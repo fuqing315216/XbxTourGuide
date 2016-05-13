@@ -83,8 +83,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.HomeActivity"
-            android:theme="@style/HomeTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
 
         <activity
             android:name=".ui.MyOrderListActivity"
@@ -113,6 +113,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/DialogStyle" />
+
+        <activity
+            android:name=".ui.SelectOrderActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.PersonalInfoActivity"
             android:screenOrientation="portrait" />
@@ -261,7 +268,6 @@
                 <category android:name="com.xbx.tourguide" />
             </intent-filter>
         </receiver>
-
 
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
