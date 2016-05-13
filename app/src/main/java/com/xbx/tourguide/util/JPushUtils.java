@@ -33,7 +33,7 @@ public class JPushUtils {
                     Cookie.putIsDialog(context, true);
                     Intent orderIntent = new Intent(context, OrderRemainActivity.class);
                     orderIntent.putExtra("serverType", "1");
-                    orderIntent.putExtra("orderNumber", "");
+                    orderIntent.putExtra("orderNumber",Cookie.getAppointmentOrder(context));
                     orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(orderIntent);
                 }

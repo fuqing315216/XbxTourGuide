@@ -20,7 +20,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="1px"
                 android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
@@ -113,14 +113,11 @@
                     android:verticalSpacing="30dp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include layout="@layout/view_line" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="1px"
                 android:layout_marginTop="@dimen/dp8"
                 android:background="@color/line_color" />
 
@@ -157,13 +154,10 @@
                     android:paddingRight="@dimen/dp16"
                     android:paddingTop="5dp"
                     android:textSize="@dimen/sp15" />
-
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include android:id="@+id/line_service_time"
+                layout="@layout/view_line" />
 
             <RelativeLayout
                 android:id="@+id/rlyt_service_time_priced"
@@ -182,7 +176,6 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/sp15" />
 
-
                 <EditText
                     android:id="@+id/et_price_d"
                     android:layout_width="match_parent"
@@ -198,14 +191,9 @@
                     android:paddingRight="@dimen/dp16"
                     android:paddingTop="5dp"
                     android:textSize="@dimen/sp15" />
-
-
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include layout="@layout/view_line" />
 
             <RelativeLayout
                 android:id="@+id/rlyt_service_time_location"
@@ -244,10 +232,7 @@
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include layout="@layout/view_line" />
 
             <RelativeLayout
                 android:id="@+id/rlyt_service_time_guide_type"
@@ -319,10 +304,7 @@
                 </RadioGroup>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color" />
+            <include layout="@layout/view_line" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

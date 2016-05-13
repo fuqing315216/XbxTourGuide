@@ -74,6 +74,7 @@ public class Util {
 
     /**
      * 是否在当前应用
+     *
      * @param context
      * @return
      */
@@ -87,6 +88,20 @@ public class Util {
             }
         }
         return false;
+    }
+
+    public static boolean isTopActivy(String cmdName, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(Integer.MAX_VALUE);
+        String cmpNameTemp = null;
+        if (null != runningTaskInfos) {
+            cmpNameTemp = (runningTaskInfos.get(0).topActivity).getClassName();
+        }
+
+        if (null == cmpNameTemp) {
+            return false;
+        }
+        return cmpNameTemp.equals(cmdName);
     }
 
 }

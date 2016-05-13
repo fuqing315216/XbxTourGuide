@@ -44,40 +44,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ActivityManager.getInstance().pushOneActivity(this);
         initView();
 //        Cookie.putUserInfo(this, "");
-        isFirstLogin();
-    }
-
-    private void isFirstLogin() {
-        if (Cookie.getUserInfo(this) == null) {
-            return;
-        }
-        String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
-        String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
-        if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
-            RequestParams params = new RequestParams();
-            params.put("mobile", mobile);
-            params.put("password", token);
-            params.put("push_id", JPushInterface.getRegistrationID(this));
-            IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
-                @Override
-                public void requestSuccess(String json) {
-                    if (UtilParse.getRequestCode(json) == 0) {
-                        ToastUtils.showShort(LoginActivity.this, UtilParse.getRequestMsg(json));
-//                        ToastUtils.showShort(LoginActivity.this, "自动登录已过期，请重新登录");
-                    } else if (UtilParse.getRequestCode(json) == 1) {
-                        ToastUtils.showShort(LoginActivity.this, "自动登录成功");
-                        Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
-                        startIntent(HomeActivity.class, true);
-                    } else if (UtilParse.getRequestCode(json) == 2) {
-                        startIntent(RegisterGuideTypeActivity.class, false);
-                        Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
-                    }
-                }
-            });
-        }
     }
 
     private void initView() {
@@ -100,8 +68,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         forgetPwTv.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        phoneEt.setText("13982932283");
-        pwEt.setText("XBX123456");
+//        phoneEt.setText("13982932283");
+//        pwEt.setText("XBX123456");
     }
 
     @Override
@@ -138,14 +106,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         if (VerifyUtil.isNullOrEmpty(JPushInterface.getRegistrationID(this))) {
-            ToastUtils.showShort(this, "登录失败，请稍候重试");
+            ToastUtils.showShort(this, "网络出现问题，请稍候重试");
         }
 
         RequestParams params = new RequestParams();
         params.put("mobile", phoneEt.getText().toString());
         params.put("password", pwEt.getText().toString());
         params.put("push_id", JPushInterface.getRegistrationID(this));
-        IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 2) {
@@ -153,7 +121,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     startIntent(RegisterGuideTypeActivity.class, false);
                 } else if (UtilParse.getRequestCode(json) == 1) {
                     Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
-                    startIntent(HomeActivity.class, true);
+                    if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(LoginActivity.this)).getIs_auth())) {
+                        startIntent(RegisterInfoOkActivity.class, false);
+                    } else {
+                        startIntent(HomeActivity.class, true);
+                    }
                 } else {
                     ToastUtils.showShort(LoginActivity.this, UtilParse.getRequestMsg(json));
                 }
@@ -176,4 +148,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

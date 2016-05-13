@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.ui.HomeActivity;
 import com.xbx.tourguide.util.Cookie;
 
@@ -30,8 +31,6 @@ public class XbxTGApplication extends Application {
     private static final double EARTH_RADIUS = 6378137.0;
     private static XbxTGApplication instance;
     private static Context mContext;
-    public static String BROADCAST="order_broadcast";
-
 
     @Override
     public void onCreate() {
@@ -55,7 +54,6 @@ public class XbxTGApplication extends Application {
         return instance;
     }
 
-
     /**
      * 初始化ImageLoader
      *
@@ -63,9 +61,9 @@ public class XbxTGApplication extends Application {
      */
     public static void initImageLoader(Context context) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_headpic)
-                .showImageForEmptyUri(R.drawable.ic_headpic)
-                .showImageOnFail(R.drawable.ic_headpic)
+//                .showImageOnLoading(R.drawable.ic_headpic)
+//                .showImageForEmptyUri(R.drawable.ic_headpic)
+//                .showImageOnFail(R.drawable.ic_headpic)
                 .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 
@@ -135,7 +133,7 @@ public class XbxTGApplication extends Application {
      */
     public static String formatTime(long ms) {
 
-        ms=ms*1000;
+        ms = ms * 1000;
 
         int ss = 1000;
         int mi = ss * 60;
@@ -155,7 +153,7 @@ public class XbxTGApplication extends Application {
         String strMilliSecond = milliSecond < 10 ? "0" + milliSecond : "" + milliSecond;//毫秒
         strMilliSecond = milliSecond < 100 ? "0" + strMilliSecond : "" + strMilliSecond;
 
-        return strHour + "小时" + strMinute + "分"+strSecond+"秒";
+        return strHour + "小时" + strMinute + "分" + strSecond + "秒";
     }
 
     // 返回单位是米

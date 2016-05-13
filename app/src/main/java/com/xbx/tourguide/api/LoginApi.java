@@ -69,7 +69,7 @@ public class LoginApi {
         params.put("mobile", mobile);
         params.put("password", password);
         params.put("user_type", user_type);
-        IRequest.post(context, HttpUrl.LOGIN, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.LOGIN, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTHREE, json);
@@ -83,7 +83,22 @@ public class LoginApi {
      * @param params
      */
     public void register(RequestParams params) {
-        IRequest.post(context, HttpUrl.REGISTER, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.REGISTER, params, context.getString(R.string.waitting), new RequestBackListener(context) {
+            @Override
+            public void requestSuccess(String json) {
+                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+            }
+        });
+    }
+
+    /**
+     * 登出
+     *
+     * @param uid
+     */
+    public void loginOut(String uid) {
+        String url = HttpUrl.LOGIN_OUT + "?uid=" + uid;
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);

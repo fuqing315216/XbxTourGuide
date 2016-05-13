@@ -5,56 +5,50 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.OrderDetailBeans;
-import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
-import com.xbx.tourguide.view.CircleImageView;
 import com.xbx.tourguide.view.FlowLayout;
 import com.xbx.tourguide.view.TitleBarView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by shuzhen on 2016/4/5.
- * <p/>
+ * <p>
  * 订单详情
  */
 public class MyOrderDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private String orderNum = "";
     private ImageLoader loader;
-    private CircleImageView headPicCiv;
+    private RoundedImageView headPicRiv;
     private TextView nickNameTv, addressTv, orderStatusTv, commentConTv, costSumTv, payTypeTv;
     private FlowLayout tagFlyt;
     private RatingBar starRab;
     private Button refuseBtn, acceptBtn;
     private ImageView phoneIv;
+    private OrderDetailBeans result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myorder_detail);
-        orderNum = getIntent().getStringExtra("orderId");
+
+        result = (OrderDetailBeans) getIntent().getSerializableExtra("orderDetailBeans");
         loader = ImageLoader.getInstance();
+
         initView();
     }
 
@@ -69,7 +63,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
             }
         });
 
-        headPicCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        headPicRiv = (RoundedImageView) findViewById(R.id.riv_order_detail_headpic);
         nickNameTv = (TextView) findViewById(R.id.tv_username);
         addressTv = (TextView) findViewById(R.id.tv_useradd);
         orderStatusTv = (TextView) findViewById(R.id.tv_order_status);
@@ -85,7 +79,139 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         refuseBtn.setOnClickListener(this);
         acceptBtn.setOnClickListener(this);
 
-        getOrderDetail();
+        initData();
+    }
+
+    private void initData() {
+        loader.displayImage(result.getHead_image(), headPicRiv);
+        nickNameTv.setText(result.getNickname());
+        addressTv.setText(result.getEnd_addr());
+        server_type = result.getServer_type();
+        order_status = result.getOrder_status();
+
+        //0-即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
+        //1-预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
+        switch (Integer.valueOf(order_status)) {
+            case 0://待支付
+                if ("1".equals(server_type)) {
+                    stateNormal(result);
+                } else if ("0".equals(server_type)) {
+                    stateNormal(result);
+                    findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
+                }
+                break;
+            case 1://待确认
+                if ("1".equals(server_type)) {
+                    findViewById(R.id.llyt_person_num).setVisibility(View.VISIBLE);
+
+                    findViewById(R.id.llyt_myorder_detail_deposit).setVisibility(View.VISIBLE);
+                    findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
+                    findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
+
+                    setText(R.id.tv_order_status, "待确认");
+                    setText(R.id.tv_order_time, result.getServer_date());
+                    setText(R.id.tv_person_num, result.getNumbers() + "人");
+                    setText(R.id.tv_myorder_detail_deposit, result.getOrder_money() + "元");
+                    setPayType(result.getPay_type());//1-支付宝，2-微信支付
+
+                    setPhoneOn(result.getMobile());
+                }
+                break;
+            case 2://已预约
+                if ("1".equals(server_type)) {
+                    stateNormal(result);
+                }
+                break;
+            case 3:
+                stateNormal(result);
+                if ("0".equals(server_type)) {//未付款
+                    setText(R.id.tv_order_status, "未付款");
+                } else if ("1".equals(server_type)) {//进行中
+                    setText(R.id.tv_order_status, "进行中");
+                }
+                break;
+            case 4://未评论
+                findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
+
+                setText(R.id.tv_order_status, "未评论");
+                setText(R.id.tv_order_time, result.getServer_date());
+
+                setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
+                setText(R.id.tv_fee, result.getTip_money() + "元");
+                setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
+                setText(R.id.tv_cost_total, result.getPay_money() + "元");
+                setPayType(result.getPay_type());//1-支付宝，2-微信支付
+
+                break;
+            case 5://已完成
+                findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_myorder_detail_comment).setVisibility(View.VISIBLE);
+
+                setText(R.id.tv_order_status, "已完成");
+                setText(R.id.tv_order_time, result.getServer_date());
+
+                setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
+                setText(R.id.tv_fee, result.getTip_money() + "元");
+                setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
+                setText(R.id.tv_cost_total, result.getPay_money() + "元");
+                setPayType(result.getPay_type());//1-支付宝，2-微信支付
+
+                if (!VerifyUtil.isNullOrEmpty(result.getContent())) {
+                    setText(R.id.tv_comment_content, result.getContent());
+                } else {
+                    commentConTv.setVisibility(View.GONE);
+                }
+
+                if (!VerifyUtil.isNullOrEmpty(result.getStar())) {
+                    starRab.setRating(Util.getStar(result.getStar()) / 2);
+                } else {
+                    starRab.setVisibility(View.GONE);
+                }
+
+                String[] tags = result.getTag();
+                if (tags.length > 0) {
+                    for (int i = 0; i < tags.length; i++) {
+                        tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tags[i]));
+                    }
+                } else {
+                    tagFlyt.setVisibility(View.GONE);
+                }
+
+                break;
+            case 6://已关闭
+                if ("0".equals(server_type)) {//未付违约金
+                    stateClose0(result);
+                } else if ("1".equals(server_type)) {//退款中
+                    stateClose1(result, "已关闭-退款中");
+                }
+                break;
+            case 7://已关闭
+                if ("0".equals(server_type)) {//已付违约金
+                    stateClose0(result);
+                } else if ("1".equals(server_type)) {//已退款
+                    stateClose1(result, "已关闭-已退款");
+                }
+                break;
+            case 8://已拒接，退款进行中
+                stateClose1(result, "已拒接-退款中");
+                break;
+            case 9://已关闭（拒单并退款成功）
+                stateClose1(result, "已拒接-已退款");
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -100,146 +226,9 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+
     private String server_type = "";
     private String order_status = "";
-
-    private void getOrderDetail() {
-        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + orderNum;
-        IRequest.get(this, url, getString(R.string.loding), new RequestBackListener(this) {
-            @Override
-            public void requestSuccess(String json) {
-                LogUtils.i("---getOrderDetail:" + json);
-                if (UtilParse.getRequestCode(json) == 1) {
-                    final OrderDetailBeans result = JsonUtils.object(UtilParse.getRequestData(json), OrderDetailBeans.class);
-                    loader.displayImage(result.getHead_image(), headPicCiv);
-                    nickNameTv.setText(result.getNickname());
-                    addressTv.setText(result.getEnd_addr());
-                    server_type = result.getServer_type();
-                    order_status = result.getOrder_status();
-
-                    //0-即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
-                    //1-预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
-                    switch (Integer.valueOf(order_status)) {
-                        case 0://待支付
-                            if ("1".equals(server_type)) {
-                                stateNormal(result);
-                            } else if ("0".equals(server_type)) {
-                                stateNormal(result);
-                                findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
-                            }
-                            break;
-                        case 1://待确认
-                            if ("1".equals(server_type)) {
-                                findViewById(R.id.llyt_person_num).setVisibility(View.VISIBLE);
-
-                                findViewById(R.id.llyt_myorder_detail_deposit).setVisibility(View.VISIBLE);
-                                findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-                                findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
-
-                                setText(R.id.tv_order_status, "待确认");
-                                setText(R.id.tv_order_time, result.getServer_date());
-                                setText(R.id.tv_person_num, result.getNumbers() + "人");
-                                setText(R.id.tv_myorder_detail_deposit, result.getOrder_money() + "元");
-                                setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
-                                setPhoneOn(result.getMobile());
-                            }
-                            break;
-                        case 2://已预约
-                            if ("1".equals(server_type)) {
-                                stateNormal(result);
-                            }
-                            break;
-                        case 3:
-                            stateNormal(result);
-                            if ("0".equals(server_type)) {//未付款
-                                setText(R.id.tv_order_status, "未付款");
-                            } else if ("1".equals(server_type)) {//进行中
-                                setText(R.id.tv_order_status, "进行中");
-                            }
-                            break;
-                        case 4://未评论
-                            findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-
-                            setText(R.id.tv_order_status, "未评论");
-                            setText(R.id.tv_order_time, result.getServer_date());
-
-                            setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
-                            setText(R.id.tv_fee, result.getTip_money() + "元");
-                            setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                            setText(R.id.tv_cost_total, result.getPay_money() + "元");
-                            setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
-                            break;
-                        case 5://已完成
-                            findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-                            findViewById(R.id.llyt_myorder_detail_comment).setVisibility(View.VISIBLE);
-
-                            setText(R.id.tv_order_status, "已完成");
-                            setText(R.id.tv_order_time, result.getServer_date());
-
-                            setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
-                            setText(R.id.tv_fee, result.getTip_money() + "元");
-                            setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                            setText(R.id.tv_cost_total, result.getPay_money() + "元");
-                            setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
-                            if (!VerifyUtil.isNullOrEmpty(result.getContent())) {
-                                setText(R.id.tv_comment_content, result.getContent());
-                            } else {
-                                commentConTv.setVisibility(View.GONE);
-                            }
-
-                            if (!VerifyUtil.isNullOrEmpty(result.getStar())) {
-                                starRab.setRating(Util.getStar(result.getStar()) / 2);
-                            } else {
-                                starRab.setVisibility(View.GONE);
-                            }
-
-                            String[] tags = result.getTag();
-                            if (tags.length > 0) {
-                                for (int i = 0; i < tags.length; i++) {
-                                    tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tags[i]));
-                                }
-                            } else {
-                                tagFlyt.setVisibility(View.GONE);
-                            }
-
-                            break;
-                        case 6://已关闭
-                            if ("0".equals(server_type)) {//未付违约金
-                                stateClose0(result);
-                            } else if ("1".equals(server_type)) {//退款中
-                                stateClose1(result, "已关闭-退款中");
-                            }
-                            break;
-                        case 7://已关闭
-                            if ("0".equals(server_type)) {//已付违约金
-                                stateClose0(result);
-                            } else if ("1".equals(server_type)) {//已退款
-                                stateClose1(result, "已关闭-已退款");
-                            }
-                            break;
-                        case 8://已拒接，退款进行中
-                            stateClose1(result, "已拒接-退款中");
-                            break;
-                        case 9://已关闭（拒单并退款成功）
-                            stateClose1(result, "已拒接-已退款");
-                            break;
-                    }
-                }
-            }
-        });
-    }
-
 
     /**
      * 即时服务：未付款

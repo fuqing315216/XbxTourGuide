@@ -89,7 +89,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        ActivityManager.getInstance().pushOneActivity(this);
         loginApi = new LoginApi(this, handler);
         initView();
     }

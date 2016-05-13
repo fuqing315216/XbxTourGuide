@@ -1,14 +1,19 @@
 package com.xbx.tourguide.ui;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.db.DbOpenHelper;
-import com.xbx.tourguide.db.OrderNumberDao;
+import com.xbx.tourguide.base.BaseActivity;
+import com.xbx.tourguide.http.HttpUrl;
+import com.xbx.tourguide.http.IRequest;
+import com.xbx.tourguide.http.RequestBackListener;
+import com.xbx.tourguide.http.RequestParams;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.ToastUtils;
+import com.xbx.tourguide.util.VerifyUtil;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -17,8 +22,7 @@ import cn.jpush.android.api.JPushInterface;
  * <p/>
  * loading页
  */
-public class MainActivity extends Activity {
-
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +31,17 @@ public class MainActivity extends Activity {
         Cookie.putAppointmentOrder(this, "");
         Cookie.putIsDialog(this, false);
         Cookie.putIsJPush(this, false);
-        new Handler().postDelayed(new Runnable() {
 
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                isAutoLogin();
             }
-        }, 3000);
+        }, 2000);
     }
-//    @Override
+
+    //    @Override
 //    protected void onResume() {
 //        // TODO Auto-generated method stub
 //        super.onResume();
@@ -52,4 +55,41 @@ public class MainActivity extends Activity {
 //        JPushInterface.onPause(this);
 //    }
 
+    private void isAutoLogin() {
+        if (Cookie.getUserInfo(this) == null) {
+            startIntent(LoginActivity.class, true);
+            return;
+        }
+
+        String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
+        String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
+        if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
+            RequestParams params = new RequestParams();
+            params.put("mobile", mobile);
+            params.put("password", token);
+            params.put("push_id", JPushInterface.getRegistrationID(this));
+            IRequest.post(this, HttpUrl.LOGIN, params, new RequestBackListener(this) {
+                @Override
+                public void requestSuccess(String json) {
+                    if (UtilParse.getRequestCode(json) == 0) {
+                        ToastUtils.showShort(MainActivity.this, "自动登录已过期，请重新登录");
+                        startIntent(LoginActivity.class, true);
+                    } else if (UtilParse.getRequestCode(json) == 1) {
+                        ToastUtils.showShort(MainActivity.this, "自动登录成功");
+                        Cookie.putUserInfo(MainActivity.this, UtilParse.getRequestData(json));
+                        if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(MainActivity.this)).getIs_auth())) {
+                            startIntent(RegisterInfoOkActivity.class, true);
+                        } else {
+                            startIntent(HomeActivity.class, true);
+                        }
+                    } else if (UtilParse.getRequestCode(json) == 2) {
+                        Cookie.putUserInfo(MainActivity.this, UtilParse.getRequestData(json));
+                        startIntent(RegisterGuideTypeActivity.class, true);
+                    }
+                }
+            });
+        } else {
+            startIntent(LoginActivity.class, true);
+        }
+    }
 }

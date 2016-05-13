@@ -9,7 +9,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
@@ -45,14 +45,11 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
+    <include layout="@layout/view_line" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
@@ -88,14 +85,11 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
+    <include layout="@layout/view_line" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
@@ -118,11 +112,7 @@
             android:hint="@string/et_put_money" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
-
+    <include layout="@layout/view_line" />
 
     <Button
         android:id="@+id/btn_recharge"

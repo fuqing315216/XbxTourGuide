@@ -1,6 +1,7 @@
 package com.xbx.tourguide.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
@@ -32,6 +34,7 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JPushUtils;
 import com.xbx.tourguide.util.JsonUtils;
@@ -40,7 +43,6 @@ import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.util.updateversion.UpdateUtil;
-import com.xbx.tourguide.view.CircleImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,12 +62,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private String online = "";
     private String uid = "";
     private int unreadNum = 0, unreadMsg = 0;
-    private CircleImageView headPicCiv;
+    private RoundedImageView headPicRiv;
     private ImageLoader loader;
     private TourGuideInfoBeans beans;
     private ServerApi serverApi = null;
     private String userInfo = "";
     private Timer timer = null;
+
+    private OrderReceiver orderReceiver = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -74,20 +78,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS://设置是否开始接单
                     OnLineBeans onLineBean = JsonUtils.object((String) msg.obj, OnLineBeans.class);
-//                    TourGuideBeans bean = new TourGuideBeans();
-//                    TourGuideBeans bean = Cookie.getUserInfo(HomeActivity.this);
                     startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                    Cookie.putOnline(HomeActivity.this, onLineBean.getIs_online() + "");
+                    LogUtils.i("-----initData:" + onLineBean.getIs_online());
+
                     if (onLineBean.getIs_online() == 0) {//不在线
                         startTv.setText(getResources().getString(R.string.start_order));
-//                        beans.setIs_online("0");
                         startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
                     } else if (onLineBean.getIs_online() == 1) {
                         startTv.setText(getResources().getString(R.string.stop_order));
-//                        beans.setIs_online("1");
                         startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
                     }
-//                    bean.setUser_info(beans);
-//                    Cookie.putUserInfo(HomeActivity.this, JsonUtils.toJson(bean));
                     break;
                 case TaskFlag.PAGEREQUESTWO:
                     Version version = JsonUtils.object((String) msg.obj, Version.class);
@@ -96,15 +98,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     if (VerifyUtil.isNullOrEmpty(version.getVersion_code()))
                         return;
                     checkUpdate(version);
-                    break;
-
-                case 0x123:
-                    SQLiteOrderBean sqlBean = new OrderNumberDao(HomeActivity.this).selectFirst();
-                    LogUtils.i("----sqlBean.getNum():" + sqlBean.getNum());
-                    LogUtils.i("----sqlBean.getIsDialog():" + Cookie.getIsDialog(HomeActivity.this));
-                    if (sqlBean.getNum() == null || Cookie.getIsDialog(HomeActivity.this)) {
-                        timer.cancel();
-                    }
                     break;
             }
         }
@@ -118,39 +111,41 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
-    private void setTimerTask() {
-        if ("1".equals(online)) {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-
-                    JPushUtils.isShowDialog(HomeActivity.this);
-
-                    Message message = new Message();
-                    message.what = 0x123;
-                    handler.sendMessage(message);
-                }
-            }, 1000, 1000);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ActivityManager.getInstance().pushOneActivity(this);
+
+        if (orderReceiver == null) {
+            orderReceiver = new OrderReceiver();
+            IntentFilter intentFilter = new IntentFilter(Constant.BROADCAST);
+            registerReceiver(orderReceiver, intentFilter);
+        }
 
         uid = Cookie.getUid(this);
         loader = ImageLoader.getInstance();
 
         serverApi = new ServerApi(this, handler);
 //        serverApi.checkUpdate();
-
         Cookie.putIsJPush(this, true);//可以接受推送
         Cookie.putIsDialog(this, false);
         Cookie.putLoginOut(this, false);
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        getLocation();
+        if (Cookie.getLoginOut(this)) {
+            initData();
+        }
+
+        new Handler().postDelayed(run, 6000);
+
+        locationClient = new LocationClient(this);
+        locationClient.start();
+        locationClient.requestLocation();
     }
 
     private void initView() {
@@ -158,11 +153,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         starRab = (RatingBar) findViewById(R.id.rab_home);
         scoreTv = (TextView) findViewById(R.id.tv_score);
         startTv = (TextView) findViewById(R.id.tv_start_order);
-        serviceTimeTv = (TextView) findViewById(R.id.tv_service_time);
+        serviceTimeTv = (TextView) findViewById(R.id.tv_home_service_time);
         travelTv = (TextView) findViewById(R.id.tv_my_travel);
         orderNumTv = (TextView) findViewById(R.id.tv_order_sum);
         msgNumTv = (TextView) findViewById(R.id.tv_information_sum);
-        headPicCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        headPicRiv = (RoundedImageView) findViewById(R.id.riv_home_headpic);
         nameTv = (TextView) findViewById(R.id.tv_username);
 
         myOrderRlyt.setOnClickListener(this);
@@ -180,14 +175,19 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
 
+        LogUtils.i("-----initData:" + beans.toString());
+
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
             GoingBeans goingBeans = UserInfoParse.getGoing(userInfo);
-            startActivity(new Intent(HomeActivity.this, StartServiceActivity.class).putExtra("isgoing", true)
+            startActivity(new Intent(HomeActivity.this, StartServiceActivity.class)
                     .putExtra("orderId", goingBeans.getOrder_number()));
         }
 
         online = beans.getIs_online();
         startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+        Cookie.putOnline(this, online);
+
         if ("0".equals(online)) {//不在线
             startTv.setText(getResources().getString(R.string.start_order));
             startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_start_order, 0, 0);
@@ -196,22 +196,27 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             startTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stop_order, 0, 0);
         }
 
-        unreadNum = Integer.parseInt(beans.getUnread_order());
-        unreadMsg = Integer.parseInt(beans.getUnread_message());
-        if (unreadNum == 0) {
-            orderNumTv.setVisibility(View.GONE);
+//        unreadNum = Integer.parseInt(beans.getUnread_order());
+//        unreadMsg = Integer.parseInt(beans.getUnread_message());
+//        if (unreadNum == 0) {
+//            orderNumTv.setVisibility(View.GONE);
+//        } else {
+//            orderNumTv.setText(unreadNum + "");
+//        }
+//
+//        if (unreadMsg == 0) {
+//            msgNumTv.setVisibility(View.GONE);
+//        } else {
+//            msgNumTv.setText(unreadMsg + "");
+//        }
+
+        loader.displayImage(beans.getHead_image(), headPicRiv);
+        if (!VerifyUtil.isNullOrEmpty(beans.getGuide_card_number())) {
+            ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
         } else {
-            orderNumTv.setText(unreadNum + "");
+            findViewById(R.id.tv_userno).setVisibility(View.GONE);
         }
 
-        if (unreadMsg == 0) {
-            msgNumTv.setVisibility(View.GONE);
-        } else {
-
-            msgNumTv.setText(unreadMsg + "");
-        }
-        loader.displayImage(beans.getHead_image(), headPicCiv);
-        ((TextView) findViewById(R.id.tv_userno)).setText(beans.getGuide_card_number());//导游证号
         nameTv.setText(beans.getRealname());
 
         scoreTv.setText(Util.getStar(beans.getStars()) + "分");
@@ -223,22 +228,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-//        getLocation();
-        if (Cookie.getLoginOut(this)) {
-            initData();
-        }
-
-        new Handler().postDelayed(run, 6000);
-        setTimerTask();
-
-        locationClient = new LocationClient(this);
-        locationClient.start();
-        locationClient.requestLocation();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlyt_myorder:
@@ -247,21 +236,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.tv_start_order:
 //               XbxTGApplication.getInstance().showNotification();
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    serverApi.setIsOnline(uid);
-                }
+                serverApi.setIsOnline(uid);
                 break;
 
-            case R.id.tv_service_time:
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    startIntent(ServiceTimeActivity.class, false);
-                }
+            case R.id.tv_home_service_time:
+                startIntent(ServiceTimeActivity.class, false);
                 break;
 
             case R.id.tv_my_travel:
@@ -271,12 +250,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.rlyt_head:
-                if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getIs_auth())) {
-                    startActivity(new Intent(HomeActivity.this, ConfirmActivity.class)
-                            .putExtra("content", "您的资料正在审核中，请稍候访问"));
-                } else {
-                    startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
-                }
+                startActivityForResult(new Intent(HomeActivity.this, PersonalInfoActivity.class), 102);
                 break;
             case R.id.tv_my_wallet:
                 startIntent(MyWalletActivity.class, false);
@@ -293,7 +267,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 上传经纬度
      */
     private void getLonAndLat() {
-
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
@@ -324,8 +297,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     setLonLat(location);
                 }
-
-
             }
 
             public void onReceivePoi(BDLocation location) {
@@ -333,8 +304,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             }
 
         });
-
-
     }
 
     private void setLonLat(final BDLocation location) {
@@ -357,13 +326,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 102) {//修改个人信息
-            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicCiv);
+            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicRiv);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (orderReceiver != null) {
+            unregisterReceiver(orderReceiver);
+        }
     }
 
     private long exitTime = 0;

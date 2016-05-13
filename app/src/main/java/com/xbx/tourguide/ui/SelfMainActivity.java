@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.SettingApi;
@@ -15,19 +16,13 @@ import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GuideDetailBeans;
 import com.xbx.tourguide.beans.TagBeans;
-import com.xbx.tourguide.http.HttpUrl;
-import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestBackListener;
-import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
-import com.xbx.tourguide.view.CircleImageView;
 import com.xbx.tourguide.view.FlowLayout;
 
 import java.util.List;
@@ -36,7 +31,7 @@ import java.util.List;
  * Created by xbx on 2016/4/21.
  */
 public class SelfMainActivity extends BaseActivity implements View.OnClickListener {
-    private CircleImageView headCiv;
+    private RoundedImageView headRiv;
     private TextView nameTv, guideIdTv, scoreTv, pricehTv, pricedTv, userTypeTv, countTv;
     private RatingBar startRab;
     private FlowLayout tagFlyt;
@@ -51,7 +46,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                 case TaskFlag.REQUESTSUCCESS:
                     GuideDetailBeans result = JsonUtils.object((String) msg.obj, GuideDetailBeans.class);
                     LogUtils.i("---getGuideDetail:" + result);
-                    ImageLoader.getInstance().displayImage(result.getHead_image(), headCiv);
+                    ImageLoader.getInstance().displayImage(result.getHead_image(), headRiv);
                     nameTv.setText(result.getRealname());
                     guideIdTv.setText(result.getGuide_number());
 
@@ -107,7 +102,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViews() {
-        headCiv = (CircleImageView) findViewById(R.id.civ_self_main);
+        headRiv = (RoundedImageView) findViewById(R.id.riv_self_main);
         nameTv = (TextView) findViewById(R.id.tv_self_main_name);
         guideIdTv = (TextView) findViewById(R.id.tv_self_main_id);
         scoreTv = (TextView) findViewById(R.id.tv_self_main_score);

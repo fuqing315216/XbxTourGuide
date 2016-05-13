@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,7 +42,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_final);
-        ActivityManager.getInstance().pushOneActivity(this);
+
         loader = ImageLoader.getInstance();
         guide_type = getIntent().getIntExtra("guide_type", 1);
         beans = (RegisterInfoBeans) getIntent().getSerializableExtra("bean");
@@ -67,7 +68,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         personalIv = (ImageView) findViewById(R.id.iv_card_personal);
 
         if (guide_type != 1) {
-            findViewById(R.id.rlyt_upload_tourist).setVisibility(View.VISIBLE);
+            findViewById(R.id.rlyt_upload_tourist).setVisibility(View.GONE);
         }
 
         findViewById(R.id.btn_upload_card_front).setOnClickListener(this);
@@ -171,7 +172,12 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("head_image", new File(beans.getHead_image()));
         params.put("idcard_front", new File(beans.getIdcard_front()));
         params.put("idcard_back", new File(beans.getIdcard_back()));
-        params.put("guide_card", new File(beans.getGuide_card()));
+
+        if (guide_type != 1) {
+            params.put("guide_card", "");
+        } else {
+            params.put("guide_card", new File(beans.getGuide_card()));
+        }
         params.put("guide_idcard", new File(beans.getGuide_idcard()));
         params.put("server_language", beans.getServer_language() + "");
         params.put("now_address", beans.getCity().getId());
@@ -191,13 +197,13 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
                 + "\nserver_language=" + beans.getServer_language()
                 + "\nnow_address=" + beans.getCity().getId());
 
-        IRequest.post(this, HttpUrl.REGISTER_GUIDE_INFO, params, getString(R.string.loding), new RequestBackListener(this) {
+        IRequest.post(this, HttpUrl.REGISTER_GUIDE_INFO, params, getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
                 LogUtils.i("-----registerGuideInfo:" + json);
                 if (UtilParse.getRequestCode(json) != 0) {
                     ToastUtils.showShort(RegisterFinalActivity.this, "註冊成功");
-                    startIntent(LoginActivity.class, true);
+                    startIntent(RegisterInfoOkActivity.class, true);
                 } else {
                     ToastUtils.showShort(RegisterFinalActivity.this, UtilParse.getRequestMsg(json));
                 }

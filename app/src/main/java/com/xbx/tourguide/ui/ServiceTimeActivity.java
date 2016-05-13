@@ -53,8 +53,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
     private CalendarUtil calendar;
     private ArrayList<ServiceTimeBeans> gridList = new ArrayList<>();
     private String uid = "";
-    private int type = 0;//0-全陪，1-地陪，2-领队
-    private List<ServiceTimeBeans> selectTimeList = new ArrayList<>();
+    private int type = 0;//0-全陪，1-地陪，2-领队\
 
     private String locations = "";//多地区
     private String locationIds = "";//地区id
@@ -127,7 +126,8 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO:
-                    ToastUtils.showShort(ServiceTimeActivity.this, "设置服务时间和地区成功");
+                    ToastUtils.showShort(ServiceTimeActivity.this, "设置成功");
+                    finish();
                     break;
             }
         }
@@ -185,6 +185,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                 findViewById(R.id.rlyt_service_time_guide_type).setVisibility(View.VISIBLE);
                 findViewById(R.id.rlyt_service_time_priced).setVisibility(View.VISIBLE);
                 findViewById(R.id.rlyt_service_time_priceh).setVisibility(View.GONE);
+                findViewById(R.id.line_service_time).setVisibility(View.GONE);
                 break;
             case 2:
                 findViewById(R.id.rlyt_service_time_guide_type).setVisibility(View.GONE);
@@ -195,6 +196,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
                 findViewById(R.id.rlyt_service_time_priceh).setVisibility(View.VISIBLE);
                 findViewById(R.id.rlyt_service_time_priced).setVisibility(View.GONE);
                 findViewById(R.id.rlyt_service_time_guide_type).setVisibility(View.GONE);
+                findViewById(R.id.line_service_time).setVisibility(View.GONE);
                 break;
         }
         setDateList();
@@ -328,6 +330,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
 
     /**
      * 筛选选中日期上传
+     *
      * @return
      */
     private String getFreeTime() {

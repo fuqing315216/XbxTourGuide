@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.SettingApi;
@@ -19,7 +20,6 @@ import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.view.CircleImageView;
 
 import java.io.File;
 
@@ -29,7 +29,7 @@ import java.io.File;
  */
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
     private TextView titleRightTv;
-    private CircleImageView headPicCiv;
+    private RoundedImageView headPicRiv;
     private TextView nameTv, sexTv, birthdayTv, phoneTv, idTv, guideTv;
     private RelativeLayout locationRlyt;
     private TextView locationTv;
@@ -38,6 +38,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private ImageLoader loader;
     private TourGuideInfoBeans beans = null;
     private String userInfo = "";
+    private String cityId = "";
     private int rightType = 1;//1-主页 2-确认修改
 
     private SettingApi settingApi = null;
@@ -47,11 +48,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    rightType = 1;
-                    titleRightTv.setText(getString(R.string.personal_main));
-//                    beans.setHead_image(JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class).getHead_image());
-//                    Cookie.putUserInfo(PersonalInfoActivity.this, JsonUtils.toJson(tourGuideBean));
+//                    rightType = 1;
+//                    titleRightTv.setText(getString(R.string.personal_main));
                     UserInfoParse.putUserInfo(PersonalInfoActivity.this, userInfo, JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class));
+                    finish();
                     break;
             }
         }
@@ -61,6 +61,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalinfo);
+
         loader = ImageLoader.getInstance();
         userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
@@ -69,7 +70,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initView() {
         titleRightTv = (TextView) findViewById(R.id.tv_confirm_update);
-        headPicCiv = (CircleImageView) findViewById(R.id.circle_head);
+        headPicRiv = (RoundedImageView) findViewById(R.id.riv_info_headpic);
         nameTv = (TextView) findViewById(R.id.tv_name);
         sexTv = (TextView) findViewById(R.id.tv_sex);
         birthdayTv = (TextView) findViewById(R.id.tv_birthday);
@@ -89,7 +90,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         initData();
 
         titleRightTv.setOnClickListener(this);
-        headPicCiv.setOnClickListener(this);
+        headPicRiv.setOnClickListener(this);
         locationRlyt.setOnClickListener(this);
         chineseRb.setOnClickListener(this);
         englishRb.setOnClickListener(this);
@@ -98,7 +99,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-        loader.displayImage(beans.getHead_image(), headPicCiv);
+        loader.displayImage(beans.getHead_image(), headPicRiv);
         nameTv.setText(beans.getRealname());
         if (beans.getSex().equals("1")) {
             sexTv.setText("女");
@@ -130,13 +131,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.tv_confirm_update:
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
-                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image())
-                            , beans.getNow_address_name(), beans.getServer_language());
+                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image()),
+                            beans.getBirthday(), cityId, beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);
                 }
                 break;
-            case R.id.circle_head:
+            case R.id.riv_info_headpic:
                 Intent intent = new Intent(PersonalInfoActivity.this, CameraDialogActivity.class);
                 intent.putExtra("isPic", true);
                 intent.putExtra("isCrop", true);
@@ -193,7 +194,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
         if (resultCode == 100) {
             String url = data.getStringExtra("url");
-            loader.displayImage("file://" + url, headPicCiv);
+            loader.displayImage("file://" + url, headPicRiv);
             beans.setHead_image(url);
             setUpdate();
         }
@@ -202,6 +203,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             CityBeans city = (CityBeans) data.getSerializableExtra("bean");
             locationTv.setText(city.getName());
             beans.setNow_address_name(city.getName());
+            cityId = city.getId();
             setUpdate();
         }
     }

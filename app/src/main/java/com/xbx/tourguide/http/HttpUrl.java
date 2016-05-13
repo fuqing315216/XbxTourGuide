@@ -6,8 +6,8 @@ package com.xbx.tourguide.http;
  */
 public class HttpUrl {
 
-//      public static String URL = "http://192.168.1.27/yueyou/Api/";
-    public static String URL = "http://192.168.1.24/yueyou/Api/";
+    public static String URL = "http://192.168.1.27/yueyou/Api/";
+//    public static String URL = "http://192.168.1.24/yueyou/Api/";
 
     //网络服务器
 //    public static String URL = "http://123.56.194.208/yueyou/index.php/Api/";
@@ -23,6 +23,8 @@ public class HttpUrl {
     public static String GET_VERIFYCODE = URL + "Index/send_verifyCode.json";
     //登录
     public static String LOGIN = URL + "user/login.json";
+    //登出
+    public static String LOGIN_OUT = URL + "user/login_out.json";
     //找回密码
     public static String UPDATE_PW = URL + "user/retrieve_password.json";
     //服务时间设置

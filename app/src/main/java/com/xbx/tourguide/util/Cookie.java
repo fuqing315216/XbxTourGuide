@@ -2,6 +2,7 @@ package com.xbx.tourguide.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 
 /**
@@ -57,13 +58,35 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static String getUid(Context context) {
         SharedPreferences share = context.getSharedPreferences(filename,
                 Context.MODE_WORLD_READABLE);
         String info = share.getString("uid", "");
+        if (info.length() > 0) {
+            return info;
+        } else {
+            return null;
+        }
+    }
+
+    public static void putOnline(Context context, String online) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor editor = share.edit();
+        if (online != null) {
+            editor.putString("online", online);
+        }
+
+        editor.commit();
+        editor.clear();
+    }
+
+    public static String getOnline(Context context) {
+        SharedPreferences share = context.getSharedPreferences(filename,
+                Context.MODE_WORLD_READABLE);
+        String info = share.getString("online", "");
         if (info.length() > 0) {
             return info;
         } else {
@@ -81,7 +104,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static String getDeviceID(Context context) {
@@ -159,7 +181,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getIsDialog(Context context) {
@@ -180,7 +201,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getIsJPush(Context context) {
@@ -200,7 +220,6 @@ public class Cookie {
 
         editor.commit();
         editor.clear();
-
     }
 
     public static boolean getLoginOut(Context context) {

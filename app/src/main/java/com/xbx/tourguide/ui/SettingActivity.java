@@ -1,9 +1,13 @@
 package com.xbx.tourguide.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.api.LoginApi;
+import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Cookie;
@@ -14,6 +18,22 @@ import com.xbx.tourguide.view.TitleBarView;
  * Created by shuzhen on 2016/4/15.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
+
+    private LoginApi loginApi = null;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TaskFlag.REQUESTSUCCESS:
+                    Cookie.putUserInfo(SettingActivity.this, "");
+                    Cookie.putLoginOut(SettingActivity.this, true);
+                    startIntent(LoginActivity.class, true);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +82,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.tv_login_out:
-                Cookie.putUserInfo(SettingActivity.this, "");
-                Cookie.putLoginOut(SettingActivity.this, true);
-                startIntent(LoginActivity.class, true);
+                loginApi = new LoginApi(this, handler);
+                loginApi.loginOut(Cookie.getUid(this));
                 break;
             default:
                 break;

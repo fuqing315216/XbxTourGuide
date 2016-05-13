@@ -26,7 +26,7 @@ public class ActivityManager {
     //把一个activity压入栈中
     public void pushOneActivity(Activity actvity) {
         if (activityStack == null) {
-            activityStack = new Stack<Activity>();
+            activityStack = new Stack<>();
         }
         activityStack.add(actvity);
     }

@@ -14,7 +14,6 @@
             android:id="@+id/tv_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4月1日 10:30"
             android:textColor="@color/text_color"
             android:textSize="14sp" />
 
@@ -27,7 +26,6 @@
             android:layout_toRightOf="@id/tv_date_time"
             android:background="@drawable/bg_tourist_type_style"
             android:gravity="center"
-            android:text="导游"
             android:textColor="@color/bg_verification_color"
             android:textSize="10sp"
             android:visibility="gone" />
@@ -38,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dp8"
-            android:text="已完成"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp15" />
 
@@ -59,7 +56,6 @@
             android:layout_marginRight="@dimen/dp8"
             android:layout_marginTop="@dimen/dp8"
             android:layout_toLeftOf="@id/iv_arrow_right"
-            android:text="青城山"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp15" />
 
@@ -69,7 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_order_address"
             android:layout_marginTop="@dimen/dp8"
-            android:text="预约服务"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp15" />
 
@@ -80,14 +75,13 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/tv_order_address"
             android:layout_marginTop="@dimen/dp8"
-            android:text="¥500"
             android:textColor="@color/forgetpass_color"
             android:textSize="@dimen/sp15" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_alignParentBottom="true"
         android:background="@color/line_color" />
 

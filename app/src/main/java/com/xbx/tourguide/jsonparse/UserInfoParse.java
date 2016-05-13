@@ -16,7 +16,12 @@ import org.json.JSONObject;
  * Created by xbx on 2016/4/26.
  */
 public class UserInfoParse {
-
+    /**
+     * 解析loign返回数据中的uid
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getUid(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -30,6 +35,12 @@ public class UserInfoParse {
         return "";
     }
 
+    /**
+     * 解析login返回的user_info
+     *
+     * @param responseResult
+     * @return
+     */
     public static TourGuideInfoBeans getUserInfo(String responseResult) {
         TourGuideInfoBeans tourGuideInfoBeans = null;
 
@@ -47,6 +58,12 @@ public class UserInfoParse {
         return tourGuideInfoBeans;
     }
 
+    /**
+     * 解析loign返回数据中的token
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getLogToken(String responseResult) {
         JSONObject jsonObject = null;
         try {
@@ -60,6 +77,12 @@ public class UserInfoParse {
         return "";
     }
 
+    /**
+     * 解析loign返回数据中的mobile
+     *
+     * @param responseResult
+     * @return
+     */
     public static String getMobile(String responseResult) {
         JSONObject jsonObject = null;
         try {

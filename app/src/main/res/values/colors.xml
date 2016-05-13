@@ -7,6 +7,7 @@
     <color name="head_bg_color">#442680</color>
     <color name="head_text_color">#FAFAFA</color>
     <color name="line_color">#d6d7dc</color>
+    <color name="vertical_line_color">#e1e1e1</color>
     <color name="text_color">#323232</color>
     <color name="forgetpass_color">#DF3D3E</color>
     <color name="gray_color">#B4B4B4</color>
@@ -21,4 +22,6 @@
     <color name="serverTime">#ffd400</color>
     <color name="guide_type2">#e7b021</color>
     <color name="guide_type3">#abc828</color>
+    <color name="balance_more">#b4b4b4</color>
+    <color name="pay_detail_add">#666666</color>
 </resources>

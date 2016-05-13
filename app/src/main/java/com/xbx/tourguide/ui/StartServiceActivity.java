@@ -5,11 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +27,7 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServerApi;
@@ -41,13 +39,9 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
-import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.view.CircleImageView;
+import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/8.
@@ -56,9 +50,8 @@ import com.xbx.tourguide.view.CircleImageView;
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton returnIbtn;
     private String orderId = "";
-    private CircleImageView headImgCiv;
+    private RoundedImageView headImgRiv;
     private TextView nameTv, addressTv, timeTv;
     private ImageView phoneIv;
     private ImageLoader loader;
@@ -67,7 +60,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private MapView mapView;
     private BaiduMap baiduMap;
     private LocationClient locationClient;
-    private boolean isGoing;
     private boolean isFirst = true;
     private LocationMode mCurrentMode;
     private BitmapDescriptor bdMyself = null;
@@ -98,18 +90,28 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
                     nameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());
-                    loader.displayImage(result.getHead_image(), headImgCiv);
+                    loader.displayImage(result.getHead_image(), headImgRiv);
 
                     startTime = result.getServer_start_time();
                     if ("0".equals(startTime)) {
                         timeTv.setText("未开始");
+
+                        if (!stopBtn.getText().toString().equals(getString(R.string.start_service))) {
+                            stopBtn.setText(getResources().getString(R.string.start_service));
+                        }
                     } else {
                         long time = Long.parseLong(result.getNow_time());
                         long serverTime = time - Long.parseLong(startTime);
                         String timeStr = XbxTGApplication.formatTime(serverTime);
                         timeTv.setText(timeStr);
+
+                        if (!stopBtn.getText().toString().equals(getString(R.string.end_service))) {
+                            stopBtn.setText(getResources().getString(R.string.end_service));
+                        }
                     }
-                    if (result.getLon() != null && result.getLat() != null && !isGoing) {
+
+                    if (result.getLon() != null && result.getLat() != null
+                            && timeTv.getText().toString().equals("未开始")) {
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
                     }
                     break;
@@ -121,7 +123,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                             .putExtra("content", "您的即时导游服务已经开始计时"));
                     break;
                 case TaskFlag.PAGEREQUESTHREE://结束服务
-                    StartServiceActivity.this.finish();
+                    finish();
                     break;
             }
         }
@@ -141,15 +143,22 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_startservice);
         orderId = getIntent().getStringExtra("orderId");
         loader = ImageLoader.getInstance();
-        isGoing = getIntent().getBooleanExtra("isgoing", true);
         bdMyself = BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
         serverApi = new ServerApi(this, handler);
         initView();
     }
 
     private void initView() {
-        returnIbtn = (ImageButton) findViewById(R.id.ibtn_return);
-        headImgCiv = (CircleImageView) findViewById(R.id.civ_headpic);
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.app_name));
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        headImgRiv = (RoundedImageView) findViewById(R.id.riv_start_service);
         nameTv = (TextView) findViewById(R.id.tv_name);
         addressTv = (TextView) findViewById(R.id.tv_add);
         timeTv = (TextView) findViewById(R.id.tv_service_time);
@@ -162,13 +171,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         baiduMap.setMapStatus(msu);
         baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 
-        returnIbtn.setOnClickListener(this);
-
-        if (isGoing) {//进行中
-            stopBtn.setText(getResources().getString(R.string.end_service));
-        } else {//未开始
-            stopBtn.setText(getResources().getString(R.string.start_service));
-        }
         stopBtn.setOnClickListener(this);
 
         locationClient = new LocationClient(this);
@@ -182,9 +184,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtn_return:
-                finish();
-                break;
 
             case R.id.btn_service:
                 if (stopBtn.getText().toString().equals(getString(R.string.end_service))) {//进行中，点击按钮结束服务

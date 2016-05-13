@@ -32,7 +32,7 @@ public class ServerApi {
      */
     public void setIsOnline(String uid) {
         String url = HttpUrl.START_SERVICE + "?uid=" + uid;
-        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
@@ -67,7 +67,7 @@ public class ServerApi {
         IRequest.get(context, url, new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
+                sendShowMessage.sendMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });
     }
@@ -96,7 +96,7 @@ public class ServerApi {
     public void endServer(String order_number) {
         RequestParams params = new RequestParams();
         params.put("order_number", order_number);
-        IRequest.post(context, HttpUrl.END_SERVER, params, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.post(context, HttpUrl.END_SERVER, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTHREE, json);
@@ -114,7 +114,7 @@ public class ServerApi {
      */
     public void getMyOrderData(String uid, int now_page, int page_number, final int taskFlag) {
         String url = HttpUrl.MY_ORDER + "?uid=" + uid + "&now_page=" + now_page + "&page_number=" + page_number;
-        IRequest.get(context, url, context.getString(R.string.loding), new RequestBackListener(context) {
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
                 sendShowMessage.getmHandler().sendMessage(sendShowMessage.getmHandler().obtainMessage(taskFlag, UtilParse.getRequestData(json)));
@@ -122,7 +122,23 @@ public class ServerApi {
 
             @Override
             public void requestError(VolleyError e) {
-                sendShowMessage.sendMsg(TaskFlag.REQUESTERROR, "");
+//                sendShowMessage.sendMsg(TaskFlag.REQUESTERROR, "");
+                sendShowMessage.getmHandler().sendMessage(sendShowMessage.getmHandler().obtainMessage(TaskFlag.REQUESTERROR));
+            }
+        });
+    }
+
+    /**
+     * 获取订单状态详情
+     *
+     * @param order_number
+     */
+    public void getOrderStatusDetail(String order_number) {
+        String url = HttpUrl.MY_ORDER_DETAIL + "?order_number=" + order_number;
+        IRequest.get(context, url, context.getString(R.string.waitting), new RequestBackListener(context) {
+            @Override
+            public void requestSuccess(String json) {
+                sendShowMessage.sendShowMsg(TaskFlag.PAGEREQUESTWO, json);
             }
         });
     }

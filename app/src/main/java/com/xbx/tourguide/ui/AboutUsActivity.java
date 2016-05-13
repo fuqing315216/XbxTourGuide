@@ -19,7 +19,6 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        ActivityManager.getInstance().pushOneActivity(this);
         initView();
     }
 
@@ -40,5 +39,4 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
         }
     }
-
 }

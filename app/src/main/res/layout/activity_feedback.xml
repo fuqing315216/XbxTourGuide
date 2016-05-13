@@ -9,7 +9,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginTop="@dimen/dp16"
         android:background="@color/line_color" />
 
@@ -24,10 +24,7 @@
         android:textColor="@color/text_color"
         android:textSize="@dimen/sp12" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_color" />
+    <include layout="@layout/view_line"/>
 
     <Button
         android:id="@+id/btn_feedback"
