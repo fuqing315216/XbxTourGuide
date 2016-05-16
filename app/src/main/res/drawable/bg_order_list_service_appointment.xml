@@ -3,7 +3,9 @@
     android:shape="oval"
     android:useLevel="false">
     <solid android:color="@color/server_appointment" />
-    <size
-        android:width="20dp"
-        android:height="20dp" />
+    <padding
+        android:left="2dp"
+        android:top="1dp"
+        android:right="2dp"
+        android:bottom="1dp" />
 </shape>
