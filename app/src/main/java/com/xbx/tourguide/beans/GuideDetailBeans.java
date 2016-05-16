@@ -9,7 +9,7 @@ import java.util.List;
 public class GuideDetailBeans implements Serializable {
     private String realname;
     private String head_image;
-    private String guide_number;
+    private String guide_card_number;
     private String guide_instant_price;
     private String guide_reserve_price;
     private String server_times;
@@ -18,16 +18,20 @@ public class GuideDetailBeans implements Serializable {
     private String stars;
     private List<TagBeans> comment_tag_times;
 
+    public String getGuide_card_number() {
+        return guide_card_number;
+    }
+
+    public void setGuide_card_number(String guide_card_number) {
+        this.guide_card_number = guide_card_number;
+    }
+
     public String getRealname() {
         return realname;
     }
 
     public String getHead_image() {
         return head_image;
-    }
-
-    public String getGuide_number() {
-        return guide_number;
     }
 
     public String getGuide_instant_price() {
@@ -60,10 +64,6 @@ public class GuideDetailBeans implements Serializable {
 
     public void setHead_image(String head_image) {
         this.head_image = head_image;
-    }
-
-    public void setGuide_number(String guide_number) {
-        this.guide_number = guide_number;
     }
 
     public void setGuide_instant_price(String guide_instant_price) {
@@ -103,7 +103,7 @@ public class GuideDetailBeans implements Serializable {
         return "GuideDetailBeans{" +
                 "realname='" + realname + '\'' +
                 ", head_image='" + head_image + '\'' +
-                ", guide_number='" + guide_number + '\'' +
+                ", guide_card_number='" + guide_card_number + '\'' +
                 ", guide_instant_price='" + guide_instant_price + '\'' +
                 ", guide_reserve_price='" + guide_reserve_price + '\'' +
                 ", server_times='" + server_times + '\'' +

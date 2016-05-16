@@ -30,8 +30,8 @@
 
                 <ImageView
                     android:id="@+id/iv_card_front"
-                    android:layout_width="115dp"
-                    android:layout_height="76dp"
+                    android:layout_width="@dimen/dp115"
+                    android:layout_height="@dimen/dp76"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="@dimen/dp8"
                     android:layout_marginTop="@dimen/dp8"
@@ -53,15 +53,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp16"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="@dimen/dp3"
                         android:text="@string/follow_img"
                         android:textSize="@dimen/sp12" />
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_upload_card_front"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/dp80"
+                    android:layout_height="@dimen/dp30"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp16"
@@ -86,8 +86,8 @@
 
                 <ImageView
                     android:id="@+id/iv_card_other"
-                    android:layout_width="115dp"
-                    android:layout_height="76dp"
+                    android:layout_width="@dimen/dp115"
+                    android:layout_height="@dimen/dp76"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="@dimen/dp8"
                     android:layout_marginTop="@dimen/dp8"
@@ -116,8 +116,8 @@
 
                 <Button
                     android:id="@+id/btn_upload_card_other"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/dp80"
+                    android:layout_height="@dimen/dp30"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp16"
@@ -148,8 +148,8 @@
 
                     <ImageView
                         android:id="@+id/iv_card_tourist"
-                        android:layout_width="115dp"
-                        android:layout_height="76dp"
+                        android:layout_width="@dimen/dp115"
+                        android:layout_height="@dimen/dp76"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/dp8"
                         android:layout_marginTop="@dimen/dp8"
@@ -178,8 +178,8 @@
 
                     <Button
                         android:id="@+id/btn_upload_tourist"
-                        android:layout_width="80dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/dp80"
+                        android:layout_height="@dimen/dp30"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dp16"
@@ -205,8 +205,8 @@
 
                 <ImageView
                     android:id="@+id/iv_card_personal"
-                    android:layout_width="115dp"
-                    android:layout_height="76dp"
+                    android:layout_width="@dimen/dp115"
+                    android:layout_height="@dimen/dp76"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="@dimen/dp8"
                     android:layout_marginTop="@dimen/dp8"
@@ -228,15 +228,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp16"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="@dimen/dp3"
                         android:text="@string/follow_img"
                         android:textSize="@dimen/sp12" />
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_upload_card_personal"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/dp80"
+                    android:layout_height="@dimen/dp30"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp16"

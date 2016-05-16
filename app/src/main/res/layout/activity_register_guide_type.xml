@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/llyt_guide_type1"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/dp80"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
         android:background="@drawable/bg_comment_style"
@@ -20,8 +20,8 @@
         android:padding="@dimen/dp8">
 
         <TextView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/dp64"
+            android:layout_height="@dimen/dp64"
             android:background="@drawable/bg_guide_type1_style"
             android:gravity="center"
             android:text="@string/guide_type1"
@@ -37,14 +37,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/need_data"
                 android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/guide_type1_data"
                 android:textSize="@dimen/sp12" />
         </LinearLayout>
@@ -53,15 +53,15 @@
     <LinearLayout
         android:id="@+id/llyt_guide_type3"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/dp80"
         android:layout_margin="@dimen/dp16"
         android:background="@drawable/bg_comment_style"
         android:orientation="horizontal"
         android:padding="@dimen/dp8">
 
         <TextView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/dp64"
+            android:layout_height="@dimen/dp64"
             android:background="@drawable/bg_guide_type2_style"
             android:gravity="center"
             android:text="@string/guide_type2"
@@ -77,14 +77,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/need_data"
                 android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/guide_other_data"
                 android:textSize="@dimen/sp12" />
         </LinearLayout>
@@ -93,7 +93,7 @@
     <LinearLayout
         android:id="@+id/llyt_guide_type2"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/dp80"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
         android:background="@drawable/bg_comment_style"
@@ -102,8 +102,8 @@
         android:visibility="gone">
 
         <TextView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/dp64"
+            android:layout_height="@dimen/dp64"
             android:background="@drawable/bg_guide_type3_style"
             android:gravity="center"
             android:text="@string/guide_type3"
@@ -119,14 +119,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/need_data"
                 android:textSize="@dimen/sp12" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/guide_other_data"
                 android:textSize="@dimen/sp12" />
         </LinearLayout>

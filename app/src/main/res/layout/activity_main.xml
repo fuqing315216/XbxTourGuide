@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="194dp"
+        android:layout_marginTop="@dimen/dp194"
         android:src="@drawable/loading_logo" />
 
     <ImageView
@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/loading_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="@dimen/dp13"
         android:src="@drawable/loading_text" />
 </RelativeLayout>

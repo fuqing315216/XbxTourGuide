@@ -11,7 +11,7 @@
     <string name="forgetpass">忘记密码？</string>
     <string name="forgetpw">忘记密码</string>
     <string name="login">登录</string>
-    <string name="long_cancel">长按取消</string>
+
     <!-- register -->
     <string name="fill_info">信息填写</string>
     <string name="next">下一步</string>
@@ -81,16 +81,16 @@
     <string name="natival">向导</string>
     <string name="accompany">随游</string>
     <string name="order_detail">订单详情</string>
+    <string name="order_number">订&#160;&#160;单&#160;&#160;号</string>
+    <string name="my_comment">我的评价</string>
     <string name="order_details">订单明细</string>
-    <string name="order_status">订单状态：</string>
-    <string name="order_time">服务时间：</string>
-    <string name="pay_details">交易明细</string>
-    <string name="cost_sum">消费金额：</string>
-    <string name="fee">打赏：</string>
-    <string name="discount">优惠：</string>
-    <string name="cost_total">总计：</string>
-    <string name="pay_type">支付方式：</string>
+    <string name="pay_details">支付明细</string>
+    <string name="pay_success">成功支付</string>
+    <string name="cost">服务费</string>
+    <string name="fee">打赏</string>
+    <string name="discount">优惠</string>
     <string name="TA_comment">TA的评价</string>
+
     <string name="refuse">拒单</string>
     <string name="accept">接单</string>
     <string name="cancel_pay">取消费用：</string>
@@ -101,6 +101,14 @@
     <string name="weixin">微信支付</string>
     <string name="confirm">确认</string>
     <!-- setting -->
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+    <string name="sunday">日</string>
+
     <string name="price_per_h">价格/小时</string>
     <string name="price_per_d">价格/天</string>
     <string name="service_location">服务地区</string>
@@ -168,9 +176,21 @@
     <string name="now_and_order">即时和预约</string>
     <string name="cancel_order">取消订单</string>
     <string name="btn_back">返回</string>
+
+    <string name="service_duration">服务时长</string>
+    <string name="day">天</string>
+    <string name="service_price">价格</string>
+    <string name="price_day">/天</string>
+    <string name="service_num">服务次数</string>
+    <string name="count">次</string>
+    <string name="zero">0</string>
+    <string name="zero_price">0.00</string>
+    <string name="self_tag">您的印象:</string>
     <string name="self_service">服务标准:</string>
     <string name="self_introduce">自我介绍:</string>
+    <string name="self_title">个人主页</string>
     <string name="waitting">请稍候...</string>
+
     <!-- pull ListView -->
     <string name="head">这里是HeadView</string>
     <string name="pull_to_refresh">下拉刷新</string>

@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,9 +42,10 @@ public class Util {
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView textView = new TextView(context);
         textView.setText(txt);
-        textView.setPadding(20, 8, 20, 8);
-        params.rightMargin = 10;
-        params.bottomMargin = 8;
+        textView.setPadding(30, 12, 30, 12);
+        params.rightMargin = 15;
+        params.bottomMargin = 12;
+        textView.setTextColor(ContextCompat.getColor(context, R.color.head_bg_color));
         textView.setBackgroundResource(R.drawable.guide_tag_bg);
         textView.setLayoutParams(params);
         return textView;

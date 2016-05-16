@@ -3,6 +3,7 @@ package com.xbx.tourguide.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -24,6 +25,7 @@ import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.FlowLayout;
+import com.xbx.tourguide.view.TitleBarView;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ import java.util.List;
  */
 public class SelfMainActivity extends BaseActivity implements View.OnClickListener {
     private RoundedImageView headRiv;
-    private TextView nameTv, guideIdTv, scoreTv, pricehTv, pricedTv, userTypeTv, countTv;
+    private TextView nameTv, guideIdTv, scoreTv, priceTv, durationTv, countTv;
     private RatingBar startRab;
     private FlowLayout tagFlyt;
     private EditText introduceEt, serviceEt;
@@ -48,7 +50,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     LogUtils.i("---getGuideDetail:" + result);
                     ImageLoader.getInstance().displayImage(result.getHead_image(), headRiv);
                     nameTv.setText(result.getRealname());
-                    guideIdTv.setText(result.getGuide_number());
+                    guideIdTv.setText(result.getGuide_card_number());
 
                     scoreTv.setText(Util.getStar(result.getStars()) + "分");
                     if ("0.0".equals(Util.getStar(result.getStars()))) {
@@ -57,21 +59,9 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                         startRab.setRating(Util.getStar(result.getStars()) / 2);
                     }
 
-                    pricehTv.setText(result.getGuide_instant_price() + "/小时");
-                    pricedTv.setText(result.getGuide_reserve_price() + "/天");
-                    int userType = Integer.valueOf(UserInfoParse.getUserInfo(Cookie.getUserInfo(SelfMainActivity.this)).getGuide_type());
-                    switch (userType) {
-                        case 1:
-                            userTypeTv.setText("导游");
-                            break;
-                        case 2:
-                            userTypeTv.setText("随游");
-                            break;
-                        case 3:
-                            userTypeTv.setText("土著");
-                            break;
-                    }
-                    countTv.setText(result.getServer_times() + "次");
+                    priceTv.setText(result.getGuide_reserve_price());
+                    countTv.setText(result.getServer_times());
+
                     //设置tag
                     if (result.getComment_tag_times() == null) {
                         tagFlyt.setVisibility(View.GONE);
@@ -102,25 +92,31 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViews() {
+        TitleBarView titleBarView = (TitleBarView) findViewById(R.id.titlebar);
+        titleBarView.setTitle(getString(R.string.self_title));
+        titleBarView.setTitleColor(ContextCompat.getColor(this, R.color.head_bg_color));
+        titleBarView.setLeftImageButton(R.drawable.ic_return2);
+        titleBarView.setLeftImageButtonOnClickListener(new TitleBarView.OnLeftImageButtonClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        titleBarView.setLayout(ContextCompat.getColor(this, android.R.color.white));
+
         headRiv = (RoundedImageView) findViewById(R.id.riv_self_main);
-        nameTv = (TextView) findViewById(R.id.tv_self_main_name);
-        guideIdTv = (TextView) findViewById(R.id.tv_self_main_id);
-        scoreTv = (TextView) findViewById(R.id.tv_self_main_score);
-        pricehTv = (TextView) findViewById(R.id.tv_self_main_price_h);
-        pricedTv = (TextView) findViewById(R.id.tv_self_main_price_d);
-        userTypeTv = (TextView) findViewById(R.id.tv_self_main_user_type);
-        countTv = (TextView) findViewById(R.id.tv_self_main_count);
-        startRab = (RatingBar) findViewById(R.id.rab_self_main);
-        tagFlyt = (FlowLayout) findViewById(R.id.flyt_self_main_tag);
-        introduceEt = (EditText) findViewById(R.id.et_self_main_introduce);
-        serviceEt = (EditText) findViewById(R.id.et_self_main_service);
+        nameTv = (TextView) findViewById(R.id.tv_self_name);
+        guideIdTv = (TextView) findViewById(R.id.tv_self_id);
+        scoreTv = (TextView) findViewById(R.id.tv_self_score);
+        priceTv = (TextView) findViewById(R.id.tv_self_price);
+        durationTv = (TextView) findViewById(R.id.tv_self_duration);
+        countTv = (TextView) findViewById(R.id.tv_self_count);
+        startRab = (RatingBar) findViewById(R.id.rab_self);
+        tagFlyt = (FlowLayout) findViewById(R.id.flyt_self_tag);
+        introduceEt = (EditText) findViewById(R.id.et_self_introduce);
+        serviceEt = (EditText) findViewById(R.id.et_self_service);
 
-        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getGuide_type())) {
-            guideIdTv.setVisibility(View.GONE);
-        }
-
-        findViewById(R.id.btn_self_main_back).setOnClickListener(this);
-        findViewById(R.id.btn_self_main_confirm).setOnClickListener(this);
+        findViewById(R.id.btn_self_save).setOnClickListener(this);
 
         settingApi.getGuideDetail(Cookie.getUid(this));
     }
@@ -129,10 +125,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_self_main_back:
-                finish();
-                break;
-            case R.id.btn_self_main_confirm:
+            case R.id.btn_self_save:
                 if (VerifyUtil.isNullOrEmpty(introduceEt.getText().toString())) {
                     ToastUtils.showShort(this, "请填写自我介绍");
                     return;

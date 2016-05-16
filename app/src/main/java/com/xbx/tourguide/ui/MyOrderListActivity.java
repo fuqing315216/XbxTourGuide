@@ -10,17 +10,14 @@ import android.widget.AdapterView;
 import com.alibaba.fastjson.JSON;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.adapter.MyOrderListAdapter;
-import com.xbx.tourguide.api.ServerApi;
+import com.xbx.tourguide.api.ServiceApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.MyOrderBeans;
 import com.xbx.tourguide.beans.OrderDetailBeans;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
 import com.xbx.tourguide.view.TitleBarView;
@@ -45,7 +42,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
     private boolean isRefresh = false;
     private boolean isLoadMore = false;
 
-    private ServerApi serverApi = null;
+    private ServiceApi serviceApi = null;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -145,14 +142,14 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         myOrderBeansList = new ArrayList<>();
         uid = Cookie.getUid(this);
         nowPage = 1;
-        serverApi = new ServerApi(this, handler);
-        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
+        serviceApi = new ServiceApi(this, handler);
+        serviceApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MyOrderBeans bean = (MyOrderBeans) parent.getItemAtPosition(position);
-        serverApi.getOrderStatusDetail(bean.getOrder_number());
+        serviceApi.getOrderStatusDetail(bean.getOrder_number());
     }
 
     @Override
@@ -160,7 +157,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
         // 下拉刷新操作
         nowPage = 1;
         isRefresh = true;
-        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
+        serviceApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);
     }
 
     @Override
@@ -170,7 +167,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
             nowPage++;
         }
         isLoadMore = true;
-        serverApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTLOADMORE);
+        serviceApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTLOADMORE);
     }
 
 }

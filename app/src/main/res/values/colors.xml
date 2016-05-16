@@ -24,4 +24,6 @@
     <color name="guide_type3">#abc828</color>
     <color name="balance_more">#b4b4b4</color>
     <color name="pay_detail_add">#666666</color>
+    <color name="server_instant">#c183e2</color>
+    <color name="server_appointment">#77d400</color>
 </resources>

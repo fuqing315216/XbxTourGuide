@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/dp50">
 
         <TextView
             android:id="@+id/tv_city"
@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp16"
-            android:text="成都"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp15" />
 

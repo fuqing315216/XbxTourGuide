@@ -16,11 +16,11 @@ import com.xbx.tourguide.util.LogUtils;
 /**
  * Created by rudne on 2016/4/25.
  */
-public class ServerApi {
+public class ServiceApi {
     private Context context;
     private SendShowMessage sendShowMessage = null;
 
-    public ServerApi(Context context, Handler handler) {
+    public ServiceApi(Context context, Handler handler) {
         this.context = context;
         sendShowMessage = new SendShowMessage(context, handler);
     }

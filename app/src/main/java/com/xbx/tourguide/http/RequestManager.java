@@ -279,9 +279,8 @@ public class RequestManager {
     }
 
     /**
-     * O
-     * 当主页面调用协议 在结束该页面调用此方法
      *
+     * 当主页面调用协议 在结束该页面调用此方法
      * @param tag
      */
     public static void cancelAll(Object tag) {

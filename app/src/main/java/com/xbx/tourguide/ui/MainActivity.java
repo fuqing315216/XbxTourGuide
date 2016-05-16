@@ -3,6 +3,7 @@ package com.xbx.tourguide.ui;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.http.HttpUrl;
@@ -87,6 +88,16 @@ public class MainActivity extends BaseActivity {
                         startIntent(RegisterGuideTypeActivity.class, true);
                     }
                 }
+                /**
+                 * 处理网络问题 连接超时
+                 */
+//                @Override
+//                public void requestError(VolleyError e) {
+//                    super.requestError(e);
+//                    ToastUtils.showShort(MainActivity.this, "请检查您的网络");
+//                    startIntent(LoginActivity.class, true);
+//                }
+
             });
         } else {
             startIntent(LoginActivity.class, true);

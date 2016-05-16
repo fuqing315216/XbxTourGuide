@@ -30,7 +30,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.api.ServerApi;
+import com.xbx.tourguide.api.ServiceApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
@@ -68,7 +68,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private boolean isFirstInOrd = true;
     private Marker userMarkers = null;
 
-    private ServerApi serverApi = null;
+    private ServiceApi serviceApi = null;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -132,7 +132,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     Runnable run = new Runnable() {
         @Override
         public void run() {
-            serverApi.getOrderDetail(orderId);
+            serviceApi.getOrderDetail(orderId);
             new Handler().postDelayed(this, 1000);
         }
     };
@@ -144,7 +144,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         orderId = getIntent().getStringExtra("orderId");
         loader = ImageLoader.getInstance();
         bdMyself = BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
-        serverApi = new ServerApi(this, handler);
+        serviceApi = new ServiceApi(this, handler);
         initView();
     }
 
@@ -207,9 +207,9 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 101) {
-                serverApi.startServer(orderId);
+                serviceApi.startServer(orderId);
             } else if (requestCode == 102) {
-                serverApi.endServer(orderId);
+                serviceApi.endServer(orderId);
             }
         }
     }

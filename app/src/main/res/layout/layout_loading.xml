@@ -11,8 +11,8 @@
     <ProgressBar
         android:id="@+id/loading_bar"
         style="@style/loading_small"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60" />
 
     <LinearLayout
         android:layout_width="wrap_content"

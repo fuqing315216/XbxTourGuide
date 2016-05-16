@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:divider="@null"
-            android:dividerHeight="1dp"
+            android:dividerHeight="@dimen/dp1"
             android:listSelector="@null"
             android:scrollbars="none" />
 

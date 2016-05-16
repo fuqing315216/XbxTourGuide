@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/titlebar_order_detail"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llyt_order_detail_button"
+        android:layout_below="@id/titlebar_order_detail"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp12"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp93"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp32"
+                android:paddingRight="@dimen/dp32">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/riv_order_detail_headpic"
+                    android:layout_width="@dimen/dp64"
+                    android:layout_height="@dimen/dp64"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_headpic"
+                    app:riv_oval="true" />
+
+                <ImageView
+                    android:id="@+id/iv_order_detail_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_phone_ok"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp12"
+                    android:layout_marginRight="@dimen/dp12"
+                    android:layout_toLeftOf="@id/iv_order_detail_phone"
+                    android:layout_toRightOf="@id/riv_order_detail_headpic"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="小明"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp18" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="青城山正门口"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp10" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- detail -->
+            <LinearLayout
+                android:id="@+id/llyt_order_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16">
+
+                <RelativeLayout
+                    android:id="@+id/rlyt_order_detail_pay_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp56">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥ "
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sp14" />
+
+                        <TextView
+                            android:id="@+id/tv_order_detail_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/sp30" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_arrow_right" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color"
+                    android:paddingLeft="@dimen/dp16"
+                    android:paddingRight="@dimen/dp16" />
+
+                <!-- location -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp52"
+                    android:layout_marginRight="@dimen/dp52"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_location" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_address2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp4"
+                        android:text="青城山正门口青城山正门口青城山正门口"
+                        android:textColor="@color/gray_color"
+                        android:textSize="@dimen/sp12" />
+                </LinearLayout>
+
+                <!-- detail_number -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp52"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_number"
+                        android:textColor="@color/pay_detail_add"
+                        android:textSize="@dimen/sp14" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_order_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="@dimen/dp64"
+                        android:text="12345678987456321"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp14" />
+                </LinearLayout>
+
+                <!-- start -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp52"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_service"
+                        android:textColor="@color/pay_detail_add"
+                        android:textSize="@dimen/sp14" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp64"
+                        android:text="2016-05-14 09:00"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp14" />
+                </LinearLayout>
+
+                <!-- end -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp52"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/end_service"
+                        android:textColor="@color/pay_detail_add"
+                        android:textSize="@dimen/sp14" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp64"
+                        android:text="2016-05-14 09:00"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp14" />
+                </LinearLayout>
+
+                <!-- duration -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginLeft="@dimen/dp52"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp12"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/service_duration"
+                        android:textColor="@color/pay_detail_add"
+                        android:textSize="@dimen/sp14" />
+
+                    <TextView
+                        android:id="@+id/tv_order_detail_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp64"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- comment -->
+            <LinearLayout
+                android:id="@+id/llyt_order_detail_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/dp16"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dp16"
+                    android:text="@string/TA_comment"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/sp14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <TextView
+                    android:id="@+id/tv_order_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp36"
+                    android:layout_marginRight="@dimen/dp36"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:background="@drawable/bg_comment_style"
+                    android:gravity="center"
+                    android:padding="@dimen/dp8"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/sp12" />
+
+                <com.xbx.tourguide.view.FlowLayout
+                    android:id="@+id/flyt_order_detail_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_order_detail_content"
+                    android:layout_marginLeft="@dimen/dp36"
+                    android:layout_marginRight="@dimen/dp36"
+                    android:layout_marginTop="@dimen/dp12" />
+
+                <RatingBar
+                    android:id="@+id/rab_order_detail"
+                    style="@style/bigStarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/flyt_order_detail_tag"
+                    android:layout_marginLeft="@dimen/dp36"
+                    android:layout_marginRight="@dimen/dp36"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp16" />
+            </LinearLayout>
+
+            <!-- cancel -->
+            <LinearLayout
+                android:id="@+id/llyt_order_detail_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp143"
+                android:layout_marginTop="@dimen/dp12"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:src="@drawable/ic_order_detail_cancel" />
+
+                <TextView
+                    android:id="@+id/tv_order_detail_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dp6"
+                    android:text="用户取消了该行程"
+                    android:textColor="@color/pay_detail_add"
+                    android:textSize="@dimen/sp14" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llyt_order_detail_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_order_detail_refuse"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_refuse_style"
+            android:text="@string/refuse"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp17" />
+
+        <Button
+            android:id="@+id/btn_order_detail_accept"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_accept_style"
+            android:text="@string/accept"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp17" />
+    </LinearLayout>
+
+</RelativeLayout>

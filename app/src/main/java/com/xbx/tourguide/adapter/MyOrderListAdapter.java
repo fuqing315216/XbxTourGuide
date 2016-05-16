@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseMyAdapter;
 import com.xbx.tourguide.beans.MyOrderBeans;
+import com.xbx.tourguide.beans.TourGuideInfoBeans;
+import com.xbx.tourguide.jsonparse.UserInfoParse;
+import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.LogUtils;
 
 import java.sql.Date;
@@ -37,23 +40,48 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         if (holder == null) {
             holder = new ViewHolder();
-            holder.dateTv = (TextView) convertView.findViewById(R.id.tv_date_time);
-            holder.typeTv = (TextView) convertView.findViewById(R.id.tv_tourist_type);
-            holder.statusTv = (TextView) convertView.findViewById(R.id.tv_order_status);
-            holder.addressTv = (TextView) convertView.findViewById(R.id.tv_order_address);
-            holder.serviceTypeTv = (TextView) convertView.findViewById(R.id.tv_service_type);
-            holder.priceTv = (TextView) convertView.findViewById(R.id.tv_service_price);
+            holder.dateTv = (TextView) convertView.findViewById(R.id.tv_order_list_date);
+            holder.typeTv = (TextView) convertView.findViewById(R.id.tv_order_list_type);
+            holder.guideTypeTv = (TextView) convertView.findViewById(R.id.tv_order_list_guide_type);
+            holder.statusTv = (TextView) convertView.findViewById(R.id.tv_order_list_status);
+            holder.addressTv = (TextView) convertView.findViewById(R.id.tv_order_list_address);
+            holder.serviceTypeTv = (TextView) convertView.findViewById(R.id.tv_order_list_service_type);
+            holder.priceTv = (TextView) convertView.findViewById(R.id.tv_order_list_price);
 
             convertView.setTag(holder);
         }
 
         MyOrderBeans bean = mList.get(position);
         holder.addressTv.setText(bean.getEnd_addr());
-
         holder.dateTv.setText(bean.getOrder_time());
+
+        //导游类型
+        String userType = UserInfoParse.getUserInfo(Cookie.getUserInfo(mContext)).getGuide_type();
+        if ("1".equals(userType)) {//1：导游；2：向导；3：土著
+            holder.guideTypeTv.setText("导");
+            holder.guideTypeTv.setBackgroundResource(R.drawable.bg_order_list_guide);
+        } else if ("2".equals(userType)) {
+            holder.guideTypeTv.setText("向");
+            holder.guideTypeTv.setBackgroundResource(R.drawable.bg_order_list_guide2);
+        }
+
+        //服务类型
+        String service_type = bean.getServer_type();
         int order_status = Integer.valueOf(bean.getOrder_status());
-        if ("0".equals(bean.getServer_type())) {//0-及时服务，1-预约服务
-            holder.serviceTypeTv.setText("即时服务");
+
+        if ("0".equals(service_type)) {
+            if ("1".equals(userType)) {//1：导游；2：向导；3：土著
+                holder.typeTv.setText("导游即时服务");
+            } else if ("2".equals(userType)) {
+                holder.typeTv.setText("向导即时服务");
+            }
+        } else {
+            holder.typeTv.setText("导游预约服务");
+        }
+
+        if ("0".equals(service_type)) {//0-及时服务，1-预约服务
+            holder.serviceTypeTv.setText("即");
+            holder.serviceTypeTv.setBackgroundResource(R.drawable.bg_order_list_service_instant);
             //即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
             switch (order_status) {
                 case 0:
@@ -98,7 +126,8 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     break;
             }
         } else {
-            holder.serviceTypeTv.setText("预约服务");
+            holder.serviceTypeTv.setText("预");
+            holder.serviceTypeTv.setBackgroundResource(R.drawable.bg_order_list_service_appointment);
             //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
             //8-已拒接，退款进行中；9-已关闭（拒单并退款成功）
             switch (order_status) {
@@ -152,13 +181,13 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
     private void setPrice(TextView priceTv, String price, boolean isShow) {
         if (isShow) {
             priceTv.setVisibility(View.VISIBLE);
-            priceTv.setText("¥" + price);
+            priceTv.setText("金额 ¥ " + price);
         } else {
             priceTv.setVisibility(View.GONE);
         }
     }
 
     private static class ViewHolder {
-        private TextView dateTv, typeTv, statusTv, addressTv, serviceTypeTv, priceTv;
+        private TextView dateTv, typeTv, guideTypeTv, statusTv, addressTv, serviceTypeTv, priceTv;
     }
 }
