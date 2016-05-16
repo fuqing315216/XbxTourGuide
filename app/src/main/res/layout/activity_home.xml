@@ -14,8 +14,8 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/riv_home_headpic"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="@dimen/dp96"
+            android:layout_height="@dimen/dp96"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/dp16"
             android:layout_marginTop="@dimen/dp8"
@@ -107,7 +107,7 @@
             <TextView
                 android:id="@+id/tv_my_travel"
                 style="@style/HomeTextView"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp17"
                 android:drawableTop="@drawable/ic_mytravel"
                 android:text="@string/mytravel" />
         </LinearLayout>
@@ -137,7 +137,7 @@
             <TextView
                 android:id="@+id/tv_setting"
                 style="@style/HomeTextView"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp17"
                 android:drawableTop="@drawable/ic_setting"
                 android:text="@string/setting" />
         </LinearLayout>
@@ -159,7 +159,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp">
+                android:layout_marginTop="@dimen/dp17">
 
                 <TextView
                     android:id="@+id/tv_my_information"

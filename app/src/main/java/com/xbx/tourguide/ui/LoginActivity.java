@@ -107,6 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         if (VerifyUtil.isNullOrEmpty(JPushInterface.getRegistrationID(this))) {
             ToastUtils.showShort(this, "网络出现问题，请稍候重试");
+            return;
         }
 
         RequestParams params = new RequestParams();

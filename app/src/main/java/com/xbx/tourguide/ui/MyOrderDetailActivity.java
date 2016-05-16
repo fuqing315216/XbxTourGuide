@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -26,7 +28,7 @@ import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/5.
- * <p>
+ * <p/>
  * 订单详情
  */
 public class MyOrderDetailActivity extends BaseActivity implements View.OnClickListener {
@@ -34,17 +36,18 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     private String orderNum = "";
     private ImageLoader loader;
     private RoundedImageView headPicRiv;
-    private TextView nickNameTv, addressTv, orderStatusTv, commentConTv, costSumTv, payTypeTv;
+    private TextView nickNameTv, addressTv, address2Tv, totalTv, numberTv, startTv, endTv, durationTv, commentConTv;
+    private TextView cancelTv;
+    private LinearLayout payDetailLlyt, commentLlyt, cancelLlyt, buttonLlyt;
     private FlowLayout tagFlyt;
     private RatingBar starRab;
-    private Button refuseBtn, acceptBtn;
     private ImageView phoneIv;
     private OrderDetailBeans result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_myorder_detail);
+        setContentView(R.layout.activity_order_detail);
 
         result = (OrderDetailBeans) getIntent().getSerializableExtra("orderDetailBeans");
         loader = ImageLoader.getInstance();
@@ -64,20 +67,28 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         });
 
         headPicRiv = (RoundedImageView) findViewById(R.id.riv_order_detail_headpic);
-        nickNameTv = (TextView) findViewById(R.id.tv_username);
-        addressTv = (TextView) findViewById(R.id.tv_useradd);
-        orderStatusTv = (TextView) findViewById(R.id.tv_order_status);
-        commentConTv = (TextView) findViewById(R.id.tv_comment_content);
-        tagFlyt = (FlowLayout) findViewById(R.id.flyt_myorder_detail_tag);
-        starRab = (RatingBar) findViewById(R.id.rab_myorder_detail);
-        refuseBtn = (Button) findViewById(R.id.btn_refuse);
-        acceptBtn = (Button) findViewById(R.id.btn_accept);
-        costSumTv = (TextView) findViewById(R.id.tv_cost_sum);
-        payTypeTv = (TextView) findViewById(R.id.tv_pay_type);
-        phoneIv = (ImageView) findViewById(R.id.iv_phone);
+        nickNameTv = (TextView) findViewById(R.id.tv_order_detail_name);
+        addressTv = (TextView) findViewById(R.id.tv_order_detail_address);
+        address2Tv = (TextView) findViewById(R.id.tv_order_detail_address2);
+        totalTv = (TextView) findViewById(R.id.tv_order_detail_total);
+        numberTv = (TextView) findViewById(R.id.tv_order_detail_order_number);
+        startTv = (TextView) findViewById(R.id.tv_order_detail_start);
+        endTv = (TextView) findViewById(R.id.tv_order_detail_end);
+        durationTv = (TextView) findViewById(R.id.tv_order_detail_duration);
+        commentConTv = (TextView) findViewById(R.id.tv_order_detail_content);
+        tagFlyt = (FlowLayout) findViewById(R.id.flyt_order_detail_tag);
+        starRab = (RatingBar) findViewById(R.id.rab_order_detail);
+        cancelTv = (TextView) findViewById(R.id.tv_order_detail_cancel);
 
-        refuseBtn.setOnClickListener(this);
-        acceptBtn.setOnClickListener(this);
+        payDetailLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail);
+        commentLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_comment);
+        cancelLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_cancel);
+        buttonLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_button);
+
+        phoneIv = (ImageView) findViewById(R.id.iv_order_detail_phone);
+        findViewById(R.id.rlyt_order_detail_pay_detail).setOnClickListener(this);
+        findViewById(R.id.btn_order_detail_refuse).setOnClickListener(this);
+        findViewById(R.id.btn_order_detail_accept).setOnClickListener(this);
 
         initData();
     }
@@ -86,86 +97,51 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         loader.displayImage(result.getHead_image(), headPicRiv);
         nickNameTv.setText(result.getNickname());
         addressTv.setText(result.getEnd_addr());
+
         server_type = result.getServer_type();
         order_status = result.getOrder_status();
 
         //0-即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
         //1-预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
         switch (Integer.valueOf(order_status)) {
-            case 0://待支付
-                if ("1".equals(server_type)) {
-                    stateNormal(result);
+            case 0:
+                stateNormal(result);
+                if ("1".equals(server_type)) {//待支付
+                    setPhoneOn(result.getMobile());
                 } else if ("0".equals(server_type)) {
-                    stateNormal(result);
-                    findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
+                    buttonLlyt.setVisibility(View.VISIBLE);
+                    payDetailLlyt.setOnClickListener(null);
                 }
                 break;
             case 1://待确认
                 if ("1".equals(server_type)) {
-                    findViewById(R.id.llyt_person_num).setVisibility(View.VISIBLE);
-
-                    findViewById(R.id.llyt_myorder_detail_deposit).setVisibility(View.VISIBLE);
-                    findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-                    findViewById(R.id.llyt_myorder_detail_button).setVisibility(View.VISIBLE);
-
-                    setText(R.id.tv_order_status, "待确认");
-                    setText(R.id.tv_order_time, result.getServer_date());
-                    setText(R.id.tv_person_num, result.getNumbers() + "人");
-                    setText(R.id.tv_myorder_detail_deposit, result.getOrder_money() + "元");
-                    setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
+                    stateNormal(result);
+                    buttonLlyt.setVisibility(View.VISIBLE);
                     setPhoneOn(result.getMobile());
+                } else if ("0".equals(server_type)) {
+                    startActivity(new Intent(MyOrderDetailActivity.this, StartServiceActivity.class)
+                            .putExtra("orderId", result.getOrder_number()));
                 }
                 break;
             case 2://已预约
                 if ("1".equals(server_type)) {
                     stateNormal(result);
+                    setPhoneOn(result.getMobile());
+                } else if ("0".equals(server_type)) {
+                    startActivity(new Intent(MyOrderDetailActivity.this, StartServiceActivity.class)
+                            .putExtra("orderId", result.getOrder_number()));
                 }
                 break;
             case 3:
-                stateNormal(result);
-                if ("0".equals(server_type)) {//未付款
-                    setText(R.id.tv_order_status, "未付款");
-                } else if ("1".equals(server_type)) {//进行中
-                    setText(R.id.tv_order_status, "进行中");
-                }
-                break;
             case 4://未评论
-                findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-
-                setText(R.id.tv_order_status, "未评论");
-                setText(R.id.tv_order_time, result.getServer_date());
-
-                setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
-                setText(R.id.tv_fee, result.getTip_money() + "元");
-                setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                setText(R.id.tv_cost_total, result.getPay_money() + "元");
-                setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
+                stateNormal(result);
                 break;
             case 5://已完成
-                findViewById(R.id.llyt_cost_sum).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_fee).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_rebate_money).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_cost_total).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-                findViewById(R.id.llyt_myorder_detail_comment).setVisibility(View.VISIBLE);
-
-                setText(R.id.tv_order_status, "已完成");
-                setText(R.id.tv_order_time, result.getServer_date());
-
-                setText(R.id.tv_cost_sum, result.getOrder_money() + "元");
-                setText(R.id.tv_fee, result.getTip_money() + "元");
-                setText(R.id.tv_rebate_money, result.getRebate_money() + "元");
-                setText(R.id.tv_cost_total, result.getPay_money() + "元");
-                setPayType(result.getPay_type());//1-支付宝，2-微信支付
+                stateNormal(result);
+                commentLlyt.setVisibility(View.VISIBLE);
 
                 if (!VerifyUtil.isNullOrEmpty(result.getContent())) {
-                    setText(R.id.tv_comment_content, result.getContent());
+                    commentConTv.setText(result.getContent());
                 } else {
                     commentConTv.setVisibility(View.GONE);
                 }
@@ -187,24 +163,35 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
                 break;
             case 6://已关闭
+                payDetailLlyt.setVisibility(View.GONE);
+                cancelLlyt.setVisibility(View.VISIBLE);
                 if ("0".equals(server_type)) {//未付违约金
-                    stateClose0(result);
+                    cancelTv.setText("未付违约金");
                 } else if ("1".equals(server_type)) {//退款中
-                    stateClose1(result, "已关闭-退款中");
+                    cancelTv.setText("退款中");
                 }
                 break;
             case 7://已关闭
+                payDetailLlyt.setVisibility(View.GONE);
+                cancelLlyt.setVisibility(View.VISIBLE);
                 if ("0".equals(server_type)) {//已付违约金
-                    stateClose0(result);
+                    cancelTv.setText("已付违约金");
+                    if (!"0.00".equals(result.getPay_money())) {
+                        stateNormal(result);
+                    }
                 } else if ("1".equals(server_type)) {//已退款
-                    stateClose1(result, "已关闭-已退款");
+                    cancelTv.setText("已退款");
                 }
                 break;
             case 8://已拒接，退款进行中
-                stateClose1(result, "已拒接-退款中");
+                payDetailLlyt.setVisibility(View.GONE);
+                cancelLlyt.setVisibility(View.VISIBLE);
+                cancelTv.setText("已拒接-退款中");
                 break;
             case 9://已关闭（拒单并退款成功）
-                stateClose1(result, "已拒接-已退款");
+                payDetailLlyt.setVisibility(View.GONE);
+                cancelLlyt.setVisibility(View.VISIBLE);
+                cancelTv.setText("已拒接-已退款");
                 break;
         }
     }
@@ -217,10 +204,14 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_refuse:
+            case R.id.rlyt_order_detail_pay_detail:
+                startActivity(new Intent(MyOrderDetailActivity.this, OrderPayDetailActivity.class)
+                        .putExtra("orderDetailBeans", result));
+                break;
+            case R.id.btn_order_detail_refuse:
                 confirmOrder(0 + "");
                 break;
-            case R.id.btn_accept:
+            case R.id.btn_order_detail_accept:
                 confirmOrder(1 + "");
                 break;
         }
@@ -231,61 +222,15 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     private String order_status = "";
 
     /**
-     * 即时服务：未付款
-     * 预约服务：待支付 已预约 进行中
+     * 即时服务：3-未付款 4-未评论
+     * 预约服务：0-待支付 2-已预约 3-进行中 4-未评论
      */
     private void stateNormal(OrderDetailBeans result) {
-        findViewById(R.id.llyt_myorder_detail_deposit).setVisibility(View.VISIBLE);
-        findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-
-        setText(R.id.tv_order_status, "待支付");
-        setText(R.id.tv_order_time, result.getServer_start_time() + "-" + result.getServer_end_time());
-
-        setText(R.id.tv_myorder_detail_deposit, result.getOrder_money() + "元");
-
-        setPayType(result.getPay_type());//1-支付宝，2-微信支付
-
-        setPhoneOn(result.getMobile());
-    }
-
-    /**
-     * 已关闭
-     * 即时服务
-     *
-     * @param result
-     */
-    private void stateClose0(OrderDetailBeans result) {
-        findViewById(R.id.llyt_order_time).setVisibility(View.GONE);
-
-        findViewById(R.id.llyt_myorder_detail_cancle_money).setVisibility(View.VISIBLE);
-
-        setText(R.id.tv_order_status, "已关闭");
-        setText(R.id.tv_cancle_money_name, "违约金");
-
-        if ("0.00".equals(result.getPay_money())) {
-            setText(R.id.tv_myorder_detail_cancle_money, "免费");
-        } else {
-            findViewById(R.id.llyt_pay_type).setVisibility(View.VISIBLE);
-            setText(R.id.tv_myorder_detail_cancle_money, result.getPay_money() + "元");
-            setPayType(result.getPay_type());//1-支付宝，2-微信支付
-        }
-    }
-
-    /**
-     * 已关闭
-     * 预约服务
-     *
-     * @param result
-     */
-    private void stateClose1(OrderDetailBeans result, String status) {
-        findViewById(R.id.llyt_order_time).setVisibility(View.GONE);
-
-        findViewById(R.id.llyt_myorder_detail_cancle_money).setVisibility(View.VISIBLE);
-
-        setText(R.id.tv_order_status, status);
-        setText(R.id.tv_cancle_money_name, "退款金额");
-        setText(R.id.tv_myorder_detail_cancle_money, result.getPay_money() + "元");
-
+        totalTv.setText(result.getPay_money());
+        address2Tv.setText(result.getEnd_addr());
+        numberTv.setText(result.getOrder_number());
+        startTv.setText(result.getServer_start_time());
+        endTv.setText(result.getServer_end_time());
     }
 
     /**
@@ -294,6 +239,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
      * @param mobile
      */
     private void setPhoneOn(final String mobile) {
+        phoneIv.setVisibility(View.VISIBLE);
         phoneIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_phone_ok));
         phoneIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,23 +251,6 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                 startActivity(intent);
             }
         });
-    }
-
-    /**
-     * 设置支付方式
-     *
-     * @param pay_type 1-支付宝，2-微信支付
-     */
-    private void setPayType(String pay_type) {
-        if ("1".equals(pay_type)) {
-            payTypeTv.setText(getResources().getString(R.string.alipay));
-        } else {
-            payTypeTv.setText(getResources().getString(R.string.weixin));
-        }
-    }
-
-    private void setText(int id, String text) {
-        ((TextView) findViewById(id)).setText(text);
     }
 
     /**

@@ -180,7 +180,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
 
         TourGuideInfoBeans tourGuideInfoBean = UserInfoParse.getUserInfo(Cookie.getUserInfo(this));
         userType = Integer.valueOf(tourGuideInfoBean.getGuide_type());
-        switch (userType) {//1：导游；2：随游；3：土著
+        switch (userType) {//1：导游；2：向导；3：土著
             case 1:
                 findViewById(R.id.rlyt_service_time_guide_type).setVisibility(View.VISIBLE);
                 findViewById(R.id.rlyt_service_time_priced).setVisibility(View.VISIBLE);

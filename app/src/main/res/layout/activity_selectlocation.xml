@@ -34,7 +34,7 @@
             android:paddingRight="@dimen/dp16"
             android:text="@string/confirm_select"
             android:textColor="@color/head_text_color"
-            android:textSize="14sp"
+            android:textSize="@dimen/sp14"
             android:visibility="gone" />
     </RelativeLayout>
 

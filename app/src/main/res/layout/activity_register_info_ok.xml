@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_register_ok"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="@dimen/dp80"
         android:src="@drawable/register_ok_icon" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_register_ok"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="@dimen/dp22"
         android:text="您的信息已成功提交！"
         android:textColor="@color/text_color"
         android:textSize="@dimen/sp17" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_register_ok"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp8"
         android:text="@string/register_ok_notification"
         android:textColor="@color/gray_color"
         android:textSize="@dimen/sp12" />

@@ -18,16 +18,14 @@ import com.baidu.location.LocationClientOption;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.api.ServerApi;
+import com.xbx.tourguide.api.ServiceApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
-import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.beans.Version;
-import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
@@ -36,7 +34,6 @@ import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.JPushUtils;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.ToastUtils;
@@ -45,7 +42,6 @@ import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.util.updateversion.UpdateUtil;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -65,9 +61,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private RoundedImageView headPicRiv;
     private ImageLoader loader;
     private TourGuideInfoBeans beans;
-    private ServerApi serverApi = null;
+    private ServiceApi serviceApi = null;
     private String userInfo = "";
-    private Timer timer = null;
 
     private OrderReceiver orderReceiver = null;
 
@@ -125,8 +120,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         uid = Cookie.getUid(this);
         loader = ImageLoader.getInstance();
 
-        serverApi = new ServerApi(this, handler);
-//        serverApi.checkUpdate();
+        serviceApi = new ServiceApi(this, handler);
+//        serviceApi.checkUpdate();
         Cookie.putIsJPush(this, true);//可以接受推送
         Cookie.putIsDialog(this, false);
         Cookie.putLoginOut(this, false);
@@ -236,7 +231,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.tv_start_order:
 //               XbxTGApplication.getInstance().showNotification();
-                serverApi.setIsOnline(uid);
+                serviceApi.setIsOnline(uid);
                 break;
 
             case R.id.tv_home_service_time:

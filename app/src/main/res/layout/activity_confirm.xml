@@ -14,15 +14,15 @@
         android:background="@drawable/bg_comment_style"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingBottom="@dimen/dp20"
+        android:paddingLeft="@dimen/dp16"
+        android:paddingRight="@dimen/dp16">
 
         <TextView
             android:id="@+id/tv_confirm_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/dp25"
             android:textColor="@color/text_color"
             android:textSize="@dimen/sp18" />
 
@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/btn_confirm_ok2"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dp40"
             android:layout_marginLeft="@dimen/dp16"
             android:layout_marginRight="@dimen/dp16"
             android:layout_marginTop="@dimen/dp16"
@@ -56,7 +56,7 @@
         <LinearLayout
             android:id="@+id/llyt_confirm"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dp40"
             android:layout_marginTop="@dimen/dp16"
             android:orientation="horizontal">
 
