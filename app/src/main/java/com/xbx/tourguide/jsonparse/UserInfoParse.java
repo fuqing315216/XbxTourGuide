@@ -49,7 +49,6 @@ public class UserInfoParse {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_info")) {
                 tourGuideInfoBeans = JsonUtils.object(jsonObject.getString("user_info"), TourGuideInfoBeans.class);
-                LogUtils.i("---getUserInfo:" + tourGuideInfoBeans.toString());
                 return tourGuideInfoBeans;
             }
         } catch (JSONException e) {

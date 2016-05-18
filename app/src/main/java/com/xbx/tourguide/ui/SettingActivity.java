@@ -67,7 +67,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startIntent(PersonalInfoActivity.class, false);
                 break;
             case R.id.rlyt_setting_invite_code:
-
+                startIntent(InviteCodeActivity.class, false);
                 break;
             case R.id.rlyt_about_us:
                 startIntent(AboutUsActivity.class, false);

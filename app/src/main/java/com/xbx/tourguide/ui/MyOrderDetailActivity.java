@@ -21,6 +21,7 @@ import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.FlowLayout;
@@ -38,11 +39,15 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
     private RoundedImageView headPicRiv;
     private TextView nickNameTv, addressTv, address2Tv, totalTv, numberTv, startTv, endTv, durationTv, commentConTv;
     private TextView cancelTv;
-    private LinearLayout payDetailLlyt, commentLlyt, cancelLlyt, buttonLlyt;
+    private LinearLayout payDetailLlyt, cancelLlyt, buttonLlyt;
+    private RelativeLayout payDetailRlyt;
     private FlowLayout tagFlyt;
     private RatingBar starRab;
     private ImageView phoneIv;
     private OrderDetailBeans result;
+
+    private String server_type = "";
+    private String order_status = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +86,12 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
         cancelTv = (TextView) findViewById(R.id.tv_order_detail_cancel);
 
         payDetailLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail);
-        commentLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_comment);
         cancelLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_cancel);
         buttonLlyt = (LinearLayout) findViewById(R.id.llyt_order_detail_button);
+        payDetailRlyt = (RelativeLayout) findViewById(R.id.rlyt_order_detail_pay_detail);
 
         phoneIv = (ImageView) findViewById(R.id.iv_order_detail_phone);
-        findViewById(R.id.rlyt_order_detail_pay_detail).setOnClickListener(this);
+        payDetailRlyt.setOnClickListener(this);
         findViewById(R.id.btn_order_detail_refuse).setOnClickListener(this);
         findViewById(R.id.btn_order_detail_accept).setOnClickListener(this);
 
@@ -100,9 +105,9 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
         server_type = result.getServer_type();
         order_status = result.getOrder_status();
-
         //0-即时服务：0-待处理订单；1-已接单，未开始；2-服务已开始；3-服务已结束，未付款；4-已支付，未评论；5-订单已结束；6-已取消，未支付；7-已关闭（已取消并支付违约金）
-        //1-预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
+        //预约服务：0-待支付；1-待处理订单；2-已接单，未开始；3-服务已开始；4-服务已结束,未评论；5-已完成；6-已取消，退款进行中；7-已关闭（已取消并退款完成）
+        //8-已拒接，退款进行中；9-已关闭（拒单并退款成功）
         switch (Integer.valueOf(order_status)) {
             case 0:
                 stateNormal(result);
@@ -110,10 +115,11 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                     setPhoneOn(result.getMobile());
                 } else if ("0".equals(server_type)) {
                     buttonLlyt.setVisibility(View.VISIBLE);
-                    payDetailLlyt.setOnClickListener(null);
+                    cancelLlyt.setVisibility(View.VISIBLE);
+                    payDetailRlyt.setOnClickListener(null);
                 }
                 break;
-            case 1://待确认
+              case 1://待确认
                 if ("1".equals(server_type)) {
                     stateNormal(result);
                     buttonLlyt.setVisibility(View.VISIBLE);
@@ -138,7 +144,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                 break;
             case 5://已完成
                 stateNormal(result);
-                commentLlyt.setVisibility(View.VISIBLE);
+                findViewById(R.id.llyt_order_detail_comment).setVisibility(View.VISIBLE);
 
                 if (!VerifyUtil.isNullOrEmpty(result.getContent())) {
                     commentConTv.setText(result.getContent());
@@ -163,37 +169,68 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
 
                 break;
             case 6://已关闭
-                payDetailLlyt.setVisibility(View.GONE);
-                cancelLlyt.setVisibility(View.VISIBLE);
-                if ("0".equals(server_type)) {//未付违约金
-                    cancelTv.setText("未付违约金");
-                } else if ("1".equals(server_type)) {//退款中
-                    cancelTv.setText("退款中");
+                if ("0".equals(server_type)) {
+                    cancelTv.setText("用户已取消该订单");
+                    if (!"0.00".equals(result.getPay_money())) {//有违约金
+                        totalTv.setText(result.getPay_money());
+                        setCancelStatus();
+                    } else {//没有违约金
+                        payDetailLlyt.setVisibility(View.GONE);
+                    }
+                } else if ("1".equals(server_type)) {//用户取消-退款中
+                    cancelTv.setText("用户已取消该订单，退款中");
+                    totalTv.setText(result.getOrder_money());
+                    setCancelStatus();
                 }
+
                 break;
             case 7://已关闭
-                payDetailLlyt.setVisibility(View.GONE);
-                cancelLlyt.setVisibility(View.VISIBLE);
-                if ("0".equals(server_type)) {//已付违约金
-                    cancelTv.setText("已付违约金");
-                    if (!"0.00".equals(result.getPay_money())) {
-                        stateNormal(result);
-                    }
-                } else if ("1".equals(server_type)) {//已退款
-                    cancelTv.setText("已退款");
+                if ("0".equals(server_type)) {
+                    cancelTv.setText("用户已支付违约金");
+                    totalTv.setText(result.getPay_money());
+                    setCancelStatus();
+                } else if ("1".equals(server_type)) {
+                    cancelTv.setText("退款成功");
+                    totalTv.setText(result.getOrder_money());
+                    setCancelStatus();
                 }
                 break;
             case 8://已拒接，退款进行中
-                payDetailLlyt.setVisibility(View.GONE);
-                cancelLlyt.setVisibility(View.VISIBLE);
                 cancelTv.setText("已拒接-退款中");
+                setCancelStatus();
+                totalTv.setText(result.getOrder_money());
                 break;
             case 9://已关闭（拒单并退款成功）
-                payDetailLlyt.setVisibility(View.GONE);
-                cancelLlyt.setVisibility(View.VISIBLE);
                 cancelTv.setText("已拒接-已退款");
+                setCancelStatus();
+                totalTv.setText(result.getOrder_money());
                 break;
         }
+    }
+
+    /**
+     * 即时服务：3-未付款 4-未评论
+     * 预约服务：0-待支付 2-已预约 3-进行中 4-未评论
+     */
+    private void stateNormal(OrderDetailBeans result) {
+        totalTv.setText(result.getPay_money());
+        address2Tv.setText(result.getEnd_addr());
+        numberTv.setText(result.getOrder_number());
+        startTv.setText(result.getServer_start_time());
+        endTv.setText(result.getServer_end_time());
+    }
+
+    /**
+     * 设置违约金和退款状态显示
+     */
+    private void setCancelStatus() {
+        cancelLlyt.setVisibility(View.VISIBLE);
+        payDetailRlyt.setOnClickListener(null);
+        address2Tv.setText(result.getEnd_addr());
+        findViewById(R.id.iv_order_detail_arrow).setVisibility(View.GONE);
+        findViewById(R.id.llyt_order_detail_start).setVisibility(View.GONE);
+        findViewById(R.id.llyt_order_detail_end).setVisibility(View.GONE);
+        findViewById(R.id.llyt_order_detail_duration).setVisibility(View.GONE);
     }
 
     @Override
@@ -215,22 +252,6 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                 confirmOrder(1 + "");
                 break;
         }
-    }
-
-
-    private String server_type = "";
-    private String order_status = "";
-
-    /**
-     * 即时服务：3-未付款 4-未评论
-     * 预约服务：0-待支付 2-已预约 3-进行中 4-未评论
-     */
-    private void stateNormal(OrderDetailBeans result) {
-        totalTv.setText(result.getPay_money());
-        address2Tv.setText(result.getEnd_addr());
-        numberTv.setText(result.getOrder_number());
-        startTv.setText(result.getServer_start_time());
-        endTv.setText(result.getServer_end_time());
     }
 
     /**
@@ -259,7 +280,6 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
      * @param tag
      */
     private void confirmOrder(final String tag) {
-
         RequestParams params = new RequestParams();
         params.put("uid", Cookie.getUid(this));
         params.put("order_number", orderNum);

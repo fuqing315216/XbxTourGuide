@@ -76,7 +76,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
                     Cookie.putOnline(HomeActivity.this, onLineBean.getIs_online() + "");
-                    LogUtils.i("-----initData:" + onLineBean.getIs_online());
 
                     if (onLineBean.getIs_online() == 0) {//不在线
                         startTv.setText(getResources().getString(R.string.start_order));
@@ -169,8 +168,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         userInfo = Cookie.getUserInfo(this);
         beans = UserInfoParse.getUserInfo(userInfo);
-
-        LogUtils.i("-----initData:" + beans.toString());
 
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
             GoingBeans goingBeans = UserInfoParse.getGoing(userInfo);
@@ -284,7 +281,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double lon = Double.parseDouble(lonAndlat.split(",")[0]);
                     double lat = Double.parseDouble(lonAndlat.split(",")[1]);
-                    double instance = XbxTGApplication.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
+                    double instance = Util.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
 
                     if (instance >= 10) {
                         setLonLat(location);

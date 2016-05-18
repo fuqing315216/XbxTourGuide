@@ -11,8 +11,8 @@
                 android:top="1dp" />
             <solid android:color="@color/server_instant" />
             <size
-                android:width="@dimen/dp20"
-                android:height="@dimen/dp20"/>
+                android:width="15dp"
+                android:height="15dp"/>
         </shape>
     </item>
 

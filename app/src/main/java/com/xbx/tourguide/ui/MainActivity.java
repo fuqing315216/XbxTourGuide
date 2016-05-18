@@ -15,7 +15,6 @@ import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
-
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -32,7 +31,6 @@ public class MainActivity extends BaseActivity {
         Cookie.putAppointmentOrder(this, "");
         Cookie.putIsDialog(this, false);
         Cookie.putIsJPush(this, false);
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -76,7 +74,7 @@ public class MainActivity extends BaseActivity {
                         ToastUtils.showShort(MainActivity.this, "自动登录已过期，请重新登录");
                         startIntent(LoginActivity.class, true);
                     } else if (UtilParse.getRequestCode(json) == 1) {
-                        ToastUtils.showShort(MainActivity.this, "自动登录成功");
+//                        ToastUtils.showShort(MainActivity.this, "自动登录成功");
                         Cookie.putUserInfo(MainActivity.this, UtilParse.getRequestData(json));
                         if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(MainActivity.this)).getIs_auth())) {
                             startIntent(RegisterInfoOkActivity.class, true);
@@ -88,15 +86,16 @@ public class MainActivity extends BaseActivity {
                         startIntent(RegisterGuideTypeActivity.class, true);
                     }
                 }
+
                 /**
                  * 处理网络问题 连接超时
                  */
-//                @Override
-//                public void requestError(VolleyError e) {
-//                    super.requestError(e);
-//                    ToastUtils.showShort(MainActivity.this, "请检查您的网络");
-//                    startIntent(LoginActivity.class, true);
-//                }
+                @Override
+                public void requestError(VolleyError e) {
+                    super.requestError(e);
+                    ToastUtils.showShort(MainActivity.this, "请检查您的网络");
+                    startIntent(LoginActivity.class, true);
+                }
 
             });
         } else {

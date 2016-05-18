@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <ImageView
+            android:id="@+id/iv_invitecode_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_invite_code" />
+
+        <LinearLayout
+            android:id="@+id/llyt_invitecode_rule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp16"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="奖励规则"
+                android:textColor="@color/gray_color"
+                android:textSize="@dimen/sp12" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp4"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp45"
+            android:text="我的邀请码"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/sp15" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp18"
+            android:text="FNC008"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/sp36" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp15"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="您已成功邀请"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sp12" />
+
+            <TextView
+                android:id="@+id/tv_invitecode_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp15"
+                android:text="0人"
+                android:textColor="@color/head_bg_color"
+                android:textSize="@dimen/sp12" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp15"
+                android:text="，累计获得现金"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/sp12" />
+
+            <TextView
+                android:id="@+id/tv_invitecode_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp15"
+                android:text="0元"
+                android:textColor="@color/head_bg_color"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_invitecode_email"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_above="@+id/btn_invitecode_msg"
+        android:layout_marginBottom="@dimen/dp12"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:background="@drawable/bg_roundbtn_style"
+        android:text="邮件邀请"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
+
+    <Button
+        android:id="@+id/btn_invitecode_msg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp16"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:background="@drawable/bg_roundbtn_style"
+        android:text="短信邀请"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
+</RelativeLayout>

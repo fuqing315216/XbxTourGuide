@@ -17,7 +17,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.ui.HomeActivity;
 import com.xbx.tourguide.util.Cookie;
 
@@ -28,7 +27,6 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class XbxTGApplication extends Application {
 
-    private static final double EARTH_RADIUS = 6378137.0;
     private static XbxTGApplication instance;
     private static Context mContext;
 
@@ -42,6 +40,7 @@ public class XbxTGApplication extends Application {
         mContext = getApplicationContext();
         TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         Cookie.putDeviceID(mContext, manager.getDeviceId());
+
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
     }
@@ -122,56 +121,5 @@ public class XbxTGApplication extends Application {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(R.string.app_name, notifyBuilder.build());
-
-    }
-
-    /**
-     * 毫秒转换
-     *
-     * @param ms
-     * @return
-     */
-    public static String formatTime(long ms) {
-
-        ms = ms * 1000;
-
-        int ss = 1000;
-        int mi = ss * 60;
-        int hh = mi * 60;
-        int dd = hh * 24;
-
-        long day = ms / dd;
-        long hour = (ms - day * dd) / hh;
-        long minute = (ms - day * dd - hour * hh) / mi;
-        long second = (ms - day * dd - hour * hh - minute * mi) / ss;
-        long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
-
-        String strDay = day < 10 ? "0" + day : "" + day; //天
-        String strHour = hour < 10 ? "0" + hour : "" + hour;//小时
-        String strMinute = minute < 10 ? "0" + minute : "" + minute;//分钟
-        String strSecond = second < 10 ? "0" + second : "" + second;//秒
-        String strMilliSecond = milliSecond < 10 ? "0" + milliSecond : "" + milliSecond;//毫秒
-        strMilliSecond = milliSecond < 100 ? "0" + strMilliSecond : "" + strMilliSecond;
-
-        return strHour + "小时" + strMinute + "分" + strSecond + "秒";
-    }
-
-    // 返回单位是米
-    public static double getDistance(double longitude1, double latitude1,
-                                     double longitude2, double latitude2) {
-        double Lat1 = rad(latitude1);
-        double Lat2 = rad(latitude2);
-        double a = Lat1 - Lat2;
-        double b = rad(longitude1) - rad(longitude2);
-        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-                + Math.cos(Lat1) * Math.cos(Lat2)
-                * Math.pow(Math.sin(b / 2), 2)));
-        s = s * EARTH_RADIUS;
-        s = Math.round(s * 10000) / 10000;
-        return s;
-    }
-
-    private static double rad(double d) {
-        return d * Math.PI / 180.0;
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -27,12 +28,21 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.RouteLine;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServiceApi;
 import com.xbx.tourguide.api.TaskFlag;
-import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.ProcessOrderDetailBeans;
 import com.xbx.tourguide.http.HttpUrl;
@@ -41,6 +51,11 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.OverlayManager;
+import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.util.WalkingRouteOverlay;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
@@ -49,7 +64,6 @@ import com.xbx.tourguide.view.TitleBarView;
  * 开始/结束服务页
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {
-
     private String orderId = "";
     private RoundedImageView headImgRiv;
     private TextView nameTv, addressTv, timeTv;
@@ -67,6 +81,53 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private static final int accuracyCircleStrokeColor = 0x00000000;
     private boolean isFirstInOrd = true;
     private Marker userMarkers = null;
+
+    private double myLon;
+    private double myLat;
+
+    private boolean isRoute = true;
+    RouteLine route = null;
+    OverlayManager routeOverlay = null;
+    private RoutePlanSearch mSearch = null;
+
+    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+        @Override
+        public void onGetWalkingRouteResult(WalkingRouteResult result) {
+            //获取步行线路规划结果
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                Toast.makeText(StartServiceActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                // result.getSuggestAddrInfo()
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                route = result.getRouteLines().get(0);
+                WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
+                baiduMap.setOnMarkerClickListener(overlay);
+                routeOverlay = overlay;
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }
+        }
+
+        @Override
+        public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+            //获取公交换乘路径规划结果
+        }
+
+        @Override
+        public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+            //获取驾车线路规划结果
+        }
+
+        @Override
+        public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+            //获取骑行线路规划结果
+        }
+    };
 
     private ServiceApi serviceApi = null;
     private Handler handler = new Handler() {
@@ -87,7 +148,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                             startActivity(intent);
                         }
                     });
-
                     nameTv.setText(result.getNickname());
                     addressTv.setText(result.getEnd_addr());
                     loader.displayImage(result.getHead_image(), headImgRiv);
@@ -102,12 +162,17 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                     } else {
                         long time = Long.parseLong(result.getNow_time());
                         long serverTime = time - Long.parseLong(startTime);
-                        String timeStr = XbxTGApplication.formatTime(serverTime);
+                        String timeStr = Util.formatTime(serverTime);
                         timeTv.setText(timeStr);
 
                         if (!stopBtn.getText().toString().equals(getString(R.string.end_service))) {
                             stopBtn.setText(getResources().getString(R.string.end_service));
                         }
+                    }
+
+                    if (isRoute && result.getLon() != null && result.getLat() != null) {
+                        isRoute = false;
+                        setWalkingSearch(myLon, myLat, Double.valueOf(result.getLon()), Double.valueOf(result.getLat()));
                     }
 
                     if (result.getLon() != null && result.getLat() != null
@@ -145,6 +210,10 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         loader = ImageLoader.getInstance();
         bdMyself = BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
         serviceApi = new ServiceApi(this, handler);
+        //
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(listener);
+
         initView();
     }
 
@@ -166,6 +235,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         stopBtn = (Button) findViewById(R.id.btn_service);
 
         mapView = (MapView) findViewById(R.id.mapview);
+        mapView.showZoomControls(false);//去掉缩放按钮
         baiduMap = mapView.getMap();
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(14.0f);
         baiduMap.setMapStatus(msu);
@@ -220,6 +290,12 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearch.destroy();
+    }
+
     /**
      * 设置覆盖物
      *
@@ -262,15 +338,15 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
                 if (location == null) {
                     return;
                 }
                 String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
+
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
-                    double lon = Double.parseDouble(lonAndlat.split(",")[0]);
-                    double lat = Double.parseDouble(lonAndlat.split(",")[1]);
-                    double instance = XbxTGApplication.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
+                    myLon = Double.parseDouble(lonAndlat.split(",")[0]);
+                    myLat = Double.parseDouble(lonAndlat.split(",")[1]);
+                    double instance = Util.getDistance(myLon, myLat, location.getLongitude(), location.getLatitude());
                     if (instance >= 10) {
                         setLonLat(location);
                     }
@@ -284,6 +360,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         .longitude(location.getLongitude()).build();
 //                initOverlay(location.getLatitude(), location.getLongitude(), R.drawable.ic_guide);
                 baiduMap.setMyLocationData(locData);
+
                 if (isFirst) {
                     isFirst = false;
                     mCurrentMode = LocationMode.NORMAL;
@@ -308,7 +385,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
      * @param location
      */
     private void setLonLat(final BDLocation location) {
-
         RequestParams params = new RequestParams();
         params.put("uid", Cookie.getUid(this));
         params.put("lon", location.getLongitude() + "");
@@ -320,5 +396,36 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 super.requestSuccess(json);
             }
         });
+    }
+
+    private void setWalkingSearch(double myLon, double myLat, double userLon, double userLat) {
+        PlanNode stNode = PlanNode.withLocation(new LatLng(myLat, myLon));
+        PlanNode enNode = PlanNode.withLocation(new LatLng(userLat, userLon));
+        mSearch.walkingSearch((new WalkingRoutePlanOption())
+                .from(stNode)
+                .to(enNode));
+    }
+    boolean useDefaultIcon = false;
+    private class MyWalkingRouteOverlay extends WalkingRouteOverlay {
+
+        public MyWalkingRouteOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+            if (useDefaultIcon) {
+                return BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
+            }
+            return null;
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+            if (useDefaultIcon) {
+                return BitmapDescriptorFactory.fromResource(R.drawable.ic_client);
+            }
+            return null;
+        }
     }
 }

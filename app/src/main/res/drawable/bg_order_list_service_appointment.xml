@@ -4,8 +4,11 @@
     android:useLevel="false">
     <solid android:color="@color/server_appointment" />
     <padding
+        android:bottom="1dp"
         android:left="2dp"
-        android:top="1dp"
         android:right="2dp"
-        android:bottom="1dp" />
+        android:top="1dp" />
+    <size
+        android:width="15dp"
+        android:height="15dp" />
 </shape>

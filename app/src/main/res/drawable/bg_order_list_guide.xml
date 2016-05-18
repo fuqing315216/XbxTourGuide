@@ -8,4 +8,7 @@
         android:right="2dp"
         android:top="1dp" />
     <solid android:color="@color/head_bg_color" />
+    <size
+        android:width="15dp"
+        android:height="15dp" />
 </shape>

@@ -63,7 +63,6 @@
                         android:id="@+id/tv_order_detail_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="小明"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/sp18" />
 
@@ -72,7 +71,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="青城山正门口"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/sp10" />
                 </LinearLayout>
@@ -112,12 +110,12 @@
                             android:id="@+id/tv_order_detail_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/sp30" />
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/iv_order_detail_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -152,7 +150,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp4"
-                        android:text="青城山正门口青城山正门口青城山正门口"
                         android:textColor="@color/gray_color"
                         android:textSize="@dimen/sp12" />
                 </LinearLayout>
@@ -161,8 +158,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp12"
                     android:layout_marginLeft="@dimen/dp52"
-                    android:layout_marginRight="@dimen/dp16"
                     android:layout_marginTop="@dimen/dp16"
                     android:orientation="horizontal">
 
@@ -186,11 +183,11 @@
 
                 <!-- start -->
                 <LinearLayout
+                    android:id="@+id/llyt_order_detail_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp12"
                     android:layout_marginLeft="@dimen/dp52"
-                    android:layout_marginRight="@dimen/dp16"
-                    android:layout_marginTop="@dimen/dp12"
                     android:orientation="horizontal">
 
                     <TextView
@@ -205,18 +202,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp64"
-                        android:text="2016-05-14 09:00"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/sp14" />
                 </LinearLayout>
 
                 <!-- end -->
                 <LinearLayout
+                    android:id="@+id/llyt_order_detail_end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp12"
                     android:layout_marginLeft="@dimen/dp52"
-                    android:layout_marginRight="@dimen/dp16"
-                    android:layout_marginTop="@dimen/dp12"
                     android:orientation="horizontal">
 
                     <TextView
@@ -231,19 +227,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp64"
-                        android:text="2016-05-14 09:00"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/sp14" />
                 </LinearLayout>
 
                 <!-- duration -->
                 <LinearLayout
+                    android:id="@+id/llyt_order_detail_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp16"
                     android:layout_marginLeft="@dimen/dp52"
-                    android:layout_marginRight="@dimen/dp16"
-                    android:layout_marginTop="@dimen/dp12"
                     android:orientation="horizontal">
 
                     <TextView
