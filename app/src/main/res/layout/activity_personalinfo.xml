@@ -132,8 +132,7 @@
                         android:id="@+id/tv_sex"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:text="女" />
+                        android:layout_marginRight="@dimen/dp16" />
                 </RelativeLayout>
 
                 <View
@@ -155,8 +154,7 @@
                         android:id="@+id/tv_birthday"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:text="1991/02/22" />
+                        android:layout_marginRight="@dimen/dp16" />
                 </RelativeLayout>
 
                 <View
@@ -178,8 +176,7 @@
                         android:id="@+id/tv_phone"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:text="18888888888" />
+                        android:layout_marginRight="@dimen/dp16" />
                 </RelativeLayout>
 
                 <View
@@ -201,8 +198,7 @@
                         android:id="@+id/tv_id"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:text="123456789" />
+                        android:layout_marginRight="@dimen/dp16" />
                 </RelativeLayout>
 
                 <View
@@ -225,8 +221,7 @@
                         android:id="@+id/tv_guide"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:text="19910222" />
+                        android:layout_marginRight="@dimen/dp16" />
                 </RelativeLayout>
 
                 <View
@@ -248,9 +243,18 @@
                     <TextView
                         android:id="@+id/tv_location"
                         style="@style/TextViewStyle"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp8"
+                        android:layout_toLeftOf="@+id/iv_persioninfo_location_arrow"
                         android:text="成都" />
+
+                    <ImageView
+                        android:id="@+id/iv_persioninfo_location_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:src="@drawable/ic_arrow_right" />
                 </RelativeLayout>
 
                 <View

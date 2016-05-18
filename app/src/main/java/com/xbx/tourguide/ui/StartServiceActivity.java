@@ -86,8 +86,8 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private double myLat;
 
     private boolean isRoute = true;
-    RouteLine route = null;
-    OverlayManager routeOverlay = null;
+    private RouteLine route = null;
+    private OverlayManager routeOverlay = null;
     private RoutePlanSearch mSearch = null;
 
     OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
@@ -254,7 +254,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.btn_service:
                 if (stopBtn.getText().toString().equals(getString(R.string.end_service))) {//进行中，点击按钮结束服务
                     startActivityForResult(new Intent(StartServiceActivity.this, ConfirmActivity.class)
@@ -265,9 +264,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                             .putExtra("title", "提醒")
                             .putExtra("content", "是否开始服务并计时"), 101);
                 }
-
-                break;
-            default:
                 break;
         }
     }
@@ -324,14 +320,13 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
      * 获取当前位置的经纬度
      */
     private void getLonAndLat() {
-
         //设置定位条件
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
         option.setCoorType("bd09ll");       //设置返回值的坐标类型。
         option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("LocationDemo"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
-        option.setScanSpan(6000);    //设置定时定位的时间间隔。单位毫秒
+        option.setScanSpan(5000);    //设置定时定位的时间间隔。单位毫秒
         locationClient.setLocOption(option);
         //注册位置监听器
         locationClient.registerLocationListener(new BDLocationListener() {
@@ -405,6 +400,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 .from(stNode)
                 .to(enNode));
     }
+
     boolean useDefaultIcon = false;
     private class MyWalkingRouteOverlay extends WalkingRouteOverlay {
 

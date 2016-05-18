@@ -1,5 +1,7 @@
 package com.xbx.tourguide.ui;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,14 @@ import android.widget.TextView;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.util.ScreenUtils;
+import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by xbx on 2016/5/17.
  */
 public class InviteCodeActivity extends BaseActivity implements View.OnClickListener {
-    private TextView personTv, moneyTv;
+    private TextView inviteCodeTv, personTv, moneyTv;
     private ImageView bgIv;
 
     @Override
@@ -36,6 +39,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             }
         });
         bgIv = (ImageView) findViewById(R.id.iv_invitecode_bg);
+        inviteCodeTv = (TextView) findViewById(R.id.tv_invitecode_code);
         personTv = (TextView) findViewById(R.id.tv_invitecode_person);
         moneyTv = (TextView) findViewById(R.id.tv_invitecode_money);
 
@@ -44,6 +48,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         params.height = params.width / 2;
         bgIv.setLayoutParams(params);
 
+        findViewById(R.id.iv_invitecode_copy).setOnClickListener(this);
         findViewById(R.id.llyt_invitecode_rule).setOnClickListener(this);
         findViewById(R.id.btn_invitecode_email).setOnClickListener(this);
         findViewById(R.id.btn_invitecode_msg).setOnClickListener(this);
@@ -52,6 +57,11 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_invitecode_copy:
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setText(inviteCodeTv.getText().toString());
+                ToastUtils.showShort(this,"邀请码已复制");
+                break;
             case R.id.llyt_invitecode_rule:
                 break;
             case R.id.btn_invitecode_email:
