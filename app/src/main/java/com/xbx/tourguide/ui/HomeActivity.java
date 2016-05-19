@@ -20,7 +20,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.ServiceApi;
 import com.xbx.tourguide.api.TaskFlag;
-import com.xbx.tourguide.app.XbxTGApplication;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.OnLineBeans;
@@ -33,20 +32,17 @@ import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.util.updateversion.UpdateUtil;
 
-import java.util.Timer;
-
 
 /**
  * Created by shuzhen on 2016/3/31.
- * <p/>
+ * <p>
  * 首页
  */
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -75,7 +71,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     OnLineBeans onLineBean = JsonUtils.object((String) msg.obj, OnLineBeans.class);
                     startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
-                    Cookie.putOnline(HomeActivity.this, onLineBean.getIs_online() + "");
+                    SPUtils.put(HomeActivity.this, Constant.ONLINE, onLineBean.getIs_online() + "");
 
                     if (onLineBean.getIs_online() == 0) {//不在线
                         startTv.setText(getResources().getString(R.string.start_order));
@@ -116,14 +112,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             registerReceiver(orderReceiver, intentFilter);
         }
 
-        uid = Cookie.getUid(this);
+        uid = (String) SPUtils.get(this, Constant.UID, "");
         loader = ImageLoader.getInstance();
 
         serviceApi = new ServiceApi(this, handler);
 //        serviceApi.checkUpdate();
-        Cookie.putIsJPush(this, true);//可以接受推送
-        Cookie.putIsDialog(this, false);
-        Cookie.putLoginOut(this, false);
+        SPUtils.put(this, Constant.IS_JPUSH, false);
+        SPUtils.put(this, Constant.IS_DIALOG, false);
+        SPUtils.put(this, Constant.LOGIN_OUT, false);
         initView();
     }
 
@@ -131,7 +127,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 //        getLocation();
-        if (Cookie.getLoginOut(this)) {
+        if ((Boolean) SPUtils.get(this, Constant.LOGIN_OUT, false)) {
             initData();
         }
 
@@ -166,7 +162,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData() {
-        userInfo = Cookie.getUserInfo(this);
+        userInfo = (String) SPUtils.get(this, Constant.USER_INFO, "");
         beans = UserInfoParse.getUserInfo(userInfo);
 
         if ("going".equals(UserInfoParse.getDataType(userInfo))) {
@@ -178,7 +174,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         online = beans.getIs_online();
         startTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
-        Cookie.putOnline(this, online);
+        SPUtils.put(this, Constant.ONLINE, online);
 
         if ("0".equals(online)) {//不在线
             startTv.setText(getResources().getString(R.string.start_order));
@@ -276,7 +272,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 if (location == null) {
                     return;
                 }
-                String lonAndlat = Cookie.getLonAndLat(HomeActivity.this);
+                String lonAndlat = (String) SPUtils.get(HomeActivity.this, Constant.LON_LAT, "");
 
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double lon = Double.parseDouble(lonAndlat.split(",")[0]);
@@ -301,10 +297,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void setLonLat(final BDLocation location) {
 
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("lon", location.getLongitude() + "");
         params.put("lat", location.getLatitude() + "");
-        Cookie.putLonAndLat(HomeActivity.this, location.getLongitude() + "," + location.getLatitude());
+        SPUtils.put(HomeActivity.this, Constant.LON_LAT, location.getLongitude() + "," + location.getLatitude());
         IRequest.post(HomeActivity.this, HttpUrl.POST_LON_LAT, params, new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
@@ -318,7 +314,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 102) {//修改个人信息
-            loader.displayImage(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getHead_image(), headPicRiv);
+            loader.displayImage(UserInfoParse.getUserInfo((String) SPUtils.get(this, Constant.USER_INFO, "")).getHead_image(), headPicRiv);
         }
     }
 

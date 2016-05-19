@@ -13,7 +13,7 @@ import com.xbx.tourguide.ui.OrderRemainActivity;
 public class JPushUtils {
 
     public static void isShowDialog(Context context) {
-        if (!Cookie.getIsDialog(context)) {
+        if (!(Boolean) SPUtils.get(context, Constant.LOGIN_OUT, false)) {
             OrderNumberDao orderNumberDao = new OrderNumberDao(context);
             SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
             if (sqLiteOrderBean.getNum() != null) {//有缓存
@@ -21,7 +21,7 @@ public class JPushUtils {
                     orderNumberDao.clear();
                     return;
                 }
-                Cookie.putIsDialog(context, true);
+                SPUtils.put(context, Constant.LOGIN_OUT, true);
                 Intent orderIntent = new Intent(context, OrderRemainActivity.class);
                 orderIntent.putExtra("serverType", "0");
                 orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
@@ -29,11 +29,12 @@ public class JPushUtils {
                 orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(orderIntent);
             } else {//查看是否有预约服务
-                if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
-                    Cookie.putIsDialog(context, true);
+                String appointOrder = (String) SPUtils.get(context, Constant.APPOINT_ORDER, "");
+                if (appointOrder != null && !VerifyUtil.isNullOrEmpty(appointOrder)) {
+                    SPUtils.put(context, "isDialog", true);
                     Intent orderIntent = new Intent(context, OrderRemainActivity.class);
                     orderIntent.putExtra("serverType", "1");
-                    orderIntent.putExtra("orderNumber",Cookie.getAppointmentOrder(context));
+                    orderIntent.putExtra("orderNumber", appointOrder);
                     orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(orderIntent);
                 }

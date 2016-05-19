@@ -18,9 +18,9 @@ import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.VerifyBeans;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.ActivityManager;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.RegisterStepView;
@@ -29,7 +29,7 @@ import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p/>
+ * <p>
  * 注册页
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
@@ -48,7 +48,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    Cookie.putUid(RegisterActivity.this, UserInfoParse.getUid((String) msg.obj));
+                    SPUtils.put(RegisterActivity.this, Constant.UID, UserInfoParse.getUid((String) msg.obj));
                     startActivity(new Intent(RegisterActivity.this, RegisterGuideTypeActivity.class));
                     break;
 

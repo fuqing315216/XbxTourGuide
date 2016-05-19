@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.xbx.tourguide.beans.GoingBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
-import com.xbx.tourguide.util.VerifyUtil;
+import com.xbx.tourguide.util.SPUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public class UserInfoParse {
      * @return
      */
     public static String getUid(String responseResult) {
-        JSONObject jsonObject = null;
+        JSONObject jsonObject ;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "uid")) {
@@ -44,7 +44,7 @@ public class UserInfoParse {
     public static TourGuideInfoBeans getUserInfo(String responseResult) {
         TourGuideInfoBeans tourGuideInfoBeans = null;
 
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_info")) {
@@ -64,7 +64,7 @@ public class UserInfoParse {
      * @return
      */
     public static String getLogToken(String responseResult) {
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "login_token")) {
@@ -83,7 +83,7 @@ public class UserInfoParse {
      * @return
      */
     public static String getMobile(String responseResult) {
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_info")) {
@@ -99,7 +99,7 @@ public class UserInfoParse {
     }
 
     public static String getVerifyCode(String responseResult) {
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "vierfy_code")) {
@@ -112,7 +112,7 @@ public class UserInfoParse {
     }
 
     public static String getDataType(String responseResult) {
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_unfinished_order")) {
@@ -129,14 +129,13 @@ public class UserInfoParse {
 
     public static GoingBeans getGoing(String responseResult) {
         GoingBeans goingBeans = null;
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_unfinished_order")) {
                 JSONObject jsonObject2 = new JSONObject(jsonObject.getString("user_unfinished_order"));
                 if (UtilParse.checkTag(jsonObject2, "going")) {
                     goingBeans = JsonUtils.object(jsonObject2.getString("going"), GoingBeans.class);
-                    LogUtils.i("---getGoing" + goingBeans.toString());
                     return goingBeans;
                 }
             }
@@ -151,7 +150,7 @@ public class UserInfoParse {
             JSONObject jsonObject = new JSONObject(responseResult);
             if (UtilParse.checkTag(jsonObject, "user_info")) {
                 jsonObject.put("user_info", JsonUtils.toJson(tourGuideInfoBeans));
-                Cookie.putUserInfo(context, jsonObject.toString());
+                SPUtils.put(context, Constant.USER_INFO,jsonObject.toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();

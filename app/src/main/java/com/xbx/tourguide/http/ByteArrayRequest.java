@@ -1,7 +1,5 @@
 package com.xbx.tourguide.http;
 
-import android.util.Log;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,9 +17,8 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.xbx.tourguide.app.XbxTGApplication;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 
 
 class ByteArrayRequest extends Request<byte[]> {
@@ -57,7 +54,7 @@ class ByteArrayRequest extends Request<byte[]> {
         Map<String, String> headers = super.getHeaders();
         if (null == headers || headers.equals(Collections.emptyMap())) {
             headers = new HashMap<>();
-            String deviceId = Cookie.getDeviceID(XbxTGApplication.getInstance().getmContext());
+            String deviceId = (String) SPUtils.get(XbxTGApplication.getInstance().getmContext(), Constant.DEVICEID, "");
             headers.put("client", "2");//1-用户端 2-导游端
             headers.put("deviceid", deviceId);
 //            headers.put("uuid", aesCrypt.encrypt(uid));

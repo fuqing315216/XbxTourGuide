@@ -10,14 +10,8 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.SettingApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.http.HttpUrl;
-import com.xbx.tourguide.http.IRequest;
-import com.xbx.tourguide.http.RequestBackListener;
-import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.jsonparse.UtilParse;
-import com.xbx.tourguide.util.ActivityManager;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
@@ -71,8 +65,8 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
                     ToastUtils.showShort(this, "反馈意见不能为空");
                     return;
                 }
-                settingApi = new SettingApi(FeedBackActivity.this,handler);
-                settingApi.feedBack(Cookie.getUid(this),feedbackEt.getText().toString());
+                settingApi = new SettingApi(FeedBackActivity.this, handler);
+                settingApi.feedBack((String) SPUtils.get(this, Constant.UID, ""),feedbackEt.getText().toString());
                 break;
         }
     }

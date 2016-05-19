@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -18,10 +16,10 @@ import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.CityBeans;
 import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.view.WheelView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 //                    rightType = 1;
 //                    titleRightTv.setText(getString(R.string.personal_main));
                     UserInfoParse.putUserInfo(PersonalInfoActivity.this, userInfo, JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class));
-                    ToastUtils.showShort(PersonalInfoActivity.this,"修改成功");
+                    ToastUtils.showShort(PersonalInfoActivity.this, "修改成功");
                     finish();
                     break;
             }
@@ -66,7 +64,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_personalinfo);
 
         loader = ImageLoader.getInstance();
-        userInfo = Cookie.getUserInfo(this);
+        userInfo = (String) SPUtils.get(this, Constant.USER_INFO, "");
         beans = UserInfoParse.getUserInfo(userInfo);
         initView();
     }
@@ -83,7 +81,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         locationTv = (TextView) findViewById(R.id.tv_persioninfo_location);
         languageTv = (TextView) findViewById(R.id.tv_persioninfo_language);
 
-        if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getGuide_type())) {
+        if (!"1".equals(UserInfoParse.getUserInfo(userInfo).getGuide_type())) {
             findViewById(R.id.rlyt_personalinfo_guide).setVisibility(View.GONE);
         }
 
@@ -129,7 +127,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.tv_confirm_update:
                 if (rightType == 2) {//确认修改
                     settingApi = new SettingApi(this, handler);
-                    settingApi.updateInfo(Cookie.getUid(this), new File(beans.getHead_image()),
+                    settingApi.updateInfo((String) SPUtils.get(this, Constant.UID, ""), new File(beans.getHead_image()),
                             beans.getBirthday(), cityId, beans.getServer_language());
                 } else {//导游个人主页
                     startIntent(SelfMainActivity.class, false);
@@ -183,7 +181,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         }
 
         if (requestCode == 300) {
-            if(data != null){
+            if (data != null) {
                 String serverLanguage = data.getStringExtra("serverLanguage");
                 beans.setServer_language(serverLanguage);
                 languageTv.setText(getLanguage(serverLanguage));

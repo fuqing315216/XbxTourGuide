@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -16,9 +15,9 @@ import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UtilParse;
-import com.xbx.tourguide.util.ActivityManager;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.RegisterStepView;
@@ -28,7 +27,7 @@ import java.io.File;
 
 /**
  * Created by shuzhen on 2016/3/30.
- * <p/>
+ * <p>
  * 导游注册-完成
  */
 public class RegisterFinalActivity extends BaseActivity implements View.OnClickListener {
@@ -162,7 +161,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
      */
     private void registerGuideInfo() {
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("realname", beans.getRealname());
         params.put("sex", beans.getSex() + "");
         params.put("idcard", beans.getIdcard());
@@ -182,7 +181,7 @@ public class RegisterFinalActivity extends BaseActivity implements View.OnClickL
         params.put("server_language", beans.getServer_language() + "");
         params.put("now_address", beans.getCity().getId());
 
-        LogUtils.i("--------uid=" + Cookie.getUid(this)
+        LogUtils.i("--------uid=" + (String) SPUtils.get(this, Constant.UID, "")
                 + "\nrealname=" + beans.getRealname()
                 + "\nsex=" + beans.getSex()
                 + "\nidcard=" + beans.getIdcard()

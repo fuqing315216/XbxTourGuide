@@ -18,7 +18,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.ui.HomeActivity;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -39,7 +40,7 @@ public class XbxTGApplication extends Application {
         initImageLoader(instance);
         mContext = getApplicationContext();
         TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        Cookie.putDeviceID(mContext, manager.getDeviceId());
+        SPUtils.put(mContext, Constant.DEVICEID, manager.getDeviceId());
 
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush

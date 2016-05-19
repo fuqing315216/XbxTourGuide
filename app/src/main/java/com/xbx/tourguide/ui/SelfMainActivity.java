@@ -17,10 +17,10 @@ import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.GuideDetailBeans;
 import com.xbx.tourguide.beans.TagBeans;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -118,7 +118,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
 
         findViewById(R.id.btn_self_save).setOnClickListener(this);
 
-        settingApi.getGuideDetail(Cookie.getUid(this));
+        settingApi.getGuideDetail((String) SPUtils.get(this, Constant.UID, ""));
     }
 
 
@@ -136,7 +136,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
 
-                settingApi.updateGuideDetail(Cookie.getUid(this), introduceEt.getText().toString(), serviceEt.getText().toString());
+                settingApi.updateGuideDetail((String) SPUtils.get(this, Constant.UID, ""), introduceEt.getText().toString(), serviceEt.getText().toString());
                 break;
         }
     }

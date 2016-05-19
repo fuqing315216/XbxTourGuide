@@ -7,22 +7,17 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by shuzhen on 2016/3/31.
@@ -52,7 +47,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
                     loginApi.forgetPwLogin(phoneEt.getText().toString(), pwEt.getText().toString(), "1");
                     break;
                 case TaskFlag.PAGEREQUESTHREE:
-                    Cookie.putUserInfo(ForgetPassWordActivity.this, (String) msg.obj);
+                    SPUtils.put(ForgetPassWordActivity.this, Constant.USER_INFO, (String) msg.obj);
                     startIntent(HomeActivity.class, true);
                     break;
             }

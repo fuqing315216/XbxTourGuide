@@ -18,9 +18,10 @@ import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UtilParse;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -63,8 +64,8 @@ public class OrderRemainActivity extends BaseActivity {
                     OKTv.setEnabled(false);
                     confirmOrder(1 + "");//接单
                 } else if ("1".equals(orderType)) {//预约服务
-                    Cookie.putAppointmentOrder(OrderRemainActivity.this, "");
-                    Cookie.putIsDialog(OrderRemainActivity.this, false);
+                    SPUtils.put(OrderRemainActivity.this, Constant.APPOINT_ORDER, "");
+                    putIsDialog();
                     startIntent(MyOrderListActivity.class, true);
                     finish();
                 }
@@ -106,7 +107,7 @@ public class OrderRemainActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 0) {
                     ToastUtils.showShort(OrderRemainActivity.this, UtilParse.getRequestMsg(json));
-                    Cookie.putIsDialog(OrderRemainActivity.this, false);
+                    putIsDialog();
                     orderNumberDao.deleteFirst(_id);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -136,7 +137,7 @@ public class OrderRemainActivity extends BaseActivity {
      */
     private void confirmOrder(final String tag) {
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, getString(R.string.waitting), new RequestBackListener(this) {
@@ -158,7 +159,7 @@ public class OrderRemainActivity extends BaseActivity {
 //                                orderNumberDao.selectAll();
                                 isNext();
                             } else if ("1".equals(tag)) {//接单
-                                Cookie.putIsDialog(OrderRemainActivity.this, false);
+                                putIsDialog();
                                 if ("0".equals(orderType)) {//及时服务
                                     orderNumberDao.clear();
 //                                    orderNumberDao.selectAll();
@@ -181,20 +182,21 @@ public class OrderRemainActivity extends BaseActivity {
     private void isNext() {
         SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
         if (sqLiteOrderBean.getNum() == null) {//即时服务没有了
-            if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(this))) {//有预约服务
+            String appointOrder = (String) SPUtils.get(this, Constant.APPOINT_ORDER, "");
+            if (appointOrder != null && !VerifyUtil.isNullOrEmpty(appointOrder)) {//有预约服务
                 orderType = "1";
                 titleTv.setText(getResources().getString(R.string.order_remain));
                 contentTv.setText(getResources().getString(R.string.remain_content));
                 cancelTv.setVisibility(View.GONE);
                 remainRlyt.setVisibility(View.VISIBLE);
             } else {
-                Cookie.putIsDialog(this, false);
+                putIsDialog();
                 finish();
             }
         } else {
             if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
                 orderNumberDao.clear();
-                Cookie.putIsDialog(this, false);
+                putIsDialog();
                 finish();
             } else {
                 orderNum = sqLiteOrderBean.getNum();
@@ -202,6 +204,10 @@ public class OrderRemainActivity extends BaseActivity {
                 getDetail();
             }
         }
+    }
+
+    private void putIsDialog() {
+        SPUtils.put(OrderRemainActivity.this, Constant.IS_DIALOG, false);
     }
 }
 

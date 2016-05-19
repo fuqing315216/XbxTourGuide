@@ -7,12 +7,9 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.platform.comapi.map.C;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.adapter.ServiceTimeGridAdapter;
 import com.xbx.tourguide.api.SettingApi;
@@ -26,9 +23,9 @@ import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.CalendarUtil;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
@@ -41,7 +38,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/7.
- * <p/>
+ * <p>
  * 服务时间
  */
 public class ServiceTimeActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -159,7 +156,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        uid = Cookie.getUid(this);
+        uid = (String) SPUtils.get(this, Constant.UID, "");
 
         gridView = (UnScrollGridView) findViewById(R.id.gv_calendar);
         hourPriceEt = (EditText) findViewById(R.id.et_price_h);
@@ -178,7 +175,7 @@ public class ServiceTimeActivity extends BaseActivity implements View.OnClickLis
         partRbtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
         leaderRbtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
 
-        TourGuideInfoBeans tourGuideInfoBean = UserInfoParse.getUserInfo(Cookie.getUserInfo(this));
+        TourGuideInfoBeans tourGuideInfoBean = UserInfoParse.getUserInfo((String) SPUtils.get(this, Constant.USER_INFO, ""));
         userType = Integer.valueOf(tourGuideInfoBean.getGuide_type());
         switch (userType) {//1：导游；2：向导；3：土著
             case 1:

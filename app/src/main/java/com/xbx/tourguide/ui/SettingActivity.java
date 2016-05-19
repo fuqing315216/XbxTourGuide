@@ -9,8 +9,8 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.util.ActivityManager;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
@@ -27,8 +27,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             super.handleMessage(msg);
             switch (msg.what) {
                 case TaskFlag.REQUESTSUCCESS:
-                    Cookie.putUserInfo(SettingActivity.this, "");
-                    Cookie.putLoginOut(SettingActivity.this, true);
+                    SPUtils.put(SettingActivity.this, Constant.USER_INFO, "");
+                    SPUtils.put(SettingActivity.this, Constant.LOGIN_OUT, true);
                     startIntent(LoginActivity.class, true);
                     break;
             }
@@ -83,7 +83,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
             case R.id.tv_login_out:
                 loginApi = new LoginApi(this, handler);
-                loginApi.loginOut(Cookie.getUid(this));
+                loginApi.loginOut((String) SPUtils.get(this, Constant.UID, ""));
                 break;
             default:
                 break;

@@ -48,9 +48,9 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.baidumap.OverlayManager;
 import com.xbx.tourguide.util.baidumap.WalkingRouteOverlay;
@@ -176,7 +176,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         //设置用户地图覆盖物
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
                         //步行路径规划
-                        String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
+                        String lonAndlat = (String) SPUtils.get(StartServiceActivity.this, Constant.LON_LAT, "");
                         if (lonAndlat != null && !"".equals(lonAndlat)) {
                             setWalkingSearch(Double.parseDouble(lonAndlat.split(",")[0]), Double.parseDouble(lonAndlat.split(",")[1]),
                                     Double.valueOf(result.getLon()), Double.valueOf(result.getLat()));
@@ -343,7 +343,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 if (location == null) {
                     return;
                 }
-                String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
+                String lonAndlat = (String) SPUtils.get(StartServiceActivity.this, Constant.LON_LAT, "");
 
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double myLon = Double.parseDouble(lonAndlat.split(",")[0]);
@@ -388,10 +388,10 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
      */
     private void setLonLat(final BDLocation location) {
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("lon", location.getLongitude() + "");
         params.put("lat", location.getLatitude() + "");
-        Cookie.putLonAndLat(this, location.getLongitude() + "," + location.getLatitude());
+        SPUtils.put(this, Constant.LON_LAT, location.getLongitude() + "," + location.getLatitude());
         IRequest.post(this, HttpUrl.POST_LON_LAT, params, new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {

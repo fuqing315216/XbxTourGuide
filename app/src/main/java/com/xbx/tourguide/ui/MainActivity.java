@@ -12,14 +12,18 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
+
+import org.apache.http.cookie.Cookie;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/28.
- * <p/>
+ * <p>
  * loading页
  */
 public class MainActivity extends BaseActivity {
@@ -28,9 +32,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Cookie.putAppointmentOrder(this, "");
-        Cookie.putIsDialog(this, false);
-        Cookie.putIsJPush(this, false);
+        SPUtils.put(this, Constant.APPOINT_ORDER, "");
+        SPUtils.put(this, Constant.IS_DIALOG, false);
+        SPUtils.put(this, Constant.IS_JPUSH, false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -40,28 +44,15 @@ public class MainActivity extends BaseActivity {
         }, 2000);
     }
 
-    //    @Override
-//    protected void onResume() {
-//        // TODO Auto-generated method stub
-//        super.onResume();
-//        JPushInterface.onResume(this);
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        // TODO Auto-generated method stub
-//        super.onPause();
-//        JPushInterface.onPause(this);
-//    }
-
     private void isAutoLogin() {
-        if (Cookie.getUserInfo(this) == null) {
+        final String userInfo = (String) SPUtils.get(this, Constant.USER_INFO, "");
+        if (userInfo == null || VerifyUtil.isNullOrEmpty(userInfo)) {
             startIntent(LoginActivity.class, true);
             return;
         }
 
-        String mobile = UserInfoParse.getMobile(Cookie.getUserInfo(this));
-        String token = UserInfoParse.getLogToken(Cookie.getUserInfo(this));
+        String mobile = UserInfoParse.getMobile(userInfo);
+        String token = UserInfoParse.getLogToken(userInfo);
         if (!VerifyUtil.isNullOrEmpty(mobile) && !VerifyUtil.isNullOrEmpty(token)) {
             RequestParams params = new RequestParams();
             params.put("mobile", mobile);
@@ -75,14 +66,14 @@ public class MainActivity extends BaseActivity {
                         startIntent(LoginActivity.class, true);
                     } else if (UtilParse.getRequestCode(json) == 1) {
 //                        ToastUtils.showShort(MainActivity.this, "自动登录成功");
-                        Cookie.putUserInfo(MainActivity.this, UtilParse.getRequestData(json));
-                        if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(MainActivity.this)).getIs_auth())) {
+                        SPUtils.put(MainActivity.this, Constant.USER_INFO, UtilParse.getRequestData(json));
+                        if ("0".equals(UserInfoParse.getUserInfo(userInfo).getIs_auth())) {
                             startIntent(RegisterInfoOkActivity.class, true);
                         } else {
                             startIntent(HomeActivity.class, true);
                         }
                     } else if (UtilParse.getRequestCode(json) == 2) {
-                        Cookie.putUserInfo(MainActivity.this, UtilParse.getRequestData(json));
+                        SPUtils.put(MainActivity.this, Constant.USER_INFO, UtilParse.getRequestData(json));
                         startIntent(RegisterGuideTypeActivity.class, true);
                     }
                 }

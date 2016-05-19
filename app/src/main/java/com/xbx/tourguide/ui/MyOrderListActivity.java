@@ -16,9 +16,8 @@ import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.beans.MyOrderBeans;
 import com.xbx.tourguide.beans.OrderDetailBeans;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
 import com.xbx.tourguide.view.TitleBarView;
@@ -28,7 +27,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p/>
+ * <p>
  * 我的订单列表
  */
 public class MyOrderListActivity extends BaseActivity implements AdapterView.OnItemClickListener, PullToRefreshLayout.OnRefreshListener {
@@ -141,7 +140,7 @@ public class MyOrderListActivity extends BaseActivity implements AdapterView.OnI
 
     private void initData() {
         myOrderBeansList = new ArrayList<>();
-        uid = Cookie.getUid(this);
+        uid = (String) SPUtils.get(this, Constant.UID, "");
         nowPage = 1;
         serviceApi = new ServiceApi(this, handler);
         serviceApi.getMyOrderData(uid, nowPage, Constant.PAGE_NUMBER, TaskFlag.REQUESTSUCCESS);

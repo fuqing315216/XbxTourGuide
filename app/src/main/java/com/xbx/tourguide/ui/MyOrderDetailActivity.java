@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -20,8 +19,8 @@ import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
 import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
-import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.FlowLayout;
@@ -287,7 +286,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
      */
     private void confirmOrder(final String tag) {
         RequestParams params = new RequestParams();
-        params.put("uid", Cookie.getUid(this));
+        params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("order_number", orderNum);
         params.put("confirm", tag);
         IRequest.post(this, HttpUrl.CONFIRM_ORDER, params, "", new RequestBackListener(this) {

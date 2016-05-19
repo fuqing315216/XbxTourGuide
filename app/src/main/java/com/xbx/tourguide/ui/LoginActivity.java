@@ -1,8 +1,6 @@
 package com.xbx.tourguide.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.api.LoginApi;
-import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.http.HttpUrl;
 import com.xbx.tourguide.http.IRequest;
@@ -20,8 +16,8 @@ import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.ActivityManager;
-import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.TitleBarView;
@@ -30,7 +26,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/29.
- * <p/>
+ * <p>
  * 登录页
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -118,11 +114,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void requestSuccess(String json) {
                 if (UtilParse.getRequestCode(json) == 2) {
-                    Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
+                    SPUtils.put(LoginActivity.this, Constant.USER_INFO, UtilParse.getRequestData(json));
                     startIntent(RegisterGuideTypeActivity.class, false);
                 } else if (UtilParse.getRequestCode(json) == 1) {
-                    Cookie.putUserInfo(LoginActivity.this, UtilParse.getRequestData(json));
-                    if ("0".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(LoginActivity.this)).getIs_auth())) {
+                    SPUtils.put(LoginActivity.this, Constant.USER_INFO, UtilParse.getRequestData(json));
+                    if ("0".equals(UserInfoParse.getUserInfo((String) SPUtils.get(LoginActivity.this, Constant.USER_INFO, "")).getIs_auth())) {
                         startIntent(RegisterInfoOkActivity.class, false);
                     } else {
                         startIntent(HomeActivity.class, true);

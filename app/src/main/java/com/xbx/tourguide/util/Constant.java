@@ -42,4 +42,26 @@ public class Constant {
      * 分段加载number
      */
     public final static int PAGE_NUMBER = 10;
+
+
+    /**
+     *  userbean 用户基本信息
+     *  uid
+     *  online 是否上线
+     *  deviceid
+     *  lonAndlat 经纬度坐标用逗号组合
+     *  appointOrder 预约订单num
+     *  isDialog 接单对话框是否显示
+     *  isJPush 是否能接收JPush
+     *  loginOut 用户基本信息
+     */
+    public final static String USER_INFO = "userbean";
+    public final static String UID = "uid";
+    public final static String ONLINE = "online";
+    public final static String DEVICEID = "deviceid";
+    public final static String LON_LAT = "lonAndlat";
+    public final static String APPOINT_ORDER = "appointOrder";
+    public final static String IS_DIALOG = "isDialog";
+    public final static String IS_JPUSH = "isJPush";
+    public final static String LOGIN_OUT = "loginOut";
 }

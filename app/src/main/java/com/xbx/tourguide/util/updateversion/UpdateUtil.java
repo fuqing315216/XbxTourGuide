@@ -24,7 +24,7 @@ import com.xbx.tourguide.R;
 import com.xbx.tourguide.beans.Version;
 import com.xbx.tourguide.ui.HomeActivity;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.Cookie;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import java.io.File;
@@ -91,7 +91,7 @@ public class UpdateUtil {
                     break;
                 case DOWN_ERROR:
                     ToastMsg("下载失败,连接中断");
-                    Cookie.clear(context);
+                    SPUtils.clearVersion(context);
                     break;
             }
         }
@@ -236,7 +236,7 @@ public class UpdateUtil {
             @Override
             public void downLoadFinish(int totalSucess) {
                 if (totalSucess == 5) {
-                    Cookie.clear(context);
+                    SPUtils.clearVersion(context);
                     manager.cancel(100);
                     keepon = false;
                     installApk();
@@ -279,8 +279,8 @@ public class UpdateUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 cancleYes();
-                Cookie.saveState(context, false);
-                Cookie.clear(context);
+                SPUtils.saveVersionState(context, false);
+                SPUtils.clearVersion(context);
             }
         });
         b.setNegativeButton("取消", null);

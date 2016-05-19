@@ -2,7 +2,6 @@ package com.xbx.tourguide.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,18 +9,15 @@ import android.widget.TextView;
 import com.xbx.tourguide.R;
 import com.xbx.tourguide.base.BaseMyAdapter;
 import com.xbx.tourguide.beans.MyOrderBeans;
-import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
-import com.xbx.tourguide.util.Cookie;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.SPUtils;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p>
+ * <p/>
  * 我的订单adapter
  */
 public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
@@ -60,7 +56,7 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         holder.dateTv.setText(bean.getOrder_time());
 
         //导游类型
-        String userType = UserInfoParse.getUserInfo(Cookie.getUserInfo(mContext)).getGuide_type();
+        String userType = UserInfoParse.getUserInfo((String) SPUtils.get(mContext, Constant.USER_INFO, "")).getGuide_type();
         if ("1".equals(userType)) {//1：导游；2：向导；3：土著
             holder.guideTypeTv.setText("导");
             holder.guideTypeTv.setBackgroundResource(R.drawable.bg_order_list_guide);

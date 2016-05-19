@@ -4,28 +4,21 @@ import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 
-import com.xbx.tourguide.R;
-import com.xbx.tourguide.api.TaskFlag;
-import com.xbx.tourguide.beans.OnLineBeans;
+import com.baidu.platform.comapi.map.C;
 import com.xbx.tourguide.beans.SQLiteOrderBean;
-import com.xbx.tourguide.beans.Version;
 import com.xbx.tourguide.db.OrderNumberDao;
-import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.ui.LoginActivity;
 import com.xbx.tourguide.ui.MyOrderListActivity;
 import com.xbx.tourguide.ui.OrderRemainActivity;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JPushUtils;
-import com.xbx.tourguide.util.JsonUtils;
-import com.xbx.tourguide.util.LogUtils;
+import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Util;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -50,7 +43,7 @@ public class BaseActivity extends FragmentActivity {
                 case 0x123:
                     SQLiteOrderBean sqlBean = new OrderNumberDao(BaseActivity.this).selectFirst();
                     if (sqlBean.getNum() == null || VerifyUtil.isNullOrEmpty(sqlBean.getNum())
-                            || Cookie.getIsDialog(BaseActivity.this)) {
+                            || getIsDialog()) {
                         timer.cancel();
                     }
                     break;
@@ -67,8 +60,10 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (Cookie.getUserInfo(this) != null) {
-            if ("1".equals(Cookie.getOnline(this)) && Cookie.getIsJPush(this)) {
+        String userInfo = (String) SPUtils.get(this, Constant.USER_INFO, "");
+        if (userInfo != null && !VerifyUtil.isNullOrEmpty(userInfo)) {
+            if ("1".equals((String) SPUtils.get(this, Constant.ONLINE, ""))
+                    && (Boolean) SPUtils.get(this, Constant.IS_JPUSH, false)) {
                 setTimerTask();
             }
         }
@@ -131,8 +126,8 @@ public class BaseActivity extends FragmentActivity {
                     orderNumberDao.insertLast(values);
                     break;
                 case 101:
-                    if (VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {
-                        Cookie.putAppointmentOrder(context, orderNum);
+                    if (getAppointmentOrder() == null || VerifyUtil.isNullOrEmpty(getAppointmentOrder())) {
+                        SPUtils.put(context, Constant.APPOINT_ORDER, orderNum);
                     } else {
                         return;
                     }
@@ -140,7 +135,7 @@ public class BaseActivity extends FragmentActivity {
                 case 102:
                     if (Util.isAction(context)) {
                         ToastUtils.showShort(context, "有订单被用户取消,请注意查看");
-                        if (!Cookie.getIsDialog(context)) {
+                        if (!getIsDialog()) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
                         }
                         return;
@@ -149,7 +144,7 @@ public class BaseActivity extends FragmentActivity {
                 case 103://只有预约服务有推送
                     if (Util.isAction(context)) {
                         ToastUtils.showShort(context, "有预约订单用户支付定金，请注意查看");
-                        if (!Cookie.getIsDialog(context)) {
+                        if (!getIsDialog()) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
                         }
                         return;
@@ -175,7 +170,7 @@ public class BaseActivity extends FragmentActivity {
 
             if (Util.isAction(context)) {
                 //dialog是否显示
-                if (!Cookie.getIsDialog(context)) {
+                if (!getIsDialog()) {
                     SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
                     if (sqLiteOrderBean.getNum() != null) {
                         if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
@@ -185,20 +180,32 @@ public class BaseActivity extends FragmentActivity {
                         orderNum = sqLiteOrderBean.getNum();
                         orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
                     } else {
-                        if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(context))) {//预约
-                            Cookie.putIsDialog(context, true);
+                        if (getAppointmentOrder() != null && !VerifyUtil.isNullOrEmpty(getAppointmentOrder())) {//预约
+                            putIsDialog(true);
                             orderIntent.putExtra("serverType", "1");
-                            orderIntent.putExtra("orderNumber", Cookie.getAppointmentOrder(context));
+                            orderIntent.putExtra("orderNumber", getAppointmentOrder());
                             startActivity(orderIntent);
                         }
                     }
                     //
-                    Cookie.putIsDialog(context, true);
+                    putIsDialog(true);
                     orderIntent.putExtra("serverType", "0");
                     orderIntent.putExtra("orderNumber", orderNum);
                     startActivity(orderIntent);
                 }
             }
         }
+    }
+
+    private boolean getIsDialog() {
+        return (Boolean) SPUtils.get(this, Constant.IS_DIALOG, false);
+    }
+
+    private void putIsDialog(boolean flag) {
+        SPUtils.put(this, Constant.IS_DIALOG, flag);
+    }
+
+    private String getAppointmentOrder() {
+        return (String) SPUtils.get(this, Constant.APPOINT_ORDER, "");
     }
 }
