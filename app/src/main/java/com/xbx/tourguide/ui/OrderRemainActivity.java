@@ -182,6 +182,7 @@ public class OrderRemainActivity extends BaseActivity {
         SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
         if (sqLiteOrderBean.getNum() == null) {//即时服务没有了
             if (!VerifyUtil.isNullOrEmpty(Cookie.getAppointmentOrder(this))) {//有预约服务
+                orderType = "1";
                 titleTv.setText(getResources().getString(R.string.order_remain));
                 contentTv.setText(getResources().getString(R.string.remain_content));
                 cancelTv.setVisibility(View.GONE);

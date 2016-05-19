@@ -20,8 +20,12 @@ import com.xbx.tourguide.beans.TourGuideInfoBeans;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.ToastUtils;
+import com.xbx.tourguide.view.WheelView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 个人信息
@@ -31,9 +35,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private TextView titleRightTv;
     private RoundedImageView headPicRiv;
     private TextView nameTv, sexTv, birthdayTv, phoneTv, idTv, guideTv;
-    private RelativeLayout locationRlyt;
-    private TextView locationTv;
-    private RadioButton chineseRb, englishRb, allRb;
+    private TextView locationTv, languageTv;
 
     private ImageLoader loader;
     private TourGuideInfoBeans beans = null;
@@ -51,6 +53,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 //                    rightType = 1;
 //                    titleRightTv.setText(getString(R.string.personal_main));
                     UserInfoParse.putUserInfo(PersonalInfoActivity.this, userInfo, JsonUtils.object((String) msg.obj, TourGuideInfoBeans.class));
+                    ToastUtils.showShort(PersonalInfoActivity.this,"修改成功");
                     finish();
                     break;
             }
@@ -77,11 +80,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         phoneTv = (TextView) findViewById(R.id.tv_phone);
         idTv = (TextView) findViewById(R.id.tv_id);
         guideTv = (TextView) findViewById(R.id.tv_guide);
-        locationRlyt = (RelativeLayout) findViewById(R.id.rlyt_location);
-        locationTv = (TextView) findViewById(R.id.tv_location);
-        chineseRb = (RadioButton) findViewById(R.id.rb_chinese);
-        englishRb = (RadioButton) findViewById(R.id.rb_english);
-        allRb = (RadioButton) findViewById(R.id.rb_all);
+        locationTv = (TextView) findViewById(R.id.tv_persioninfo_location);
+        languageTv = (TextView) findViewById(R.id.tv_persioninfo_language);
 
         if (!"1".equals(UserInfoParse.getUserInfo(Cookie.getUserInfo(this)).getGuide_type())) {
             findViewById(R.id.rlyt_personalinfo_guide).setVisibility(View.GONE);
@@ -90,11 +90,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         initData();
 
         titleRightTv.setOnClickListener(this);
-        headPicRiv.setOnClickListener(this);
-        locationRlyt.setOnClickListener(this);
-        chineseRb.setOnClickListener(this);
-        englishRb.setOnClickListener(this);
-        allRb.setOnClickListener(this);
+        findViewById(R.id.rlyt_info_headpic).setOnClickListener(this);
+        findViewById(R.id.rlyt_persioninfo_location).setOnClickListener(this);
+        findViewById(R.id.rlyt_persioninfo_language).setOnClickListener(this);
         findViewById(R.id.ibtn_return).setOnClickListener(this);
     }
 
@@ -111,7 +109,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         idTv.setText(beans.getIdcard());
         guideTv.setText(beans.getGuide_card_number());
         locationTv.setText(beans.getNow_address_name());
-        setRb(beans.getServer_language());
+        languageTv.setText(getLanguage(beans.getServer_language()));
     }
 
     @Override
@@ -137,51 +135,28 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     startIntent(SelfMainActivity.class, false);
                 }
                 break;
-            case R.id.riv_info_headpic:
+            case R.id.rlyt_info_headpic:
                 Intent intent = new Intent(PersonalInfoActivity.this, CameraDialogActivity.class);
                 intent.putExtra("isPic", true);
                 intent.putExtra("isCrop", true);
                 startActivityForResult(intent, 100);
                 break;
-            case R.id.rlyt_location:
+            case R.id.rlyt_persioninfo_location:
                 Intent cityIntent = new Intent(PersonalInfoActivity.this, SelectProvinceActivity.class);
                 startActivityForResult(cityIntent, 200);
                 break;
-            case R.id.rb_chinese:
-                setRb("0");
-                setUpdate();
-                break;
-            case R.id.rb_english:
-                setRb("1");
-                setUpdate();
-                break;
-            case R.id.rb_all:
-                setRb("2");
-                setUpdate();
-                break;
-            default:
+            case R.id.rlyt_persioninfo_language:
+                Intent languageIntent = new Intent(PersonalInfoActivity.this, WheelViewDialogActivity.class);
+                List<String> list = new ArrayList<>();
+                list.add(getString(R.string.chinese));
+                list.add(getString(R.string.english));
+                list.add(getString(R.string.all));
+                languageIntent.putStringArrayListExtra("wheelViewList", (ArrayList<String>) list);
+                startActivityForResult(languageIntent, 300);
                 break;
         }
     }
 
-    private void setRb(String languageType) {
-        if (languageType.equals("1")) {
-            beans.setServer_language("1");
-            chineseRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-            englishRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
-            allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-        } else if (languageType.equals("2")) {
-            beans.setServer_language("2");
-            chineseRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-            englishRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-            allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
-        } else {
-            beans.setServer_language("0");
-            chineseRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_selected, 0, 0, 0);
-            englishRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-            allRb.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_gender_normal, 0, 0, 0);
-        }
-    }
 
     private void setUpdate() {
         titleRightTv.setText(getString(R.string.confirm_update));
@@ -206,5 +181,24 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             cityId = city.getId();
             setUpdate();
         }
+
+        if (requestCode == 300) {
+            if(data != null){
+                String serverLanguage = data.getStringExtra("serverLanguage");
+                beans.setServer_language(serverLanguage);
+                languageTv.setText(getLanguage(serverLanguage));
+                setUpdate();
+            }
+        }
+    }
+
+    private String getLanguage(String serverLanguage) {
+        if ("1".equals(serverLanguage)) {
+            return getString(R.string.english);
+        }
+        if ("2".equals(serverLanguage)) {
+            return getString(R.string.all);
+        }
+        return getString(R.string.chinese);
     }
 }

@@ -89,6 +89,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/DialogStyle" />
         <activity
+            android:name=".ui.WheelViewDialogActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogStyle" />
+
+        <activity
             android:name=".ui.ForgetPassWordActivity"
             android:screenOrientation="portrait" />
         <activity

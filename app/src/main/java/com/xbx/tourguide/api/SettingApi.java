@@ -64,7 +64,6 @@ public class SettingApi {
         IRequest.post(context, HttpUrl.UPDATE_INFO, params, context.getString(R.string.waitting), new RequestBackListener(context) {
             @Override
             public void requestSuccess(String json) {
-                LogUtils.i("-----updateInfo:" + json);
                 sendShowMessage.sendShowMsg(TaskFlag.REQUESTSUCCESS, json);
             }
         });

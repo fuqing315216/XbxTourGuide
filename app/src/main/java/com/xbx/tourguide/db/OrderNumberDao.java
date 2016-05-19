@@ -29,11 +29,9 @@ public class OrderNumberDao implements OrderNumberService {
         SQLiteDatabase database = null;
         try {
             database = dbOpenHelper.getWritableDatabase();
-            LogUtils.e("---values:" + values.toString());
             id = database.insert("order_number", null, values);
             flag = (id > 0 ? true : false);
         } catch (Exception e) {
-            LogUtils.e("---Exception:" + e.getMessage());
             e.printStackTrace();
         } finally {
             if (database != null) {
@@ -67,7 +65,6 @@ public class OrderNumberDao implements OrderNumberService {
                 database.close();
             }
         }
-        LogUtils.e("---selectFirst:" + bean.toString());
         return bean;
     }
 
@@ -132,7 +129,6 @@ public class OrderNumberDao implements OrderNumberService {
                 cursor.close();
             }
         }
-        LogUtils.e("---list:" + list.toString());
         return list;
     }
 }

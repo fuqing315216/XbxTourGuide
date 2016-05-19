@@ -28,7 +28,6 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -52,15 +51,14 @@ import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
-import com.xbx.tourguide.util.OverlayManager;
 import com.xbx.tourguide.util.Util;
-import com.xbx.tourguide.util.VerifyUtil;
-import com.xbx.tourguide.util.WalkingRouteOverlay;
+import com.xbx.tourguide.util.baidumap.OverlayManager;
+import com.xbx.tourguide.util.baidumap.WalkingRouteOverlay;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/8.
- * <p/>
+ * <p>
  * 开始/结束服务页
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {
@@ -82,11 +80,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     private boolean isFirstInOrd = true;
     private Marker userMarkers = null;
 
-    private double myLon;
-    private double myLat;
-
-    private boolean isRoute = true;
-    private RouteLine route = null;
     private OverlayManager routeOverlay = null;
     private RoutePlanSearch mSearch = null;
 
@@ -103,13 +96,15 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 return;
             }
             if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-                route = result.getRouteLines().get(0);
+                if (routeOverlay != null) {
+                    routeOverlay.removeFromMap();
+                }
                 WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
                 baiduMap.setOnMarkerClickListener(overlay);
                 routeOverlay = overlay;
                 overlay.setData(result.getRouteLines().get(0));
                 overlay.addToMap();
-                overlay.zoomToSpan();
+//                overlay.zoomToSpan();
             }
         }
 
@@ -149,7 +144,13 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         }
                     });
                     nameTv.setText(result.getNickname());
-                    addressTv.setText(result.getEnd_addr());
+
+                    String addr = result.getEnd_addr();
+                    if (addr.contains("市")) {
+                        addr = addr.substring(addr.indexOf("市") + 1, addr.length());
+                    }
+                    addressTv.setText(addr);
+
                     loader.displayImage(result.getHead_image(), headImgRiv);
 
                     startTime = result.getServer_start_time();
@@ -170,19 +171,24 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                         }
                     }
 
-                    if (isRoute && result.getLon() != null && result.getLat() != null) {
-                        isRoute = false;
-                        setWalkingSearch(myLon, myLat, Double.valueOf(result.getLon()), Double.valueOf(result.getLat()));
-                    }
-
                     if (result.getLon() != null && result.getLat() != null
                             && timeTv.getText().toString().equals("未开始")) {
+                        //设置用户地图覆盖物
                         initOverlay(Double.parseDouble(result.getLat()), Double.parseDouble(result.getLon()), R.drawable.ic_client);
+                        //步行路径规划
+                        String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
+                        if (lonAndlat != null && !"".equals(lonAndlat)) {
+                            setWalkingSearch(Double.parseDouble(lonAndlat.split(",")[0]), Double.parseDouble(lonAndlat.split(",")[1]),
+                                    Double.valueOf(result.getLon()), Double.valueOf(result.getLat()));
+                        }
                     }
                     break;
                 case TaskFlag.PAGEREQUESTWO://开始服务
                     stopBtn.setText(getResources().getString(R.string.end_service));
                     userMarkers.remove();
+                    if (routeOverlay != null) {
+                        routeOverlay.removeFromMap();
+                    }
                     startActivity(new Intent(StartServiceActivity.this, ConfirmActivity.class)
                             .putExtra("title", "服务开始")
                             .putExtra("content", "您的即时导游服务已经开始计时"));
@@ -198,7 +204,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         @Override
         public void run() {
             serviceApi.getOrderDetail(orderId);
-            new Handler().postDelayed(this, 1000);
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -248,7 +254,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         locationClient.requestLocation();
 
         getLonAndLat();
-        new Handler().postDelayed(run, 1000);
+        handler.postDelayed(run, 1000);
     }
 
     @Override
@@ -283,13 +289,14 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onStop() {
         super.onStop();
-        finish();
+//        finish();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        handler.removeCallbacks(run);
         mSearch.destroy();
+        super.onDestroy();
     }
 
     /**
@@ -339,8 +346,9 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 String lonAndlat = Cookie.getLonAndLat(StartServiceActivity.this);
 
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
-                    myLon = Double.parseDouble(lonAndlat.split(",")[0]);
-                    myLat = Double.parseDouble(lonAndlat.split(",")[1]);
+                    double myLon = Double.parseDouble(lonAndlat.split(",")[0]);
+                    double myLat = Double.parseDouble(lonAndlat.split(",")[1]);
+
                     double instance = Util.getDistance(myLon, myLat, location.getLongitude(), location.getLatitude());
                     if (instance >= 10) {
                         setLonLat(location);
@@ -363,8 +371,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                             mCurrentMode, true, bdMyself, accuracyCircleFillColor, accuracyCircleStrokeColor));
                     LatLng ll = new LatLng(location.getLatitude(),
                             location.getLongitude());
-                    MapStatus mMapstatus = new MapStatus.Builder().target(ll).zoom(20f)
-                            .build();
+                    MapStatus mMapstatus = new MapStatus.Builder().target(ll).zoom(20f).build();
                     MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(mMapstatus);
                     baiduMap.animateMapStatus(u);
                     baiduMap.setMapStatus(u);
@@ -401,7 +408,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 .to(enNode));
     }
 
-    boolean useDefaultIcon = false;
+
     private class MyWalkingRouteOverlay extends WalkingRouteOverlay {
 
         public MyWalkingRouteOverlay(BaiduMap baiduMap) {
@@ -410,17 +417,17 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
         @Override
         public BitmapDescriptor getStartMarker() {
-            if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
-            }
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.ic_guide);
+//            }
             return null;
         }
 
         @Override
         public BitmapDescriptor getTerminalMarker() {
-            if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(R.drawable.ic_client);
-            }
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.ic_client);
+//            }
             return null;
         }
     }

@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 
@@ -32,6 +33,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
+            android:paddingLeft="@dimen/dp16"
             android:paddingRight="@dimen/dp16"
             android:text="@string/personal_main"
             android:textColor="@color/head_text_color"
@@ -56,6 +58,7 @@
                 android:background="@color/line_color" />
 
             <RelativeLayout
+                android:id="@+id/rlyt_info_headpic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -75,12 +78,20 @@
                     android:id="@+id/riv_info_headpic"
                     android:layout_width="@dimen/dp76"
                     android:layout_height="@dimen/dp76"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp12"
                     android:layout_marginTop="@dimen/dp8"
+                    android:layout_toLeftOf="@+id/iv_persioninfo_head_arrow"
                     android:src="@drawable/ic_headpic"
                     app:riv_oval="true" />
 
+                <ImageView
+                    android:id="@+id/iv_persioninfo_head_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:src="@drawable/ic_arrow_right" />
             </RelativeLayout>
 
             <include layout="@layout/view_line" />
@@ -110,7 +121,7 @@
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/dp16"
-                        android:text="@string/et_name" />
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -132,7 +143,8 @@
                         android:id="@+id/tv_sex"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16" />
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -154,7 +166,8 @@
                         android:id="@+id/tv_birthday"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16" />
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -176,7 +189,8 @@
                         android:id="@+id/tv_phone"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16" />
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -198,7 +212,8 @@
                         android:id="@+id/tv_id"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16" />
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -221,7 +236,8 @@
                         android:id="@+id/tv_guide"
                         style="@style/TextViewStyle"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp16" />
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textColor="@color/gray_color" />
                 </RelativeLayout>
 
                 <View
@@ -232,7 +248,7 @@
                     android:background="@color/line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/rlyt_location"
+                    android:id="@+id/rlyt_persioninfo_location"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48">
 
@@ -241,9 +257,9 @@
                         android:text="@string/location" />
 
                     <TextView
-                        android:id="@+id/tv_location"
+                        android:id="@+id/tv_persioninfo_location"
                         style="@style/TextViewStyle"
-                        android:layout_marginRight="@dimen/dp8"
+                        android:layout_marginRight="@dimen/dp12"
                         android:layout_toLeftOf="@+id/iv_persioninfo_location_arrow"
                         android:text="成都" />
 
@@ -265,6 +281,7 @@
                     android:background="@color/line_color" />
 
                 <RelativeLayout
+                    android:id="@+id/rlyt_persioninfo_language"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48">
 
@@ -273,59 +290,21 @@
                         style="@style/TextViewStyle"
                         android:text="@string/language" />
 
-                    <!--<EditText-->
-                    <!--android:id="@+id/et_language"-->
-                    <!--style="@style/EditTextStyle"-->
-                    <!--android:hint="@string/et_location" />-->
+                    <TextView
+                        android:id="@+id/tv_persioninfo_language"
+                        style="@style/TextViewStyle"
+                        android:layout_marginRight="@dimen/dp12"
+                        android:layout_toLeftOf="@+id/iv_persioninfo_language_arrow"
+                        android:text="中文" />
 
-                    <RadioGroup
+                    <ImageView
+                        android:id="@+id/iv_persioninfo_language_arrow"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dp16"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/rb_chinese"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:button="@null"
-                            android:drawableLeft="@drawable/ic_gender_selected"
-                            android:drawablePadding="@dimen/dp8"
-                            android:text="@string/chinese"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/sp15" />
-
-                        <RadioButton
-                            android:id="@+id/rb_english"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp12"
-                            android:background="@null"
-                            android:button="@null"
-                            android:checked="false"
-                            android:drawableLeft="@drawable/ic_gender_normal"
-                            android:drawablePadding="@dimen/dp8"
-                            android:text="@string/english"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/sp15" />
-
-                        <RadioButton
-                            android:id="@+id/rb_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp12"
-                            android:background="@null"
-                            android:button="@null"
-                            android:checked="false"
-                            android:drawableLeft="@drawable/ic_gender_normal"
-                            android:drawablePadding="@dimen/dp8"
-                            android:text="@string/all"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/sp15" />
-                    </RadioGroup>
+                        android:src="@drawable/ic_arrow_right" />
                 </RelativeLayout>
 
                 <include layout="@layout/view_line" />

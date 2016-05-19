@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Created by shuzhen on 2016/4/1.
- * <p/>
+ * <p>
  * 我的订单adapter
  */
 public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
@@ -52,7 +52,11 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
         }
 
         MyOrderBeans bean = mList.get(position);
-        holder.addressTv.setText(bean.getEnd_addr());
+        String addr = bean.getEnd_addr();
+        if (addr.contains("市")) {
+            addr = addr.substring(addr.indexOf("市") + 1, addr.length());
+        }
+        holder.addressTv.setText(addr);
         holder.dateTv.setText(bean.getOrder_time());
 
         //导游类型
@@ -156,7 +160,7 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 6://已取消（退款中）
-                    holder.statusTv.setText("已关闭");
+                    holder.statusTv.setText("已关闭-退款中");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     break;
                 case 7:
@@ -164,7 +168,7 @@ public class MyOrderListAdapter extends BaseMyAdapter<MyOrderBeans> {
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color));
                     break;
                 case 8://已关闭（拒单并退款中）
-                    holder.statusTv.setText("已拒接");
+                    holder.statusTv.setText("已拒接-退款中");
                     holder.statusTv.setTextColor(ContextCompat.getColor(mContext, R.color.forgetpass_color));
                     break;
                 case 9://已关闭（拒单并退款成功）

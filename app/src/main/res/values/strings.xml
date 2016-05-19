@@ -120,7 +120,7 @@
     <string name="language">服务语言</string>
     <string name="chinese">中文</string>
     <string name="english">英文</string>
-    <string name="all">全部</string>
+    <string name="all">中英文</string>
     <string name="select_city">选择城市</string>
     <string name="personal_info">个人信息</string>
     <string name="personal_main">主页</string>

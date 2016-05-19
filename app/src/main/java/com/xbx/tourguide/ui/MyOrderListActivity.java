@@ -18,6 +18,7 @@ import com.xbx.tourguide.beans.OrderDetailBeans;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.Cookie;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.view.PullToRefreshLayout;
 import com.xbx.tourguide.view.PullableListView;
 import com.xbx.tourguide.view.TitleBarView;

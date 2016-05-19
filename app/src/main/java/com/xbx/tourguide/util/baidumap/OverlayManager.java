@@ -1,4 +1,4 @@
-package com.xbx.tourguide.util;
+package com.xbx.tourguide.util.baidumap;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnPolylineClickListener;

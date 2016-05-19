@@ -68,9 +68,11 @@
 
             <ImageView
                 android:id="@+id/iv_invitecode_copy"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/ic_launcher" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="@dimen/dp6"
+                android:src="@drawable/ic_copy" />
         </LinearLayout>
 
 
