@@ -35,8 +35,8 @@ public class SPUtils {
 
         if (object instanceof String) {
             editor.putString(key, (String) object);
-            if (key.equals("userbean")) {//特殊处理 通用时先删除
-                editor.putString("uid", UserInfoParse.getUid((String) object));
+            if (key.equals("userinfo")) {//特殊处理 通用时先删除
+                put(context,Constant.UID,UserInfoParse.getUid((String) object));
             }
         } else if (object instanceof Integer) {
             editor.putInt(key, (Integer) object);

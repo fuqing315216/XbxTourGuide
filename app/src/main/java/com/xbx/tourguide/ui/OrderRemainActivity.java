@@ -23,7 +23,7 @@ import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 /**
@@ -194,7 +194,7 @@ public class OrderRemainActivity extends BaseActivity {
                 finish();
             }
         } else {
-            if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+            if (Utils.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
                 orderNumberDao.clear();
                 putIsDialog();
                 finish();

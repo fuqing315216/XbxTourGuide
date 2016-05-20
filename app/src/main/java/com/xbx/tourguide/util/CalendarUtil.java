@@ -1,7 +1,5 @@
 package com.xbx.tourguide.util;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -77,7 +75,7 @@ public class CalendarUtil {
     /**
      * 获取年
      *
-     * @param date
+     * @param date yyyy-mm-dd
      * @return
      */
     public static String getYear(String date) {
@@ -87,7 +85,7 @@ public class CalendarUtil {
     /**
      * 获取月
      *
-     * @param date
+     * @param date yyyy-mm-dd
      * @return
      */
     public static String getMonth(String date) {
@@ -97,7 +95,7 @@ public class CalendarUtil {
     /**
      * 获取日
      *
-     * @param date
+     * @param date yyyy-mm-dd
      * @return
      */
     public static String getDay(String date) {

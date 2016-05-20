@@ -55,7 +55,7 @@ public class Constant {
      *  isJPush 是否能接收JPush
      *  loginOut 用户基本信息
      */
-    public final static String USER_INFO = "userbean";
+    public final static String USER_INFO = "userinfo";
     public final static String UID = "uid";
     public final static String ONLINE = "online";
     public final static String DEVICEID = "deviceid";

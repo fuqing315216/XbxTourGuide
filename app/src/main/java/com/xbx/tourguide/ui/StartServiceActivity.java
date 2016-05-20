@@ -50,15 +50,16 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.baidumap.OverlayManager;
 import com.xbx.tourguide.util.baidumap.WalkingRouteOverlay;
 import com.xbx.tourguide.view.TitleBarView;
 
 /**
  * Created by shuzhen on 2016/4/8.
- * <p>
+ * <p/>
  * 开始/结束服务页
  */
 public class StartServiceActivity extends BaseActivity implements View.OnClickListener {
@@ -82,47 +83,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
     private OverlayManager routeOverlay = null;
     private RoutePlanSearch mSearch = null;
-
-    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
-        @Override
-        public void onGetWalkingRouteResult(WalkingRouteResult result) {
-            //获取步行线路规划结果
-            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                Toast.makeText(StartServiceActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
-            }
-            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
-                // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-                // result.getSuggestAddrInfo()
-                return;
-            }
-            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-                if (routeOverlay != null) {
-                    routeOverlay.removeFromMap();
-                }
-                WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
-                baiduMap.setOnMarkerClickListener(overlay);
-                routeOverlay = overlay;
-                overlay.setData(result.getRouteLines().get(0));
-                overlay.addToMap();
-//                overlay.zoomToSpan();
-            }
-        }
-
-        @Override
-        public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
-            //获取公交换乘路径规划结果
-        }
-
-        @Override
-        public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-            //获取驾车线路规划结果
-        }
-
-        @Override
-        public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
-            //获取骑行线路规划结果
-        }
-    };
 
     private ServiceApi serviceApi = null;
     private Handler handler = new Handler() {
@@ -163,7 +123,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                     } else {
                         long time = Long.parseLong(result.getNow_time());
                         long serverTime = time - Long.parseLong(startTime);
-                        String timeStr = Util.formatTime(serverTime);
+                        String timeStr = Utils.formatTime(serverTime);
                         timeTv.setText(timeStr);
 
                         if (!stopBtn.getText().toString().equals(getString(R.string.end_service))) {
@@ -196,15 +156,11 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 case TaskFlag.PAGEREQUESTHREE://结束服务
                     finish();
                     break;
+                case 1:
+                    serviceApi.getOrderDetail(orderId);
+                    handler.sendEmptyMessageDelayed(1, 1000);
+                    break;
             }
-        }
-    };
-
-    Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            serviceApi.getOrderDetail(orderId);
-            handler.postDelayed(this, 1000);
         }
     };
 
@@ -219,7 +175,6 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         //
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(listener);
-
         initView();
     }
 
@@ -254,7 +209,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         locationClient.requestLocation();
 
         getLonAndLat();
-        handler.postDelayed(run, 1000);
+        handler.sendEmptyMessage(1);
     }
 
     @Override
@@ -287,14 +242,8 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-//        finish();
-    }
-
-    @Override
     protected void onDestroy() {
-        handler.removeCallbacks(run);
+        handler.removeMessages(1);
         mSearch.destroy();
         super.onDestroy();
     }
@@ -349,7 +298,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                     double myLon = Double.parseDouble(lonAndlat.split(",")[0]);
                     double myLat = Double.parseDouble(lonAndlat.split(",")[1]);
 
-                    double instance = Util.getDistance(myLon, myLat, location.getLongitude(), location.getLatitude());
+                    double instance = Utils.getDistance(myLon, myLat, location.getLongitude(), location.getLatitude());
                     if (instance >= 10) {
                         setLonLat(location);
                     }
@@ -400,6 +349,14 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
+    /**
+     * 步行路线规划
+     *
+     * @param myLon
+     * @param myLat
+     * @param userLon
+     * @param userLat
+     */
     private void setWalkingSearch(double myLon, double myLat, double userLon, double userLat) {
         PlanNode stNode = PlanNode.withLocation(new LatLng(myLat, myLon));
         PlanNode enNode = PlanNode.withLocation(new LatLng(userLat, userLon));
@@ -408,6 +365,46 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 .to(enNode));
     }
 
+    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+        @Override
+        public void onGetWalkingRouteResult(WalkingRouteResult result) {
+            //获取步行线路规划结果
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                Toast.makeText(StartServiceActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                // result.getSuggestAddrInfo()
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                if (routeOverlay != null) {
+                    routeOverlay.removeFromMap();
+                }
+                WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
+                baiduMap.setOnMarkerClickListener(overlay);
+                routeOverlay = overlay;
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+//                overlay.zoomToSpan();
+            }
+        }
+
+        @Override
+        public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+            //获取公交换乘路径规划结果
+        }
+
+        @Override
+        public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+            //获取驾车线路规划结果
+        }
+
+        @Override
+        public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+            //获取骑行线路规划结果
+        }
+    };
 
     private class MyWalkingRouteOverlay extends WalkingRouteOverlay {
 

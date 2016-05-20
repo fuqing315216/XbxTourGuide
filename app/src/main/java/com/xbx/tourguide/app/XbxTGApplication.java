@@ -43,7 +43,7 @@ public class XbxTGApplication extends Application {
         SPUtils.put(mContext, Constant.DEVICEID, manager.getDeviceId());
 
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);            // 初始化 JPush
+        JPushInterface.init(mContext);            // 初始化 JPush
     }
 
     public Context getmContext() {

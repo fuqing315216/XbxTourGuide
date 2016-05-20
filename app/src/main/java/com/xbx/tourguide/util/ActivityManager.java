@@ -18,7 +18,11 @@ public class ActivityManager {
     //单例模式
     public static ActivityManager getInstance() {
         if (instance == null) {
-            instance = new ActivityManager();
+            synchronized (ActivityManager.class) {
+                if (instance == null) {
+                    instance = new ActivityManager();
+                }
+            }
         }
         return instance;
     }

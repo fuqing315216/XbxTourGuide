@@ -21,7 +21,7 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.SPUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.FlowLayout;
 import com.xbx.tourguide.view.TitleBarView;
@@ -158,7 +158,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                 }
 
                 if (!VerifyUtil.isNullOrEmpty(result.getStar())) {
-                    starRab.setRating(Util.getStar(result.getStar()) / 2);
+                    starRab.setRating(Utils.getStar(result.getStar()) / 2);
                 } else {
                     starRab.setVisibility(View.GONE);
                 }
@@ -166,7 +166,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
                 String[] tags = result.getTag();
                 if (tags.length > 0) {
                     for (int i = 0; i < tags.length; i++) {
-                        tagFlyt.addView(Util.addTextView(MyOrderDetailActivity.this, tags[i]));
+                        tagFlyt.addView(Utils.addTextView(MyOrderDetailActivity.this, tags[i]));
                     }
                 } else {
                     tagFlyt.setVisibility(View.GONE);

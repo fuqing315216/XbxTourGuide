@@ -13,11 +13,13 @@ import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import org.apache.http.cookie.Cookie;
+import org.xml.sax.helpers.LocatorImpl;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -32,13 +34,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        SPUtils.clear(this);
         SPUtils.put(this, Constant.APPOINT_ORDER, "");
         SPUtils.put(this, Constant.IS_DIALOG, false);
         SPUtils.put(this, Constant.IS_JPUSH, false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 isAutoLogin();
             }
         }, 2000);

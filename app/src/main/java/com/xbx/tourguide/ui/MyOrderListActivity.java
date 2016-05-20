@@ -18,8 +18,8 @@ import com.xbx.tourguide.beans.OrderDetailBeans;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.SPUtils;
-import com.xbx.tourguide.view.PullToRefreshLayout;
-import com.xbx.tourguide.view.PullableListView;
+import com.xbx.tourguide.view.pullview.PullToRefreshLayout;
+import com.xbx.tourguide.view.pullview.PullableListView;
 import com.xbx.tourguide.view.TitleBarView;
 
 import java.util.ArrayList;

@@ -33,16 +33,17 @@ import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.util.updateversion.UpdateUtil;
 
 
 /**
  * Created by shuzhen on 2016/3/31.
- * <p>
+ * <p/>
  * 首页
  */
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -89,15 +90,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                         return;
                     checkUpdate(version);
                     break;
-            }
-        }
-    };
 
-    private Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            getLonAndLat();
-            new Handler().postDelayed(this, 6000);
+                case 0x123://上传经纬度
+                    getLonAndLat();
+                    break;
+            }
         }
     };
 
@@ -117,7 +114,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         serviceApi = new ServiceApi(this, handler);
 //        serviceApi.checkUpdate();
-        SPUtils.put(this, Constant.IS_JPUSH, false);
+        SPUtils.put(this, Constant.IS_JPUSH, true);
         SPUtils.put(this, Constant.IS_DIALOG, false);
         SPUtils.put(this, Constant.LOGIN_OUT, false);
         initView();
@@ -131,7 +128,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             initData();
         }
 
-        new Handler().postDelayed(run, 6000);
+        handler.sendEmptyMessageDelayed(0x123, 2000);
 
         locationClient = new LocationClient(this);
         locationClient.start();
@@ -207,11 +204,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         nameTv.setText(beans.getRealname());
 
-        scoreTv.setText(Util.getStar(beans.getStars()) + "分");
-        if ("0.0".equals(Util.getStar(beans.getStars()))) {
+        scoreTv.setText(Utils.getStar(beans.getStars()) + "分");
+        if ("0.0".equals(Utils.getStar(beans.getStars()))) {
             starRab.setVisibility(View.GONE);
         } else {
-            starRab.setRating(Util.getStar(beans.getStars()) / 2);
+            starRab.setRating(Utils.getStar(beans.getStars()) / 2);
         }
     }
 
@@ -273,11 +270,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     return;
                 }
                 String lonAndlat = (String) SPUtils.get(HomeActivity.this, Constant.LON_LAT, "");
-
                 if (lonAndlat != null && !"".equals(lonAndlat)) {
                     double lon = Double.parseDouble(lonAndlat.split(",")[0]);
                     double lat = Double.parseDouble(lonAndlat.split(",")[1]);
-                    double instance = Util.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
+                    double instance = Utils.getDistance(lon, lat, location.getLongitude(), location.getLatitude());
 
                     if (instance >= 10) {
                         setLonLat(location);
@@ -295,7 +291,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void setLonLat(final BDLocation location) {
-
         RequestParams params = new RequestParams();
         params.put("uid", (String) SPUtils.get(this, Constant.UID, ""));
         params.put("lon", location.getLongitude() + "");
@@ -304,7 +299,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         IRequest.post(HomeActivity.this, HttpUrl.POST_LON_LAT, params, new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {
-
             }
         });
     }

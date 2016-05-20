@@ -3,22 +3,24 @@ package com.xbx.tourguide.util;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.SystemClock;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xbx.tourguide.R;
+import com.xbx.tourguide.beans.SQLiteOrderBean;
+import com.xbx.tourguide.db.OrderNumberDao;
+import com.xbx.tourguide.ui.OrderRemainActivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by xbx on 2016/4/21.
  */
-public class Util {
+public class Utils {
     private static final double EARTH_RADIUS = 6378137.0;
 
     /**
@@ -50,6 +52,40 @@ public class Util {
         textView.setBackgroundResource(R.drawable.guide_tag_bg);
         textView.setLayoutParams(params);
         return textView;
+    }
+
+    /**
+     * 检查是否有订单要提示
+     * @param context
+     */
+    public static void isShowDialog(Context context) {
+        if (!(Boolean) SPUtils.get(context, Constant.LOGIN_OUT, false)) {
+            OrderNumberDao orderNumberDao = new OrderNumberDao(context);
+            SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+            if (sqLiteOrderBean.getNum() != null) {//有缓存
+                if (Utils.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+                    orderNumberDao.clear();
+                    return;
+                }
+                SPUtils.put(context, Constant.LOGIN_OUT, true);
+                Intent orderIntent = new Intent(context, OrderRemainActivity.class);
+                orderIntent.putExtra("serverType", "0");
+                orderIntent.putExtra("orderNumber", sqLiteOrderBean.getNum());
+                orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
+                orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(orderIntent);
+            } else {//查看是否有预约服务
+                String appointOrder = (String) SPUtils.get(context, Constant.APPOINT_ORDER, "");
+                if (appointOrder != null && !VerifyUtil.isNullOrEmpty(appointOrder)) {
+                    SPUtils.put(context, "isDialog", true);
+                    Intent orderIntent = new Intent(context, OrderRemainActivity.class);
+                    orderIntent.putExtra("serverType", "1");
+                    orderIntent.putExtra("orderNumber", appointOrder);
+                    orderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(orderIntent);
+                }
+            }
+        }
     }
 
     public static boolean isOverTime(long getMillionSeconds) {

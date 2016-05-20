@@ -38,7 +38,6 @@ public class OrderNumberDao implements OrderNumberService {
                 database.close();
             }
         }
-        LogUtils.e("---flag:" + flag);
         return flag;
     }
 

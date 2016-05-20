@@ -5,15 +5,11 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.xbx.tourguide.R;
-import com.xbx.tourguide.adapter.MyOrderListAdapter;
 import com.xbx.tourguide.adapter.PayDetailListAdapter;
 import com.xbx.tourguide.base.BaseActivity;
-import com.xbx.tourguide.beans.MyOrderBeans;
-import com.xbx.tourguide.view.PullToRefreshLayout;
-import com.xbx.tourguide.view.PullableListView;
+import com.xbx.tourguide.view.pullview.PullToRefreshLayout;
+import com.xbx.tourguide.view.pullview.PullableListView;
 import com.xbx.tourguide.view.TitleBarView;
-
-import java.util.List;
 
 /**
  * 支付明细

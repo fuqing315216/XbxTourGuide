@@ -7,20 +7,19 @@ android {
     defaultConfig {
         applicationId "com.xbx.tourguide"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         versionCode 1
         versionName "1.0"
     }
     sourceSets {
         main {
-            jniLibs.srcDir 'libs'
+            jniLibs.srcDirs = ['libs']
         }
-        instrumentTest.setRoot('tests')
+        /*instrumentTest.setRoot('tests')
         debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+        release.setRoot('build-types/release')*/
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -38,7 +37,6 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.4-SNAPSHOT.jar')
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile files('libs/jpush-android-2.0.6.jar')
     compile 'com.makeramen:roundedimageview:2.2.0'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/baidumapapi_base_v3_7_3.jar')
@@ -48,4 +46,5 @@ dependencies {
     compile files('libs/baidumapapi_search_v3_7_3.jar')
     compile files('libs/baidumapapi_util_v3_7_3.jar')
     compile files('libs/locSDK_6.13.jar')
+    compile files('libs/jpush-android-2.1.5.jar')
 }

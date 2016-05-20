@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 
-import com.baidu.platform.comapi.map.C;
 import com.xbx.tourguide.beans.SQLiteOrderBean;
 import com.xbx.tourguide.db.OrderNumberDao;
 import com.xbx.tourguide.ui.LoginActivity;
@@ -17,10 +16,10 @@ import com.xbx.tourguide.ui.MyOrderListActivity;
 import com.xbx.tourguide.ui.OrderRemainActivity;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.JPushUtils;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.VerifyUtil;
 
 import java.util.Timer;
@@ -62,7 +61,7 @@ public class BaseActivity extends FragmentActivity {
         super.onResume();
         String userInfo = (String) SPUtils.get(this, Constant.USER_INFO, "");
         if (userInfo != null && !VerifyUtil.isNullOrEmpty(userInfo)) {
-            if ("1".equals((String) SPUtils.get(this, Constant.ONLINE, ""))
+            if ("1".equals(SPUtils.get(this, Constant.ONLINE, ""))
                     && (Boolean) SPUtils.get(this, Constant.IS_JPUSH, false)) {
                 setTimerTask();
             }
@@ -82,7 +81,7 @@ public class BaseActivity extends FragmentActivity {
             @Override
             public void run() {
 
-                JPushUtils.isShowDialog(BaseActivity.this);
+                Utils.isShowDialog(BaseActivity.this);
 
                 Message message = new Message();
                 message.what = 0x123;
@@ -110,7 +109,6 @@ public class BaseActivity extends FragmentActivity {
     }
 
     public class OrderReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             orderNumberDao = new OrderNumberDao(context);
@@ -133,7 +131,7 @@ public class BaseActivity extends FragmentActivity {
                     }
                     break;
                 case 102:
-                    if (Util.isAction(context)) {
+                    if (Utils.isAction(context)) {
                         ToastUtils.showShort(context, "有订单被用户取消,请注意查看");
                         if (!getIsDialog()) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
@@ -142,7 +140,7 @@ public class BaseActivity extends FragmentActivity {
                     }
                     break;
                 case 103://只有预约服务有推送
-                    if (Util.isAction(context)) {
+                    if (Utils.isAction(context)) {
                         ToastUtils.showShort(context, "有预约订单用户支付定金，请注意查看");
                         if (!getIsDialog()) {
                             startActivity(new Intent(context, MyOrderListActivity.class));
@@ -151,7 +149,7 @@ public class BaseActivity extends FragmentActivity {
                     }
                     break;
                 case 301:
-                    if (Util.isAction(context)) {
+                    if (Utils.isAction(context)) {
                         startActivity(new Intent(context, LoginActivity.class));
                         ToastUtils.showShort(context, "");
                         return;
@@ -159,7 +157,7 @@ public class BaseActivity extends FragmentActivity {
 
                     break;
                 case 302:
-                    if (Util.isAction(context)) {
+                    if (Utils.isAction(context)) {
                         startActivity(new Intent(context, LoginActivity.class));
                         ToastUtils.showShort(context, "");
                         return;
@@ -168,12 +166,11 @@ public class BaseActivity extends FragmentActivity {
 
             }
 
-            if (Util.isAction(context)) {
+            if (Utils.isAction(context) && !getIsDialog()) {
                 //dialog是否显示
-                if (!getIsDialog()) {
                     SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
                     if (sqLiteOrderBean.getNum() != null) {
-                        if (Util.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+                        if (Utils.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
                             orderNumberDao.clear();
                             return;
                         }
@@ -192,7 +189,6 @@ public class BaseActivity extends FragmentActivity {
                     orderIntent.putExtra("serverType", "0");
                     orderIntent.putExtra("orderNumber", orderNum);
                     startActivity(orderIntent);
-                }
             }
         }
     }

@@ -20,7 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * 自定义接收器
- * <p>
+ * <p/>
  * 如果不定义这个 Receiver，则：
  * 1) 默认用户会打开主界面
  * 2) 接收不到自定义消息
@@ -48,7 +48,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "----[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            Log.d(TAG, "----Util.isAppOnForeground(context): " + Util.isAction(context));
+            Log.d(TAG, "----Utils.isAppOnForeground(context): " + Utils.isAction(context));
             OrderDetailBeans orderNumber = JsonUtils.object(bundle.getString(JPushInterface.EXTRA_EXTRA), OrderDetailBeans.class);
             Log.i("log", orderNumber.getOrder_number() + "************************");
             Log.i("log", "----JPushInterface==================" + orderNumber.toString());
@@ -56,7 +56,8 @@ public class MyReceiver extends BroadcastReceiver {
             SPUtils.put(context, Constant.UID, UserInfoParse.getUid((String) SPUtils.get(context, Constant.USER_INFO, "")));
 
             context.sendBroadcast(new Intent().setAction(Constant.BROADCAST)
-                    .putExtra("serverType", orderNumber.getServer_type()).putExtra("orderNum", orderNumber.getOrder_number()));
+                    .putExtra("serverType", orderNumber.getServer_type())
+                    .putExtra("orderNum", orderNumber.getOrder_number()));
 //        	processCustomMessage(context, bundle);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
@@ -70,7 +71,7 @@ public class MyReceiver extends BroadcastReceiver {
             switch (Integer.valueOf(serverType)) {//100-即时 101-预约 102-取消 103-用户已支付
                 case 100:
                 case 101:
-                    if (!Util.isAction(context)) {
+                    if (!Utils.isAction(context)) {
                         //打开自定义的Activity
                         Intent i = new Intent(context, HomeActivity.class);
                         i.putExtras(bundle);
@@ -80,7 +81,7 @@ public class MyReceiver extends BroadcastReceiver {
                     break;
                 case 102:
                 case 103://只有预约服务有推送
-                    if (!Util.isAction(context)) {
+                    if (!Utils.isAction(context)) {
                         Intent i = new Intent(context, MyOrderListActivity.class);
                         i.putExtras(bundle);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

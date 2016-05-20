@@ -1,4 +1,4 @@
-package com.xbx.tourguide.view;
+package com.xbx.tourguide.view.pullview;
 
 public interface Pullable {
     /**

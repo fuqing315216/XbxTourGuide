@@ -10,6 +10,7 @@ import com.xbx.tourguide.api.LoginApi;
 import com.xbx.tourguide.api.TaskFlag;
 import com.xbx.tourguide.base.BaseActivity;
 import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.view.TitleBarView;
 
@@ -83,6 +84,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
             case R.id.tv_login_out:
                 loginApi = new LoginApi(this, handler);
+                LogUtils.i("---------UID()"+(String) SPUtils.get(this, Constant.UID, ""));
                 loginApi.loginOut((String) SPUtils.get(this, Constant.UID, ""));
                 break;
             default:

@@ -22,7 +22,7 @@ import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
-import com.xbx.tourguide.util.Util;
+import com.xbx.tourguide.util.Utils;
 import com.xbx.tourguide.util.VerifyUtil;
 import com.xbx.tourguide.view.FlowLayout;
 import com.xbx.tourguide.view.TitleBarView;
@@ -52,11 +52,11 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     nameTv.setText(result.getRealname());
                     guideIdTv.setText(result.getGuide_card_number());
 
-                    scoreTv.setText(Util.getStar(result.getStars()) + "分");
-                    if ("0.0".equals(Util.getStar(result.getStars()))) {
+                    scoreTv.setText(Utils.getStar(result.getStars()) + "分");
+                    if ("0.0".equals(Utils.getStar(result.getStars()))) {
                         startRab.setVisibility(View.GONE);
                     } else {
-                        startRab.setRating(Util.getStar(result.getStars()) / 2);
+                        startRab.setRating(Utils.getStar(result.getStars()) / 2);
                     }
 
                     priceTv.setText(result.getGuide_reserve_price());
@@ -68,7 +68,7 @@ public class SelfMainActivity extends BaseActivity implements View.OnClickListen
                     } else {
                         List<TagBeans> tagBeanses = result.getComment_tag_times();
                         for (int i = 0; i < tagBeanses.size(); i++) {
-                            tagFlyt.addView(Util.addTextView(SelfMainActivity.this, tagBeanses.get(i).getTag_name()));
+                            tagFlyt.addView(Utils.addTextView(SelfMainActivity.this, tagBeanses.get(i).getTag_name()));
                         }
                     }
 

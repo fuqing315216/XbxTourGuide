@@ -17,6 +17,7 @@ import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
+import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.VerifyUtil;
@@ -26,7 +27,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/29.
- * <p>
+ * <p/>
  * 登录页
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -64,8 +65,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         forgetPwTv.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-//        phoneEt.setText("13982932283");
-//        pwEt.setText("XBX123456");
+        phoneEt.setText("13982932283");
+        pwEt.setText("XBX123456");
     }
 
     @Override
@@ -100,8 +101,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ToastUtils.showShort(this, "请输入密码");
             return;
         }
-
-        if (VerifyUtil.isNullOrEmpty(JPushInterface.getRegistrationID(this))) {
+        String pushId = JPushInterface.getRegistrationID(this);
+        LogUtils.i("------------pushId:" + pushId);
+        if (VerifyUtil.isNullOrEmpty(pushId)) {
             ToastUtils.showShort(this, "网络出现问题，请稍候重试");
             return;
         }
@@ -109,7 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         RequestParams params = new RequestParams();
         params.put("mobile", phoneEt.getText().toString());
         params.put("password", pwEt.getText().toString());
-        params.put("push_id", JPushInterface.getRegistrationID(this));
+        params.put("push_id", pushId);
         IRequest.post(this, HttpUrl.LOGIN, params, this.getString(R.string.waitting), new RequestBackListener(this) {
             @Override
             public void requestSuccess(String json) {

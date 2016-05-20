@@ -1,4 +1,4 @@
-package com.xbx.tourguide.view;
+package com.xbx.tourguide.view.pullview;
 
 import java.util.Timer;
 import java.util.TimerTask;
