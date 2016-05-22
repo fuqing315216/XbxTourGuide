@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.Stack;
 
 /**
+ * 管理activity栈
  * Created by xbx on 2016/5/4.
  */
 public class ActivityManager {

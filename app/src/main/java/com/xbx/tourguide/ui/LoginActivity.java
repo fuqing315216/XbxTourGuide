@@ -27,7 +27,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by shuzhen on 2016/3/29.
- * <p/>
+ * <p>
  * 登录页
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -42,7 +42,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-//        Cookie.putUserInfo(this, "");
     }
 
     private void initView() {
@@ -147,5 +146,4 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         return super.onKeyDown(keyCode, event);
     }
-
 }
