@@ -109,7 +109,7 @@ public class LoadingDialog extends Dialog implements DialogInterface.OnKeyListen
 
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             return true;
         }
         return false;

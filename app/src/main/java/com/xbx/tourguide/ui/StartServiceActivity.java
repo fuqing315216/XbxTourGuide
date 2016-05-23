@@ -365,7 +365,7 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
                 .to(enNode));
     }
 
-    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+    private OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
         @Override
         public void onGetWalkingRouteResult(WalkingRouteResult result) {
             //获取步行线路规划结果

@@ -300,7 +300,6 @@
                     android:id="@+id/flyt_order_detail_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_order_detail_content"
                     android:layout_marginLeft="@dimen/dp36"
                     android:layout_marginRight="@dimen/dp36"
                     android:layout_marginTop="@dimen/dp12" />
@@ -310,7 +309,6 @@
                     style="@style/bigStarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/flyt_order_detail_tag"
                     android:layout_marginLeft="@dimen/dp36"
                     android:layout_marginRight="@dimen/dp36"
                     android:layout_marginTop="@dimen/dp16"

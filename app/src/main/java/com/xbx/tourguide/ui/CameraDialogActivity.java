@@ -276,7 +276,7 @@ public class CameraDialogActivity extends BaseActivity implements View.OnClickLi
      *
      * @param uri 图片URI
      */
-    public void cropImageUri(Uri uri, File file) {
+    private void cropImageUri(Uri uri, File file) {
         if (null == file) {
             // CommonUtils.showToast(mContext, "启动相机异常");
             return;

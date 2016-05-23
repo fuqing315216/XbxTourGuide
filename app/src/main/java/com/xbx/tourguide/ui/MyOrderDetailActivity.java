@@ -3,6 +3,7 @@ package com.xbx.tourguide.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -266,7 +267,7 @@ public class MyOrderDetailActivity extends BaseActivity implements View.OnClickL
      */
     private void setPhoneOn(final String mobile) {
         phoneIv.setVisibility(View.VISIBLE);
-        phoneIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_phone_ok));
+        phoneIv.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_phone_ok));
         phoneIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -45,11 +45,12 @@ public class OrderNumberDao implements OrderNumberService {
     public SQLiteOrderBean selectFirst() {
         SQLiteOrderBean bean = null;
         SQLiteDatabase database = null;
+        Cursor cursor = null;
         try {
             database = dbOpenHelper.getReadableDatabase();
             bean = new SQLiteOrderBean();
             String sql = "select * from order_number where _id = (select max(_id) from order_number)";
-            Cursor cursor = database.rawQuery(sql, new String[]{});
+            cursor = database.rawQuery(sql, new String[]{});
             while (cursor.moveToNext()) {
                 bean.set_id(cursor.getInt(0) + "");
                 bean.setNum(cursor.getString(1));
@@ -60,9 +61,8 @@ public class OrderNumberDao implements OrderNumberService {
             e.printStackTrace();
 
         } finally {
-            if (database != null) {
-                database.close();
-            }
+            if(database != null)database.close();
+            if(cursor!=null)cursor.close();
         }
         return bean;
     }

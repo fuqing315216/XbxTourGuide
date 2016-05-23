@@ -315,6 +315,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handler.removeMessages(0x123);
         if (orderReceiver != null) {
             unregisterReceiver(orderReceiver);
         }

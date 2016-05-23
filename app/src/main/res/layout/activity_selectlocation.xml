@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:scaleType="center"
             android:src="@drawable/ic_return" />
 

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
 
     private LoginApi loginApi = null;
 
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -54,7 +55,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
         }
     };
 
-    Runnable runnable = new Runnable() {
+    private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             if (time > 0) {
@@ -69,7 +70,7 @@ public class ForgetPassWordActivity extends BaseActivity implements View.OnClick
                 verificationBtn.setEnabled(false);
                 handler.postDelayed(this, 1000);
             } else {
-                verificationBtn.setTextColor(getResources().getColor(R.color.head_text_color));
+                verificationBtn.setTextColor(ContextCompat.getColor(ForgetPassWordActivity.this,R.color.head_text_color));
                 verificationBtn.setBackgroundResource(R.drawable.bg_roundbtn_verification_style);
                 verificationBtn.setText(getResources().getString(R.string.get_verification));
                 verificationBtn.setEnabled(true);

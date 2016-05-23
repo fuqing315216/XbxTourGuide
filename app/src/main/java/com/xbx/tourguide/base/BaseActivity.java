@@ -30,7 +30,7 @@ import java.util.TimerTask;
  */
 public class BaseActivity extends FragmentActivity {
 
-    protected Intent intent = new Intent();
+    private Intent intent = new Intent();
     private OrderNumberDao orderNumberDao;
 
     private Timer timer = null;
@@ -80,7 +80,6 @@ public class BaseActivity extends FragmentActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-
                 Utils.isShowDialog(BaseActivity.this);
 
                 Message message = new Message();

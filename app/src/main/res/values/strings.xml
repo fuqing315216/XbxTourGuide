@@ -74,16 +74,8 @@
     <string name="mywallet">我的钱包</string>
     <string name="information">消息中心</string>
     <!-- order -->
-    <string name="finished">已完成</string>
-    <string name="going">进行中</string>
-    <string name="ordered">已预约</string>
-    <string name="closed">已关闭</string>
-    <string name="natival">向导</string>
-    <string name="accompany">随游</string>
     <string name="order_detail">订单详情</string>
     <string name="order_number">订&#160;&#160;单&#160;&#160;号</string>
-    <string name="my_comment">我的评价</string>
-    <string name="order_details">订单明细</string>
     <string name="pay_details">支付明细</string>
     <string name="pay_success">成功支付</string>
     <string name="cost">服务费</string>
@@ -93,12 +85,8 @@
 
     <string name="refuse">拒单</string>
     <string name="accept">接单</string>
-    <string name="cancel_pay">取消费用：</string>
     <string name="update_ok">确认修改</string>
     <string name="confirm_select">确认选择</string>
-    <string name="pay_money">支付定金：</string>
-    <string name="alipay">支付宝支付</string>
-    <string name="weixin">微信支付</string>
     <string name="confirm">确认</string>
     <!-- setting -->
     <string name="monday">一</string>
@@ -143,7 +131,6 @@
     <string name="bank_card">银行卡</string>
     <string name="balance">余额</string>
     <string name="my_balance">我的余额</string>
-    <string name="recharge">充值</string>
     <string name="deposit">提现</string>
     <string name="paydetail">收支明细</string>
     <string name="balance_more">点击查看更多</string>
@@ -175,7 +162,6 @@
     <string name="about_accompany">关于随游</string>
     <string name="now_and_order">即时和预约</string>
     <string name="cancel_order">取消订单</string>
-    <string name="btn_back">返回</string>
 
     <string name="service_duration">服务时长</string>
     <string name="day">天</string>

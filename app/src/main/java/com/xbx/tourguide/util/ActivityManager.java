@@ -37,7 +37,7 @@ public class ActivityManager {
     }
 
     //获取栈顶的activity，先进后出原则
-    public Activity getLastActivity() {
+    private Activity getLastActivity() {
         return activityStack.lastElement();
     }
 

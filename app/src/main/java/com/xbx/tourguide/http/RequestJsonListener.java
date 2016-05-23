@@ -11,10 +11,10 @@ public interface RequestJsonListener<T> {
      *
      * @param <T>
      */
-    public void requestSuccess(T result);
-    public void requestSuccess(List<T> list);
+     void requestSuccess(T result);
+     void requestSuccess(List<T> list);
     /**
      * 错误
      */
-    public void requestError(VolleyError e);
+     void requestError(VolleyError e);
 }

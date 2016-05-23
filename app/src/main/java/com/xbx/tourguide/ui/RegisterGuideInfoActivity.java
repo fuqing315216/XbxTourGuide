@@ -32,8 +32,8 @@ public class RegisterGuideInfoActivity extends BaseActivity implements View.OnCl
     private RelativeLayout touristTypeRlyt;
     private RadioButton femaleRb, maleRb, chRb, enRb, allRb;
     private RoundedImageView headPicRiv;
-    public TextView typeEt, locationTv;
-    public EditText nameEt, idEt, guideIdEt;
+    private TextView typeEt, locationTv;
+    private EditText nameEt, idEt, guideIdEt;
     private ImageLoader loader;
     private int guide_type = 1;//1-导游；2-伴游；3-向导
     private RegisterInfoBeans beans;

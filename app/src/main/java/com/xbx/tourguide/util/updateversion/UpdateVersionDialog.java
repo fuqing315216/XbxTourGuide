@@ -68,8 +68,8 @@ public class UpdateVersionDialog extends Dialog {
     };
 
     public interface CustomClickListener {
-        public void cancel();
+         void cancel();
 
-        public void confirm();
+         void confirm();
     }
 }

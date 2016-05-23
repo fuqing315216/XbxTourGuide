@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
-    static String DbName = "xbxguide.db";
-    static int Version = 1;
+    private static String DbName = "xbxguide.db";
+    private static int Version = 1;
 
     public DbOpenHelper(Context context) {
         super(context, DbName, null, Version);

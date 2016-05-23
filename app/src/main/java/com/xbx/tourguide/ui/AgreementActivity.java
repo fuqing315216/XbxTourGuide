@@ -14,7 +14,7 @@ import com.xbx.tourguide.view.TitleBarView;
 public class AgreementActivity extends BaseActivity {
 
     private String title;
-    private int type = 1;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
