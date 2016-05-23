@@ -16,7 +16,6 @@ import com.xbx.tourguide.ui.MyOrderListActivity;
 import com.xbx.tourguide.ui.OrderRemainActivity;
 import com.xbx.tourguide.util.ActivityManager;
 import com.xbx.tourguide.util.Constant;
-import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
 import com.xbx.tourguide.util.ToastUtils;
 import com.xbx.tourguide.util.Utils;
@@ -92,6 +91,7 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
         ActivityManager.getInstance().popOneActivity(this);
     }
 
@@ -167,27 +167,27 @@ public class BaseActivity extends FragmentActivity {
 
             if (Utils.isAction(context) && !getIsDialog()) {
                 //dialog是否显示
-                    SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
-                    if (sqLiteOrderBean.getNum() != null) {
-                        if (Utils.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
-                            orderNumberDao.clear();
-                            return;
-                        }
-                        orderNum = sqLiteOrderBean.getNum();
-                        orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
-                    } else {
-                        if (getAppointmentOrder() != null && !VerifyUtil.isNullOrEmpty(getAppointmentOrder())) {//预约
-                            putIsDialog(true);
-                            orderIntent.putExtra("serverType", "1");
-                            orderIntent.putExtra("orderNumber", getAppointmentOrder());
-                            startActivity(orderIntent);
-                        }
+                SQLiteOrderBean sqLiteOrderBean = orderNumberDao.selectFirst();
+                if (sqLiteOrderBean.getNum() != null) {
+                    if (Utils.isOverTime(Long.valueOf(sqLiteOrderBean.getDate()))) {
+                        orderNumberDao.clear();
+                        return;
                     }
-                    //
-                    putIsDialog(true);
-                    orderIntent.putExtra("serverType", "0");
-                    orderIntent.putExtra("orderNumber", orderNum);
-                    startActivity(orderIntent);
+                    orderNum = sqLiteOrderBean.getNum();
+                    orderIntent.putExtra("_id", sqLiteOrderBean.get_id());
+                } else {
+                    if (getAppointmentOrder() != null && !VerifyUtil.isNullOrEmpty(getAppointmentOrder())) {//预约
+                        putIsDialog(true);
+                        orderIntent.putExtra("serverType", "1");
+                        orderIntent.putExtra("orderNumber", getAppointmentOrder());
+                        startActivity(orderIntent);
+                    }
+                }
+                //
+                putIsDialog(true);
+                orderIntent.putExtra("serverType", "0");
+                orderIntent.putExtra("orderNumber", orderNum);
+                startActivity(orderIntent);
             }
         }
     }
