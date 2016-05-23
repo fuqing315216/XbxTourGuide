@@ -243,9 +243,10 @@ public class StartServiceActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void onDestroy() {
-        handler.removeMessages(1);
-        mSearch.destroy();
         super.onDestroy();
+        LogUtils.i("-----------onDestroy");
+        handler.removeCallbacksAndMessages(null);
+        mSearch.destroy();
     }
 
     /**

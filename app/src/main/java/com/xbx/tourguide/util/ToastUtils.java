@@ -1,8 +1,6 @@
 package com.xbx.tourguide.util;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.Toast;
 
 /**
@@ -12,6 +10,7 @@ import android.widget.Toast;
  * @version 2012-5-21 下午9:21:01
  */
 public class ToastUtils {
+
     private ToastUtils() {
             /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
@@ -27,7 +26,7 @@ public class ToastUtils {
      */
     public static void showShort(Context context, CharSequence message) {
         if (isShow)
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -38,7 +37,7 @@ public class ToastUtils {
      */
     public static void showShort(Context context, int message) {
         if (isShow)
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -49,7 +48,7 @@ public class ToastUtils {
      */
     public static void showLong(Context context, CharSequence message) {
         if (isShow)
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -72,7 +71,7 @@ public class ToastUtils {
      */
     public static void show(Context context, CharSequence message, int duration) {
         if (isShow)
-            Toast.makeText(context, message, duration).show();
+            Toast.makeText(context.getApplicationContext(), message, duration).show();
     }
 
     /**
@@ -84,6 +83,6 @@ public class ToastUtils {
      */
     public static void show(Context context, int message, int duration) {
         if (isShow)
-            Toast.makeText(context, message, duration).show();
+            Toast.makeText(context.getApplicationContext(), message, duration).show();
     }
 }

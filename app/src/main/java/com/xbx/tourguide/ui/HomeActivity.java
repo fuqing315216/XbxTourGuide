@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.util.ActivityManager;
+import com.xbx.tourguide.util.BitmapBgUtils;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.JsonUtils;
 import com.xbx.tourguide.util.LogUtils;
@@ -47,7 +49,7 @@ import com.xbx.tourguide.util.updateversion.UpdateUtil;
  * 首页
  */
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
-
+    private LinearLayout bgLlyt;
     private RelativeLayout myOrderRlyt;
     private RatingBar starRab;
     private TextView startTv, serviceTimeTv, travelTv, orderNumTv, msgNumTv, nameTv, scoreTv;
@@ -136,6 +138,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        bgLlyt = (LinearLayout) findViewById(R.id.llyt_home_bg);
         myOrderRlyt = (RelativeLayout) findViewById(R.id.rlyt_myorder);
         starRab = (RatingBar) findViewById(R.id.rab_home);
         scoreTv = (TextView) findViewById(R.id.tv_score);
@@ -154,6 +157,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.rlyt_head).setOnClickListener(this);
         findViewById(R.id.tv_my_wallet).setOnClickListener(this);
         findViewById(R.id.tv_setting).setOnClickListener(this);
+
+        BitmapBgUtils.getInstance().setBitmapBackground(this,bgLlyt,R.drawable.bg_home);
 
         initData();
     }
@@ -315,7 +320,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeMessages(0x123);
+        handler.removeCallbacksAndMessages(null);
+        BitmapBgUtils.getInstance().destroyBackground(bgLlyt);
         if (orderReceiver != null) {
             unregisterReceiver(orderReceiver);
         }

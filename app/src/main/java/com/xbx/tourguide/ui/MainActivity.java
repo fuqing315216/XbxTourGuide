@@ -2,6 +2,7 @@ package com.xbx.tourguide.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.xbx.tourguide.R;
@@ -12,6 +13,7 @@ import com.xbx.tourguide.http.RequestBackListener;
 import com.xbx.tourguide.http.RequestParams;
 import com.xbx.tourguide.jsonparse.UserInfoParse;
 import com.xbx.tourguide.jsonparse.UtilParse;
+import com.xbx.tourguide.util.BitmapBgUtils;
 import com.xbx.tourguide.util.Constant;
 import com.xbx.tourguide.util.LogUtils;
 import com.xbx.tourguide.util.SPUtils;
@@ -30,6 +32,8 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MainActivity extends BaseActivity {
 
+    private RelativeLayout bgRlyt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +42,22 @@ public class MainActivity extends BaseActivity {
         SPUtils.put(this, Constant.APPOINT_ORDER, "");
         SPUtils.put(this, Constant.IS_DIALOG, false);
         SPUtils.put(this, Constant.IS_JPUSH, false);
+
+        bgRlyt = (RelativeLayout) findViewById(R.id.rlyt_loading_bg);
+        BitmapBgUtils.getInstance().setBitmapBackground(this,bgRlyt,R.drawable.bg_loading);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 isAutoLogin();
             }
         }, 2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BitmapBgUtils.getInstance().destroyBackground(bgRlyt);
     }
 
     private void isAutoLogin() {
